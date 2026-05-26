@@ -1818,7 +1818,7 @@ def withdraw():
                 if account_days < 1:
                     flash("❌ আপনার একাউন্টের বয়স ১ দিন হতে হবে।", "error")
                     return redirect(url_for('withdraw'))
-                if amount < 300:
+                if amount < 280:
                     flash("❌ ফ্রি ইউজারদের মেইন ব্যালেন্স থেকে সর্বনিম্ন উইথড্রয়াল ৩০০ টাকা।", "error")
                     return redirect(url_for('withdraw'))
             # 🟢 VIP ইউজারদের জন্য সহজ শর্ত (মেইন ব্যালেন্স)
