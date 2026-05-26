@@ -3518,7 +3518,19 @@ def tasks():
                            special_rejected=special_rejected,
                            special_task=SPECIAL_TASK_INFO,
                            user=g.user)
-    
+
+# ==========================================
+# 🛑 CUSTOM ERROR HANDLERS
+# ==========================================
+@app.errorhandler(404)
+def page_not_found(e):
+    # 404 Error: Page not found
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    # 500 Error: Server crashed / Database issue
+    return render_template('500.html'), 500
 # --- 2. NEW HISTORY ROUTE (Task & Withdraw) ---
 @app.route('/history')
 @login_required
