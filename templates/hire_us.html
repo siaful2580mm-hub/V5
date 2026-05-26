@@ -1,0 +1,262 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    :root {
+        --primary: #E11D48;
+        --primary-dark: #9F1239;
+        --surface: #ffffff;
+        --background: #F8FAFC;
+        --glass: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Smooth Entry Animation */
+    @keyframes reveal {
+        from { opacity: 0; transform: translateY(30px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-reveal { animation: reveal 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+    /* Premium Glass Card */
+    .bento-card {
+        background: var(--surface);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 24px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    .bento-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.08);
+        border-color: var(--primary);
+    }
+
+    /* Floating Icon Style */
+    .icon-box {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        transition: transform 0.3s ease;
+    }
+    .bento-card:hover .icon-box { transform: scale(1.1) rotate(-5deg); }
+
+    /* Modern Input */
+    .form-group-modern {
+        position: relative;
+        border-bottom: 2px solid #E2E8F0;
+        transition: all 0.3s ease;
+    }
+    .form-group-modern:focus-within {
+        border-bottom-color: var(--primary);
+    }
+    .form-input-modern {
+        background: transparent;
+        border: none;
+        width: 100%;
+        padding: 12px 0 12px 32px;
+        font-weight: 600;
+        outline: none;
+    }
+    .form-label-modern {
+        position: absolute;
+        left: 0;
+        top: -10px;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #94A3B8;
+    }
+
+    /* Mesh Background Hero */
+    .hero-mesh {
+        background-color: #881337;
+        background-image: 
+            radial-gradient(at 0% 0%, hsla(343,90%,38%,1) 0, transparent 50%), 
+            radial-gradient(at 50% 0%, hsla(350,89%,45%,1) 0, transparent 50%), 
+            radial-gradient(at 100% 0%, hsla(340,82%,52%,1) 0, transparent 50%);
+    }
+</style>
+
+<div class="max-w-6xl mx-auto px-4 py-8 space-y-12 animate-reveal">
+
+    <!-- 1. HERO SECTION: The Narrative -->
+    <header class="hero-mesh rounded-[40px] p-8 md:p-16 text-white relative shadow-2xl overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg width="100%" height="100%"><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/></pattern><rect width="100%" height="100%" fill="url(#grid)" /></svg>
+        </div>
+        
+        <div class="relative z-10 text-center max-w-3xl mx-auto">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 mb-6">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                </span>
+                <span class="text-xs font-black uppercase tracking-tighter">GrowEarn Official Promotion Hub</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-black mb-6 leading-[1.1] tracking-tight">
+                Scale Your Brand <br>
+                <span class="text-rose-300">With 56k+ Experts</span>
+            </h1>
+            
+            <p class="text-lg text-rose-100/80 mb-8 font-medium">
+                অর্গানিক মেম্বারদের মাধ্যমে আপনার সোশ্যাল মিডিয়া ও ব্যবসার গ্রোথ নিশ্চিত করুন। নিরাপদ, দ্রুত এবং সাশ্রয়ী।
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#hireForm" class="bg-white text-rose-600 px-8 py-4 rounded-2xl font-bold hover:bg-rose-50 transition-colors shadow-lg">Get Started Now</a>
+                <div class="flex -space-x-3">
+                    <img class="w-10 h-10 rounded-full border-2 border-rose-500" src="https://ui-avatars.com/api/?name=User1&bg=E11D48&color=fff" alt="User">
+                    <img class="w-10 h-10 rounded-full border-2 border-rose-500" src="https://ui-avatars.com/api/?name=User2&bg=BE123C&color=fff" alt="User">
+                    <img class="w-10 h-10 rounded-full border-2 border-rose-500" src="https://ui-avatars.com/api/?name=User3&bg=9F1239&color=fff" alt="User">
+                    <div class="w-10 h-10 rounded-full border-2 border-rose-500 bg-rose-900 flex items-center justify-center text-[10px] font-bold">+56k</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. VALUE PROPOSITIONS -->
+    <div class="grid md:grid-cols-3 gap-6">
+        <div class="bento-card p-8">
+            <div class="icon-box bg-rose-50 text-rose-600 mb-6"><i class="fa-solid fa-bolt-lightning text-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-2">Instant Reach</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">হাজার হাজার রিয়েল মানুষের কাছে আপনার কন্টেন্ট পৌঁছে দিন মুহূর্তের মধ্যেই।</p>
+        </div>
+        <div class="bento-card p-8">
+            <div class="icon-box bg-blue-50 text-blue-600 mb-6"><i class="fa-solid fa-shield-halved text-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-2">100% Organic</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">কোনো বট নয়, আমাদের মেম্বাররা সরাসরি আপনার দেওয়া লিংকে কাজ করবে।</p>
+        </div>
+        <div class="bento-card p-8">
+            <div class="icon-box bg-emerald-50 text-emerald-600 mb-6"><i class="fa-solid fa-wallet text-2xl"></i></div>
+            <h3 class="text-xl font-bold mb-2">Flexible Pay</h3>
+            <p class="text-slate-500 text-sm leading-relaxed">Earned Balance কিংবা bKash/Binance দিয়ে খুব সহজে পেমেন্ট করার সুবিধা।</p>
+        </div>
+    </div>
+
+    <!-- 3. SERVICES GRID -->
+    <section>
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Premium Services</h2>
+                <p class="text-slate-500 font-medium">Select a category to boost your presence</p>
+            </div>
+            <div class="flex gap-2">
+                <span class="px-4 py-2 bg-slate-100 rounded-full text-xs font-bold text-slate-600 tracking-widest uppercase">Global Delivery</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for srv in services %}
+            <div class="bento-card p-6 flex flex-col group cursor-pointer" onclick="selectService('{{ srv.title }}')">
+                <div class="flex justify-between items-start mb-6">
+                    <div class="icon-box {{ srv.bg }} {{ srv.color }} shadow-sm">
+                        <i class="fa-brands {{ srv.icon }} text-2xl"></i>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right text-slate-300 group-hover:text-rose-500 transition-colors"></i>
+                </div>
+                <h4 class="font-black text-slate-800 mb-2">{{ srv.title }}</h4>
+                <p class="text-xs text-slate-500 font-medium leading-relaxed mb-6">{{ srv.desc }}</p>
+                <div class="mt-auto">
+                    <span class="text-[10px] font-black text-rose-600 bg-rose-50 px-3 py-1 rounded-full uppercase">Order Now</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- 4. ORDER FORM -->
+    <section id="hireForm" class="bg-slate-900 rounded-[40px] p-8 md:p-16 text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-rose-600/10 blur-[120px] pointer-events-none"></div>
+        
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-3xl font-black mb-2">Request a Custom Proposal</h2>
+                <p class="text-slate-400">Fill the details below and our team will contact you within 2 hours.</p>
+            </div>
+
+            <form method="POST" action="/hire-us" class="space-y-10" onsubmit="return showLoadingBtn()">
+                <div class="grid md:grid-cols-2 gap-x-12 gap-y-10">
+                    <!-- Field 1 -->
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">Name / Brand</label>
+                        <i class="fa-regular fa-user absolute left-0 bottom-4 text-slate-500"></i>
+                        <input type="text" name="name" required class="form-input-modern text-white" placeholder="John Doe">
+                    </div>
+
+                    <!-- Field 2 -->
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">Contact Method</label>
+                        <i class="fa-brands fa-whatsapp absolute left-0 bottom-4 text-slate-500"></i>
+                        <select name="contact_method" required class="form-input-modern text-white bg-transparent appearance-none">
+                            <option class="text-slate-900" value="WhatsApp">WhatsApp</option>
+                            <option class="text-slate-900" value="Telegram">Telegram</option>
+                            <option class="text-slate-900" value="Direct Call">Phone Call</option>
+                        </select>
+                    </div>
+
+                    <!-- Field 3 -->
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">ID or Number</label>
+                        <i class="fa-solid fa-link absolute left-0 bottom-4 text-slate-500"></i>
+                        <input type="text" name="phone" required class="form-input-modern text-white" placeholder="+88017XXXXXXXX">
+                    </div>
+
+                    <!-- Field 4 -->
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">Service Needed</label>
+                        <i class="fa-solid fa-layer-group absolute left-0 bottom-4 text-slate-500"></i>
+                        <select name="service" id="serviceSelect" required class="form-input-modern text-white bg-transparent appearance-none">
+                            <option value="" disabled selected>Select Service</option>
+                            {% for srv in services %}
+                                <option class="text-slate-900" value="{{ srv.title }}">{{ srv.title }}</option>
+                            {% endfor %}
+                            <option class="text-slate-900" value="Custom">Other Request</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Field 5 -->
+                <div class="form-group-modern">
+                    <label class="form-label-modern">Project Details & Budget</label>
+                    <i class="fa-solid fa-pen-nib absolute left-0 top-3 text-slate-500"></i>
+                    <textarea name="details" rows="2" required class="form-input-modern text-white resize-none pt-2" placeholder="Tell us what you need..."></textarea>
+                </div>
+
+                <div class="flex flex-col items-center gap-6">
+                    <button type="submit" id="submitReqBtn" class="w-full md:w-auto px-12 py-5 bg-rose-600 rounded-2xl font-black uppercase tracking-widest hover:bg-rose-500 transition-all shadow-xl shadow-rose-900/20 active:scale-95">
+                        Submit Proposal <i class="fa-solid fa-paper-plane ml-2"></i>
+                    </button>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+                        <i class="fa-solid fa-shield-check text-rose-500"></i> Secure & Private Transmission
+                    </p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    function selectService(serviceName) {
+        const select = document.getElementById('serviceSelect');
+        select.value = serviceName;
+        document.getElementById('hireForm').scrollIntoView({ behavior: 'smooth' });
+        // Visual feedback
+        select.parentElement.style.borderBottomColor = '#E11D48';
+    }
+    
+    function showLoadingBtn() {
+        const btn = document.getElementById('submitReqBtn');
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...`;
+        return true;
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,324 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    /* Smooth Entry Animation */
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* bKash Style Combined Header Card */
+    .bKash-header-card {
+        background: linear-gradient(145deg, #e11d48 0%, #be123c 100%);
+        border-radius: 28px;
+        box-shadow: 0 10px 30px -5px rgba(225, 29, 72, 0.3);
+        position: relative;
+        overflow: hidden;
+        color: white;
+        padding: 24px;
+        margin-top: 10px;
+    }
+    .bKash-header-card::after {
+        content: ''; position: absolute; right: -20px; top: -20px;
+        width: 150px; height: 150px;
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+        border-radius: 50%; pointer-events: none;
+    }
+
+    /* Shiny White Avatar */
+    .avatar-white {
+        background: white; color: #e11d48;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        border: 2px solid rgba(255,255,255,0.5);
+    }
+
+    /* Modern Category Grid Cards (Soft UI) */
+    .nav-card {
+        background: #ffffff; border: 1px solid #F1F5F9; border-radius: 20px;
+        padding: 16px 10px; display: flex; flex-direction: column; align-items: center; text-align: center;
+        gap: 12px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+    .nav-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(225, 29, 72, 0.08); border-color: #FECDD3; }
+    .nav-card:active { transform: scale(0.96); }
+    
+    /* Icon Boxes */
+    .nav-icon-box {
+        height: 48px; width: 48px; border-radius: 16px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; transition: all 0.3s ease;
+    }
+    .nav-card:hover .nav-icon-box { transform: scale(1.1) rotate(5deg); }
+
+    /* Notice Board Box */
+    .notice-box {
+        background: #FFF1F2; border: 1px solid #FFE4E6; border-radius: 20px;
+        padding: 16px; display: flex; align-items: flex-start; gap: 16px;
+    }
+
+    /* Popup Modal Styles */
+    .modal-backdrop {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 9999; opacity: 0; pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+    .modal-content {
+        background: white; border-radius: 24px; width: 90%; max-w: 400px;
+        padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        transform: scale(0.9); transition: transform 0.3s ease;
+    }
+    .modal-backdrop.show .modal-content { transform: scale(1); }
+</style>
+
+<div id="welcomeModal" class="modal-backdrop">
+    <div class="modal-content relative text-center">
+        <button onclick="closeModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-xl font-bold transition">
+            &times;
+        </button>
+        
+        <div class="h-16 w-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner">
+            <i class="fa-solid fa-gift"></i>
+        </div>
+
+        <h3 class="text-xl font-black text-slate-800 mb-2">Growearn এ স্বাগতম</h3>
+        <p class="text-xs text-slate-500 mb-5 leading-relaxed">আমাদের প্ল্যাটফর্মে যোগ দেওয়ার জন্য আপনাকে ধন্যবাদ। নিচের লিঙ্কগুলো ব্যবহার করে আমাদের সাথে যুক্ত থাকুন।</p>
+        
+        <div class="space-y-2.5 text-left mb-6">
+            <a href="https://t.me/grow_earn" target="_blank" class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-sky-50 rounded-xl border border-slate-100 hover:border-sky-200 transition text-slate-700 hover:text-sky-700 font-semibold text-sm">
+                <i class="fa-solid fa-headset text-sky-500 text-base"></i>
+                <span>Support: @grow_earn</span>
+            </a>
+            <a href="https://t.me/growearnch" target="_blank" class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-blue-50 rounded-xl border border-slate-100 hover:border-blue-200 transition text-slate-700 hover:text-blue-700 font-semibold text-sm">
+                <i class="fa-brands fa-telegram text-blue-500 text-lg"></i>
+                <span>Telegram Channel</span>
+            </a>
+            <a href="/tutorial" class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-rose-50 rounded-xl border border-slate-100 hover:border-rose-200 transition text-slate-700 hover:text-rose-700 font-semibold text-sm">
+                <i class="fa-brands fa-youtube text-rose-500 text-base"></i>
+                <span>Tutorial (কাজের নিয়ম)</span>
+            </a>
+        </div>
+
+        <button onclick="closeModal()" class="w-full bg-rose-600 text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest text-center shadow-md active:scale-95 transition">
+            শুরু করুন
+        </button>
+    </div>
+</div>
+
+<div class="space-y-6 fade-in-up max-w-2xl mx-auto px-2 pb-10 relative z-10">
+
+    <div class="bKash-header-card">
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center gap-4 relative z-10">
+                <div class="h-12 w-12 rounded-full avatar-white flex items-center justify-center text-xl font-black flex-shrink-0">
+                    {{ user.email[0] | upper }}
+                </div>
+                <div>
+                    <h2 class="text-lg font-black leading-none truncate max-w-[150px] sm:max-w-[200px]">
+                        {{ user.full_name or user.email.split('@')[0] | title }}
+                    </h2>
+                    {% if user.current_level > 0 %}
+                        <span class="text-[10px] font-bold text-amber-300 mt-1 block"><i class="fa-solid fa-crown"></i> Elite Member</span>
+                    {% else %}
+                        <span class="text-[10px] font-bold text-red-100 mt-1 block"><i class="fa-solid fa-shield-check"></i> Verified User</span>
+                    {% endif %}
+                </div>
+            </div>
+            <a href="/account" class="h-10 w-10 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition backdrop-blur-sm relative z-10">
+                <i class="fa-solid fa-gear"></i>
+            </a>
+        </div>
+
+        <div class="mb-6 relative z-10">
+            <div class="flex items-center gap-2 mb-1 cursor-pointer w-max" onclick="toggleBalance()">
+                <p class="text-[11px] font-medium text-red-100 uppercase tracking-widest">Available Balance</p>
+                <i id="eyeIcon" class="fa-regular fa-eye-slash text-red-200"></i>
+            </div>
+            <h1 class="text-4xl font-black font-mono tracking-tight leading-none flex items-center gap-2">
+                <span class="text-2xl text-red-200 font-bold">৳</span>
+                <span id="balanceText" data-amount="{{ user.balance }}" class="blur-md transition-all duration-300">{{ user.balance }}</span>
+            </h1>
+        </div>
+
+        <div class="flex gap-3 relative z-10 border-t border-white/20 pt-4 mt-2">
+            <a href="/withdraw" class="flex-1 bg-white text-red-600 py-3 rounded-[16px] text-xs font-black uppercase tracking-widest text-center shadow-md active:scale-95 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-money-bill-transfer"></i> Withdraw
+            </a>
+            <a href="/income" class="flex-1 bg-white/20 text-white py-3 rounded-[16px] text-xs font-bold uppercase tracking-widest text-center border border-white/30 active:scale-95 transition flex items-center justify-center gap-2 backdrop-blur-sm">
+                <i class="fa-solid fa-chart-pie"></i> Details
+            </a>
+        </div>
+    </div>
+
+    {% if settings.activation_required and not user.is_active %}
+    <div class="bg-amber-50 border border-amber-200 p-4 rounded-[20px] flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="bg-amber-100 text-amber-600 h-10 w-10 rounded-xl flex items-center justify-center text-lg">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h3 class="font-bold text-amber-800 text-sm">Verify Account</h3>
+                <p class="text-[10px] text-amber-600 font-medium">Please activate your account</p>
+            </div>
+        </div>
+        <a href="/activate" class="bg-amber-500 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md hover:bg-amber-600 transition">
+            Verify
+        </a>
+    </div>
+    {% endif %}
+
+    {% if settings.notice_text %}
+    <div class="notice-box shadow-[0_2px_15px_rgba(225,29,72,0.03)] relative overflow-hidden group">
+        <div class="absolute right-0 top-0 w-20 h-20 bg-red-100 rounded-bl-full opacity-50 pointer-events-none"></div>
+        <div class="h-10 w-10 bg-red-100 text-red-500 rounded-full flex items-center justify-center flex-shrink-0 text-lg group-hover:scale-110 transition-transform">
+            <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div class="relative z-10 pr-2">
+            <h4 class="text-[10px] font-black text-red-600 uppercase tracking-widest mb-1">Notice Board</h4>
+            <p class="text-[12px] text-slate-700 font-medium leading-relaxed">
+                {{ settings.notice_text }}
+            </p>
+        </div>
+    </div>
+    {% endif %}
+
+    <a href="/work" class="block bg-slate-900 text-white p-5 rounded-[24px] shadow-[0_8px_25px_rgba(0,0,0,0.15)] relative overflow-hidden group active:scale-95 transition-all mt-4 border border-slate-800">
+        <div class="absolute right-0 top-0 w-32 h-32 bg-blue-500/20 rounded-bl-full pointer-events-none blur-2xl"></div>
+        <div class="flex items-center justify-between relative z-10">
+            <div>
+                <span class="bg-white/10 text-slate-300 border border-white/10 px-2.5 py-1 rounded text-[8px] font-black uppercase tracking-widest mb-2 inline-block">Earn Money</span>
+                <h3 class="font-black text-white text-xl leading-tight tracking-tight">Start Working!</h3>
+                <p class="text-[11px] text-slate-400 mt-1 font-medium">Complete daily tasks to earn rewards.</p>
+            </div>
+            <div class="h-14 w-14 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl shadow-lg group-hover:bg-blue-500 transition-colors flex-shrink-0">
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+        </div>
+    </a>
+
+    <div class="pt-4">
+        <h3 class="font-bold text-slate-800 text-xs uppercase tracking-widest mb-4 px-2 flex items-center gap-1.5">
+            <i class="fa-solid fa-bolt text-red-500"></i> Quick Services
+        </h3>
+        
+        <div class="grid grid-cols-4 gap-3 sm:gap-4">
+            <a href="/tasks" class="nav-card group">
+                <div class="nav-icon-box bg-indigo-50 text-indigo-600 border border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white"><i class="fa-solid fa-list-check"></i></div>
+                <span class="text-[10px] font-bold text-slate-700">Tasks</span>
+            </a>
+            
+            <a href="/gmail-tasks" class="nav-card group relative overflow-hidden">
+                <span class="absolute top-0 right-0 bg-red-500 h-1.5 w-1.5 rounded-full m-2"></span>
+                <div class="nav-icon-box bg-red-50 text-red-500 border border-red-100 group-hover:bg-red-500 group-hover:text-white"><i class="fa-brands fa-google"></i></div>
+                <span class="text-[10px] font-bold text-slate-700">Gmail</span>
+            </a>
+            
+            <a href="/captcha" class="nav-card group">
+                <div class="nav-icon-box bg-teal-50 text-teal-600 border border-teal-100 group-hover:bg-teal-600 group-hover:text-white"><i class="fa-solid fa-keyboard"></i></div>
+                <span class="text-[10px] font-bold text-slate-700">Captcha</span>
+            </a>
+            
+            <a href="/spin" class="nav-card group">
+                <div class="nav-icon-box bg-orange-50 text-orange-500 border border-orange-100 group-hover:bg-orange-500 group-hover:text-white"><i class="fa-solid fa-dharmachakra"></i></div>
+                <span class="text-[10px] font-bold text-slate-700">Spin</span>
+            </a>
+            
+            <a href="/drive" class="nav-card group">
+                <div class="nav-icon-box bg-sky-50 text-sky-500 border border-sky-100 group-hover:bg-sky-500 group-hover:text-white"><i class="fa-solid fa-wifi"></i></div>
+                <span class="text-[10px] font-bold text-slate-700">Drive</span>
+            </a>
+
+            <a href="/hire-us" class="nav-card group">
+                <div class="nav-icon-box bg-blue-50 text-blue-600 border border-blue-100 group-hover:bg-blue-600 group-hover:text-white"><i class="fa-solid fa-briefcase"></i></div>
+                <span class="text-[10px] font-bold text-slate-700">Hire Us</span>
+            </a>
+
+            <a href="/referrals" class="nav-card group">
+                <div class="nav-icon-box bg-purple-50 text-purple-600 border border-purple-100 group-hover:bg-purple-600 group-hover:text-white"><i class="fa-solid fa-users"></i></div>
+                <span class="text-[10px] font-bold text-slate-700">Team</span>
+            </a>
+
+            <a href="/tutorial" class="nav-card group">
+                <div class="nav-icon-box bg-rose-50 text-rose-500 border border-rose-100 group-hover:bg-rose-500 group-hover:text-white"><i class="fa-brands fa-youtube"></i></div>
+                <span class="text-[10px] font-bold text-slate-700">Guide</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-[24px] p-5 shadow-sm border border-slate-100 mt-8 mb-4">
+        <h3 class="font-black text-slate-800 text-sm mb-4">App Information</h3>
+        <div class="flex justify-between items-center px-1">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center text-lg border border-slate-100"><i class="fa-regular fa-calendar"></i></div>
+                <div>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Site Age</p>
+                    <p class="text-xs font-black text-slate-700" id="countdown">Loading...</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center text-lg border border-slate-100"><i class="fa-solid fa-users"></i></div>
+                <div>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Total Users</p>
+                    <p class="text-xs font-black text-slate-700">56,000+</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Popup Modal Functions
+    window.addEventListener('DOMContentLoaded', () => {
+        // পেজ লোড হওয়ার সাথে সাথে পপআপ ওপেন হবে
+        setTimeout(() => {
+            document.getElementById('welcomeModal').classList.add('show');
+        }, 300); 
+    });
+
+    function closeModal() {
+        document.getElementById('welcomeModal').classList.remove('show');
+    }
+
+    // 1. App-like Balance Toggle
+    function toggleBalance() {
+        const balElement = document.getElementById("balanceText");
+        const icon = document.getElementById("eyeIcon");
+        
+        if (icon.classList.contains("fa-eye")) {
+            balElement.innerText = "******";
+            icon.classList.replace("fa-eye", "fa-eye-slash");
+            balElement.classList.add("blur-md");
+        } else {
+            balElement.innerText = balElement.getAttribute("data-amount");
+            icon.classList.replace("fa-eye-slash", "fa-eye");
+            balElement.classList.remove("blur-md");
+        }
+    }
+
+    // 2. Simple Site Age Text
+    (function() {
+        function updateSiteAge() {
+            const startDate = new Date("2025-01-01T00:00:00").getTime(); 
+            const now = new Date().getTime();
+            const diff = now - startDate;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const months = Math.floor(days / 30);
+                const remainingDays = days % 30;
+                
+                let text = "";
+                if(months > 0) text += months + " Months ";
+                text += remainingDays + " Days";
+                
+                document.getElementById("countdown").innerText = text;
+            }
+        }
+        setInterval(updateSiteAge, 60000);
+        updateSiteAge();
+    })();
+</script>
+
+{% endblock %}

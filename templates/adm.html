@@ -1,0 +1,218 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    /* Global Background Accent */
+    body { background-color: #f1f5f9; }
+
+    /* Premium Entry Animations */
+    .fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeInUp { 
+        from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+        to { opacity: 1; transform: translateY(0); filter: blur(0); }
+    }
+    
+    /* Glowing Method Cards */
+    .method-card {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #ffffff;
+        border: 2px solid #f1f5f9;
+        border-radius: 24px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Unique Glowing Effects for Methods */
+    /* bKash Glow */
+    input[value="bKash"]:checked + .method-card {
+        border-color: #E2136E;
+        box-shadow: 0 10px 25px -5px rgba(226, 19, 110, 0.3), 0 0 15px rgba(226, 19, 110, 0.1);
+        transform: scale(1.05);
+    }
+    /* Nagad Glow */
+    input[value="Nagad"]:checked + .method-card {
+        border-color: #F59E0B;
+        box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.3), 0 0 15px rgba(245, 158, 11, 0.1);
+        transform: scale(1.05);
+    }
+    /* Rocket Glow */
+    input[value="Rocket"]:checked + .method-card {
+        border-color: #9333EA;
+        box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 0 15px rgba(147, 51, 234, 0.1);
+        transform: scale(1.05);
+    }
+
+    /* Input Field Glow */
+    .premium-input:focus {
+        border-color: #E11D48;
+        background: #fff;
+        box-shadow: 0 0 20px rgba(225, 29, 72, 0.15);
+    }
+
+    /* Glassmorphism Details */
+    .glass-status {
+        background: rgba(15, 23, 42, 0.9);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Gradient Button Glow */
+    .btn-glow {
+        background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+        box-shadow: 0 10px 20px -5px rgba(225, 29, 72, 0.4);
+        transition: all 0.3s ease;
+    }
+    .btn-glow:hover {
+        box-shadow: 0 15px 30px -5px rgba(225, 29, 72, 0.6);
+        transform: translateY(-2px);
+    }
+    .btn-glow:active { transform: scale(0.97); }
+
+    /* Animated Radio Circles */
+    .check-indicator {
+        position: absolute; top: 12px; right: 12px;
+        height: 20px; width: 20px; border-radius: 50%;
+        border: 2px solid #e2e8f0;
+        display: flex; align-items: center; justify-content: center;
+        transition: all 0.3s ease;
+    }
+    input:checked + .method-card .check-indicator {
+        background: currentColor;
+        border-color: transparent;
+    }
+</style>
+
+<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-4 mt-6">
+
+    <!-- Header Section -->
+    <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4">
+            <a href="/menu" class="h-12 w-12 bg-white rounded-2xl flex items-center justify-center text-slate-600 shadow-sm border border-slate-100 hover:text-red-600 transition-all">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+            <div>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Payout Settings</h2>
+                <p class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Withdrawal Gateway</p>
+            </div>
+        </div>
+        <div class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+    </div>
+
+    <!-- Active Wallet Card (Financial App Style) -->
+    {% if user.wallet_number and user.wallet_method %}
+    <div class="glass-status rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl">
+        <div class="absolute -right-6 -top-6 w-32 h-32 bg-red-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -left-6 -bottom-6 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
+        
+        <div class="relative z-10 space-y-4">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Active Receiver</p>
+                    <h3 class="text-2xl font-mono font-bold tracking-[0.2em] mt-1">{{ user.wallet_number }}</h3>
+                </div>
+                <div class="bg-white/10 px-3 py-1 rounded-full text-[9px] font-black tracking-tighter border border-white/10">
+                    {{ user.wallet_method }}
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-green-400 text-[10px] font-bold uppercase">
+                <i class="fa-solid fa-shield-check"></i> Verified Destination
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Form Container -->
+    <div class="bg-white/70 backdrop-blur-md p-6 rounded-[35px] border border-white shadow-sm">
+        <form method="POST" action="/adm" class="space-y-8" onsubmit="return showLoading()">
+            
+            <!-- Step 1: Select Method -->
+            <div class="space-y-4">
+                <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 px-1">
+                    <span class="h-5 w-5 rounded-lg bg-slate-800 text-white flex items-center justify-center text-[10px]">01</span>
+                    Payment Method
+                </label>
+                
+                <div class="grid grid-cols-3 gap-4">
+                    <!-- bKash -->
+                    <label class="relative group">
+                        <input type="radio" name="method" value="bKash" class="sr-only" {{ 'checked' if user.wallet_method == 'bKash' }} required>
+                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2 cursor-pointer text-[#E2136E]">
+                            <div class="check-indicator"><i class="fa-solid fa-check text-[10px] text-white"></i></div>
+                            <div class="h-12 w-12 rounded-2xl bg-pink-50 flex items-center justify-center text-2xl shadow-inner">
+                                <i class="fa-solid fa-bolt-lightning"></i>
+                            </div>
+                            <span class="text-[11px] font-black uppercase tracking-tighter">bKash</span>
+                        </div>
+                    </label>
+
+                    <!-- Nagad -->
+                    <label class="relative group">
+                        <input type="radio" name="method" value="Nagad" class="sr-only" {{ 'checked' if user.wallet_method == 'Nagad' }} required>
+                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2 cursor-pointer text-[#F59E0B]">
+                            <div class="check-indicator"><i class="fa-solid fa-check text-[10px] text-white"></i></div>
+                            <div class="h-12 w-12 rounded-2xl bg-orange-50 flex items-center justify-center text-2xl shadow-inner">
+                                <i class="fa-solid fa-fire-flame-curved"></i>
+                            </div>
+                            <span class="text-[11px] font-black uppercase tracking-tighter">Nagad</span>
+                        </div>
+                    </label>
+
+                    <!-- Rocket -->
+                    <label class="relative group">
+                        <input type="radio" name="method" value="Rocket" class="sr-only" {{ 'checked' if user.wallet_method == 'Rocket' }} required>
+                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2 cursor-pointer text-[#9333EA]">
+                            <div class="check-indicator"><i class="fa-solid fa-check text-[10px] text-white"></i></div>
+                            <div class="h-12 w-12 rounded-2xl bg-purple-50 flex items-center justify-center text-2xl shadow-inner">
+                                <i class="fa-solid fa-shuttle-space"></i>
+                            </div>
+                            <span class="text-[11px] font-black uppercase tracking-tighter">Rocket</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Step 2: Number Input -->
+            <div class="space-y-4">
+                <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 px-1">
+                    <span class="h-5 w-5 rounded-lg bg-slate-800 text-white flex items-center justify-center text-[10px]">02</span>
+                    Wallet Number
+                </label>
+                <div class="relative">
+                    <span class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 font-bold">+88</span>
+                    <input type="tel" name="number" required pattern="01[3-9][0-9]{8}" placeholder="01700000000" value="{{ user.wallet_number or '' }}"
+                           class="premium-input w-full pl-16 pr-6 py-5 rounded-[24px] text-xl font-bold tracking-[0.2em] bg-slate-50 border-none ring-1 ring-slate-200 transition-all">
+                </div>
+            </div>
+
+            <!-- Warning Box -->
+            <div class="p-4 rounded-[20px] bg-amber-50 border border-amber-100 flex gap-3">
+                <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1"></i>
+                <p class="text-[11px] leading-relaxed text-amber-800 font-medium">
+                    নিশ্চিত করুন যে নাম্বারটি আপনার ব্যক্তিগত। ভুল নাম্বারের জন্য পেমেন্ট আটকে গেলে সিস্টেম দায়ী থাকবে না।
+                </p>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="submitBtn" class="btn-glow w-full py-5 rounded-[24px] text-white font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-3">
+                Update Wallet <i class="fa-solid fa-arrow-right-long animate-pulse"></i>
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    function showLoading() {
+        const form = document.querySelector('form');
+        if (form.checkValidity()) {
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+            return true;
+        }
+        return false;
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,277 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    :root {
+        --primary: #FF3B30;
+        --secondary: #1C1C1E;
+        --accent: #34C759;
+        --surface: #FFFFFF;
+        --background: #F2F2F7;
+    }
+
+    /* Smooth Entrance Animation */
+    .app-entry { animation: app-slide-up 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    @keyframes app-slide-up {
+        from { opacity: 0; transform: translateY(30px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Glassmorphism & Shadows */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Dynamic Button Gradient */
+    .btn-gradient {
+        background: linear-gradient(135deg, #FF3B30 0%, #FF2D55 100%);
+        box-shadow: 0 10px 20px -5px rgba(255, 59, 48, 0.3);
+    }
+    
+    .btn-gradient:active { transform: scale(0.96); }
+
+    /* Modern Progress Tracker */
+    .timer-ring {
+        transition: stroke-dashoffset 0.35s;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+    }
+
+    /* Pulse Effect for Active Task */
+    .pulse-glow { animation: pulse-red 2s infinite; }
+    @keyframes pulse-red {
+        0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.4); }
+        70% { box-shadow: 0 0 0 15px rgba(255, 59, 48, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+    }
+</style>
+
+<div class="max-w-xl mx-auto px-4 pt-6 pb-20 app-entry">
+
+    <!-- 1. NAVIGATION HEADER -->
+    <div class="flex items-center justify-between mb-8">
+        <a href="/work" class="w-12 h-12 flex items-center justify-center bg-white rounded-2xl shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors">
+            <i class="fa-solid fa-chevron-left text-gray-800"></i>
+        </a>
+        <div class="text-center">
+            <h1 class="text-xl font-black text-gray-900 tracking-tight">Submit Proof</h1>
+            <p class="text-[10px] font-bold text-red-500 uppercase tracking-[0.2em]">Verification Desk</p>
+        </div>
+        <div class="w-12"></div> <!-- Spacer -->
+    </div>
+
+    <!-- 2. TASK IDENTITY CARD -->
+    <div class="relative bg-gray-900 rounded-[32px] p-6 mb-8 overflow-hidden shadow-2xl">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-red-600/20 blur-3xl"></div>
+        <div class="absolute -left-4 -bottom-4 w-24 h-24 bg-blue-600/20 blur-3xl"></div>
+        
+        <div class="relative z-10 flex items-center gap-5">
+            <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl border border-white/10 shadow-inner
+                {% if 'YouTube' in task.category %} text-red-400
+                {% elif 'Facebook' in task.category %} text-blue-400
+                {% else %} text-emerald-400 {% endif %}">
+                {% if 'YouTube' in task.category %}<i class="fa-brands fa-youtube"></i>
+                {% elif 'Facebook' in task.category %}<i class="fa-brands fa-facebook"></i>
+                {% else %}<i class="fa-solid fa-bolt-lightning"></i>{% endif %}
+            </div>
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="px-2 py-0.5 bg-red-500/20 text-red-400 text-[9px] font-black rounded uppercase tracking-wider">{{ task.category }}</span>
+                    <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[9px] font-black rounded uppercase tracking-wider">Verified</span>
+                </div>
+                <h2 class="text-white font-bold text-lg leading-tight">{{ task.title }}</h2>
+                <p class="text-gray-400 text-xs mt-1 font-medium">Earn ৳{{ task.reward }} instantly upon approval</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. INSTRUCTION STEPS -->
+    <div class="space-y-6">
+        
+        <!-- STEP 1: ACTIONS (If needed) -->
+        {% if task.task_type == 'screenshot' and task.link %}
+        <div class="glass-card rounded-[28px] p-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-black shadow-lg shadow-red-200">1</div>
+                <h3 class="font-bold text-gray-800">Execute Task</h3>
+            </div>
+           <div class="bg-white/5 rounded-2xl p-4 border border-white/5">
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Instructions / কাজের বিবরণ:</p>
+                <p class="text-gray-300 text-xs leading-relaxed font-medium">
+                    {{ task.description }}
+                </p>
+            </div>
+            
+            <p class="text-gray-500 text-xs leading-relaxed mb-6">লিংকে ক্লিক করে নির্দিষ্ট সময় পর্যন্ত কন্টেন্ট দেখুন। অটোমেটিক ট্র্যাকিং চালু হবে।</p>
+            
+            <div class="flex flex-col items-center">
+                <button id="startLinkBtn" onclick="startTaskTimer('{{ task.link }}')" class="btn-gradient w-full py-4 rounded-2xl text-white font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 active:scale-95 transition-all">
+                    <i class="fa-solid fa-external-link-alt" id="linkIcon"></i>
+                    <span id="linkBtnText">Go to Task Link</span>
+                </button>
+
+                <!-- Hidden Timer Progress -->
+                <div id="progressContainer" class="w-full mt-6 hidden">
+                    <div class="flex justify-between items-center mb-2">
+                        <span id="timerMessage" class="text-[11px] font-bold text-gray-400 uppercase tracking-tighter">Waiting for tracking...</span>
+                        <span id="timeText" class="text-xs font-mono font-bold text-red-500">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                        <div id="progressBar" class="h-full bg-red-500 w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- STEP 2: UPLOAD -->
+        <form method="POST" enctype="multipart/form-data" onsubmit="return submitFinalProof()" class="glass-card rounded-[28px] p-6 relative overflow-hidden">
+            
+            <!-- Dynamic Lock Overlay -->
+            {% if task.task_type == 'screenshot' and task.link %}
+            <div id="uploadLockOverlay" class="absolute inset-0 bg-white/60 backdrop-blur-md z-20 flex flex-col items-center justify-center transition-all duration-500">
+                <div class="w-14 h-14 bg-white rounded-2xl shadow-xl flex items-center justify-center text-gray-300 text-2xl mb-3 border border-gray-100">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Complete Step 1 First</p>
+            </div>
+            {% endif %}
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-black shadow-lg shadow-red-200">
+                    {% if task.task_type == 'screenshot' and task.link %}2{% else %}1{% endif %}
+                </div>
+                <h3 class="font-bold text-gray-800">Upload Screenshot</h3>
+            </div>
+
+            <!-- Modern File Drop -->
+            <label class="block relative group cursor-pointer">
+                <input type="file" name="screenshot" id="fileInput" accept="image/*" required class="hidden" onchange="handleFileUpload(this)">
+                <div id="uploadBox" class="border-2 border-dashed border-gray-200 rounded-[24px] p-8 transition-all group-hover:border-red-400 group-hover:bg-red-50/30">
+                    <div class="flex flex-col items-center">
+                        <div id="uploadIcon" class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-400 text-2xl mb-4 transition-all group-hover:scale-110 group-hover:text-red-500">
+                            <i class="fa-solid fa-cloud-upload-alt"></i>
+                        </div>
+                        <p id="uploadText" class="text-sm font-bold text-gray-700">Choose Evidence Image</p>
+                        <p id="uploadSubText" class="text-[10px] text-gray-400 mt-1 uppercase font-semibold">JPG, PNG up to 5MB</p>
+                    </div>
+                </div>
+            </label>
+
+            <button type="submit" id="submitBtn" class="w-full mt-6 bg-gray-900 py-4 rounded-2xl text-white font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-black active:scale-95 transition-all">
+                <span>Submit Work</span>
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Configurable Required Time based on Category
+    const category = "{{ task.category }}".toLowerCase();
+    let requiredSeconds = (category.includes('facebook') || category.includes('telegram')) ? 15 : 30;
+    
+    let timeLeft = requiredSeconds;
+    let isTracking = false;
+    let taskDone = false;
+    let backgroundTime = 0;
+
+    function startTaskTimer(url) {
+        if(taskDone) return;
+        
+        window.open(url, '_blank');
+        isTracking = true;
+
+        const btn = document.getElementById('startLinkBtn');
+        const prog = document.getElementById('progressContainer');
+        
+        btn.classList.replace('btn-gradient', 'bg-gray-100');
+        btn.classList.add('text-gray-400', 'pointer-events-none');
+        document.getElementById('linkBtnText').innerText = "Monitoring Viewtime...";
+        document.getElementById('linkIcon').className = "fa-solid fa-spinner fa-spin";
+        
+        prog.classList.remove('hidden');
+    }
+
+    document.addEventListener('visibilitychange', function() {
+        if (!isTracking || taskDone) return;
+
+        if (document.hidden) {
+            backgroundTime = Date.now();
+        } else {
+            if (backgroundTime > 0) {
+                let elapsed = Math.floor((Date.now() - backgroundTime) / 1000);
+                timeLeft -= elapsed;
+                backgroundTime = 0;
+
+                updateUI();
+            }
+        }
+    });
+
+    function updateUI() {
+        const progressBar = document.getElementById('progressBar');
+        const timeText = document.getElementById('timeText');
+        const msg = document.getElementById('timerMessage');
+        const overlay = document.getElementById('uploadLockOverlay');
+        const btn = document.getElementById('startLinkBtn');
+
+        let percent = Math.max(0, Math.min(100, ((requiredSeconds - timeLeft) / requiredSeconds) * 100));
+        progressBar.style.width = percent + "%";
+        timeText.innerText = Math.round(percent) + "%";
+
+        if (timeLeft <= 0) {
+            taskDone = true;
+            isTracking = false;
+            progressBar.classList.replace('bg-red-500', 'bg-green-500');
+            msg.innerText = "✅ Time Requirement Met!";
+            msg.classList.replace('text-gray-400', 'text-green-600');
+            
+            if(overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 500);
+            }
+            
+            btn.innerHTML = '<i class="fa-solid fa-check-circle"></i> Completed';
+            btn.classList.replace('bg-gray-100', 'bg-green-50');
+            btn.classList.replace('text-gray-400', 'text-green-600');
+        } else {
+            msg.innerText = "Continue viewing for " + timeLeft + "s";
+            btn.classList.replace('bg-gray-100', 'btn-gradient');
+            btn.classList.remove('text-gray-400', 'pointer-events-none');
+            document.getElementById('linkBtnText').innerText = "Resume Task";
+            document.getElementById('linkIcon').className = "fa-solid fa-play";
+        }
+    }
+
+    function handleFileUpload(input) {
+        if (input.files && input.files[0]) {
+            const box = document.getElementById('uploadBox');
+            const icon = document.getElementById('uploadIcon');
+            const text = document.getElementById('uploadText');
+            
+            box.classList.add('bg-emerald-50', 'border-emerald-200');
+            icon.innerHTML = '<i class="fa-solid fa-check-double"></i>';
+            icon.className = "w-16 h-16 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg pulse-glow";
+            text.innerText = input.files[0].name;
+            text.className = "text-sm font-black text-emerald-700 truncate w-full px-4 text-center";
+            document.getElementById('uploadSubText').innerText = "Click to change image";
+        }
+    }
+
+    function submitFinalProof() {
+        if(document.getElementById('uploadLockOverlay') && !taskDone) {
+            alert("Please complete the required viewing time first!");
+            return false;
+        }
+        const btn = document.getElementById('submitBtn');
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+        btn.disabled = true;
+        return true;
+    }
+</script>
+
+{% endblock %}

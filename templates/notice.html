@@ -1,0 +1,293 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    /* Premium Entry Animations */
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* SaaS Style Notice Card */
+    .notice-card {
+        background: #ffffff;
+        border: 1px solid #E2E8F0;
+        border-radius: 28px;
+        padding: 24px;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.02);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+    .notice-card:hover {
+        box-shadow: 0 15px 35px -5px rgba(225, 29, 72, 0.08);
+        border-color: #FECDD3; /* Red-200 */
+        transform: translateY(-2px);
+    }
+
+    /* Advanced Read More CSS */
+    .notice-content-wrapper {
+        position: relative; overflow: hidden;
+        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .notice-clamped { max-height: 90px; } /* Shows ~4 lines */
+    
+    /* Fading Gradient for Hidden Text */
+    .fade-overlay {
+        position: absolute; bottom: 0; left: 0; right: 0; height: 50px;
+        background: linear-gradient(transparent, #ffffff);
+        transition: opacity 0.3s ease; pointer-events: none;
+    }
+    .notice-expanded .fade-overlay { opacity: 0; }
+    .notice-text { white-space: pre-wrap; line-height: 1.7; color: #475569; font-weight: 500; font-size: 13px; }
+    
+    /* Image Lightbox Hover */
+    .notice-img-wrap { 
+        overflow: hidden; border-radius: 20px; margin-bottom: 20px; 
+        border: 1px solid #F1F5F9; background: #F8FAFC; cursor: pointer;
+        position: relative;
+    }
+    .notice-img-wrap img { width: 100%; max-height: 350px; object-fit: cover; transition: transform 0.5s ease; }
+    .notice-img-wrap:hover img { transform: scale(1.03); }
+    .notice-img-wrap::after {
+        content: '\f0b2'; font-family: "Font Awesome 6 Free"; font-weight: 900;
+        position: absolute; inset: 0; background: rgba(15,23,42,0.3); color: white;
+        display: flex; align-items: center; justify-content: center; font-size: 2rem;
+        opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(2px);
+    }
+    .notice-img-wrap:hover::after { opacity: 1; }
+</style>
+
+<div class="max-w-3xl mx-auto space-y-8 fade-in-up pb-10 px-1 mt-2">
+
+    <!-- ==========================================
+         1. CORPORATE HEADER
+    ========================================== -->
+    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[32px] p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-48 h-48 bg-red-500/20 rounded-full blur-[60px] -mr-10 -mt-10 pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div>
+                <div class="inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-500/20 mb-5 shadow-sm">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                    </span>
+                    Official Announcements
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black tracking-tight mb-2">Notice Board</h2>
+                <p class="text-slate-400 text-xs sm:text-sm font-medium leading-relaxed max-w-sm">GrowEarn-এর সিস্টেম আপডেট, নতুন কাজ এবং পেমেন্ট সংক্রান্ত সর্বশেষ খবর।</p>
+            </div>
+            
+            <div class="flex flex-col items-center justify-center bg-white/5 p-5 rounded-[24px] border border-white/10 shadow-inner flex-shrink-0 text-center min-w-[120px] backdrop-blur-sm">
+                <p class="text-[9px] uppercase tracking-widest text-slate-400 font-bold mb-1">Page Traffic</p>
+                <h3 class="text-3xl font-black text-white font-mono flex items-center gap-2"><i class="fa-solid fa-users text-red-500 text-lg"></i> {{ views }}</h3>
+                <p class="text-[8px] text-slate-500 mt-1 uppercase tracking-widest">Last 72 Hours</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         2. ADMIN POST FORM 
+    ========================================== -->
+    {% if user and user.role == 'admin' %}
+    <div class="bg-white p-6 sm:p-8 rounded-[28px] shadow-sm border border-slate-100 border-l-[6px] border-l-red-600 relative overflow-hidden">
+        <h3 class="font-bold text-slate-800 text-sm mb-5 flex items-center justify-between uppercase tracking-widest">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-pen-nib text-red-600"></i> Compose Notice</span>
+            <span class="text-[9px] bg-sky-50 text-sky-600 px-2.5 py-1.5 rounded-lg border border-sky-100"><i class="fa-brands fa-telegram"></i> Auto Sync</span>
+        </h3>
+
+        <div id="imagePreviewBox" class="hidden mb-4 bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-3">
+                <img id="previewImg" src="" class="h-12 w-12 object-cover rounded-xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold text-emerald-600"><i class="fa-solid fa-check"></i> Image Ready</span>
+            </div>
+            <button type="button" onclick="removeImage()" class="h-8 w-8 bg-red-50 text-red-500 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form method="POST" action="/notice" enctype="multipart/form-data" class="space-y-4" onsubmit="showPublishLoader()">
+            <div>
+                <input type="text" name="title" required placeholder="Notice Title..." class="w-full p-4 border border-slate-200 rounded-[16px] focus:outline-none focus:border-red-500 bg-slate-50 focus:bg-white transition text-sm font-bold text-slate-800 shadow-sm">
+            </div>
+            <div>
+                <textarea name="content" required rows="4" placeholder="Write full details..." class="w-full p-4 border border-slate-200 rounded-[16px] focus:outline-none focus:border-red-500 bg-slate-50 focus:bg-white transition text-sm font-medium text-slate-700 shadow-sm resize-y"></textarea>
+            </div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                <label class="bg-slate-100 text-slate-600 px-5 py-3.5 rounded-[14px] text-xs font-bold cursor-pointer hover:bg-red-50 hover:text-red-600 transition flex items-center justify-center gap-2 border border-slate-200 w-full sm:w-auto">
+                    <i class="fa-solid fa-image"></i> Attach Image
+                    <input type="file" name="image" id="imageInput" class="hidden" accept="image/*" onchange="previewImage(this)">
+                </label>
+                <button type="submit" id="publishBtn" class="bg-red-600 text-white px-8 py-3.5 rounded-[14px] text-xs font-black uppercase tracking-widest shadow-[0_8px_20px_rgba(225,29,72,0.25)] hover:bg-red-700 active:scale-95 transition-all flex items-center justify-center gap-2 w-full sm:w-auto">
+                    Publish <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- ==========================================
+         3. SAAS CHANGELOG FEED
+    ========================================== -->
+    <div class="space-y-6 mt-8">
+
+        {% for notice in notices %}
+        <div class="notice-card flex flex-col md:flex-row gap-6">
+            
+            <!-- Left Side: Date Block -->
+            <div class="md:w-32 flex-shrink-0 flex flex-row md:flex-col justify-between md:justify-start items-center md:items-start border-b md:border-b-0 border-slate-100 pb-3 md:pb-0 mb-3 md:mb-0">
+                <div>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] block mb-1">Date</span>
+                    <p class="text-sm font-black text-red-600 font-mono bg-red-50 px-2 py-1 rounded-lg border border-red-100 inline-block">{{ notice.created_at[:10] }}</p>
+                </div>
+                
+                {% if user and user.role == 'admin' %}
+                <a href="/notice/delete/{{ notice.id }}" onclick="return confirm('ডিলিট করবেন?')" class="h-8 w-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition shadow-sm mt-0 md:mt-4" title="Delete">
+                    <i class="fa-solid fa-trash-can text-xs"></i>
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Right Side: Content Block -->
+            <div class="flex-grow min-w-0">
+                <!-- Title & Badge -->
+                <div class="flex items-start gap-3 mb-4">
+                    <h3 class="text-lg sm:text-xl font-black text-slate-900 leading-tight tracking-tight">{{ notice.title }}</h3>
+                </div>
+                
+                <!-- Notice Image -->
+                {% if notice.image_url %}
+                <div class="notice-img-wrap" onclick="openImageModal('{{ notice.image_url }}')">
+                    <img src="{{ notice.image_url }}" alt="Notice Image">
+                </div>
+                {% endif %}
+
+                <!-- Notice Text (With Pro Read More Logic) -->
+                <div class="relative mb-4">
+                    <div id="wrapper-{{ notice.id }}" class="notice-content-wrapper {% if notice.content|length > 200 %}notice-clamped{% endif %}">
+                        <div class="notice-text" id="text-{{ notice.id }}">{{ notice.content }}</div>
+                        {% if notice.content|length > 200 %}
+                        <div class="fade-overlay"></div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if notice.content|length > 200 %}
+                    <button id="btn-{{ notice.id }}" onclick="toggleNoticeContent('{{ notice.id }}')" class="text-[11px] font-black text-red-600 uppercase tracking-widest mt-3 hover:text-red-800 transition-colors flex items-center gap-1.5 focus:outline-none">
+                        Read Full Notice <i id="icon-{{ notice.id }}" class="fa-solid fa-arrow-down text-[9px]"></i>
+                    </button>
+                    {% endif %}
+                </div>
+
+                <!-- Action Bar -->
+                <div class="flex items-center gap-3 pt-4 border-t border-slate-100 mt-2">
+                    <button onclick="copyNotice('text-{{ notice.id }}', this)" class="text-[10px] font-bold text-slate-500 hover:text-red-600 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-200 px-4 py-2 rounded-xl transition-all shadow-sm active:scale-95 flex items-center gap-1.5">
+                        <i class="fa-regular fa-copy text-sm"></i> Copy
+                    </button>
+                    
+                    <a href="whatsapp://send?text=*{{ notice.title }}*%0A{{ notice.content }}" class="text-[10px] font-bold text-slate-500 hover:text-emerald-600 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 px-4 py-2 rounded-xl transition-all shadow-sm active:scale-95 flex items-center gap-1.5">
+                        <i class="fa-brands fa-whatsapp text-emerald-500 text-sm"></i> Share
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div class="text-center py-24 bg-white rounded-[32px] border border-slate-200 shadow-sm">
+            <div class="h-20 w-20 bg-slate-50 rounded-[20px] flex items-center justify-center mx-auto mb-4 text-4xl text-slate-300 border border-slate-100 shadow-sm"><i class="fa-regular fa-bell-slash"></i></div>
+            <h3 class="text-base font-bold text-slate-800">No Announcements Yet</h3>
+            <p class="text-xs text-slate-500 mt-1 font-medium">Please check back later for updates.</p>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+<!-- ==========================================
+     IMAGE MODAL (Lightbox)
+========================================== -->
+<div id="imageModal" class="fixed inset-0 z-[100] hidden bg-slate-900/95 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-300 opacity-0" onclick="closeModal()">
+    <button class="absolute top-4 right-4 h-12 w-12 text-slate-400 hover:text-white bg-white/10 hover:bg-red-500 rounded-full flex items-center justify-center z-50 transition-all text-xl">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+    <img id="modalImg" src="" class="w-full max-h-[85vh] object-contain rounded-[20px] shadow-2xl border border-white/10" onclick="event.stopPropagation()">
+</div>
+
+<!-- ==========================================
+     SCRIPTS
+========================================== -->
+<script>
+    // Advanced Read More Logic (Smooth Height Transition)
+    function toggleNoticeContent(id) {
+        const wrapper = document.getElementById('wrapper-' + id);
+        const btn = document.getElementById('btn-' + id);
+        const icon = document.getElementById('icon-' + id);
+        
+        if (wrapper.classList.contains('notice-clamped')) {
+            // Expanding
+            wrapper.classList.remove('notice-clamped');
+            wrapper.classList.add('notice-expanded');
+            wrapper.style.maxHeight = wrapper.scrollHeight + 'px'; // Auto calculate height
+            
+            btn.innerHTML = `Show Less <i class="fa-solid fa-arrow-up text-[9px] ml-1"></i>`;
+        } else {
+            // Collapsing
+            wrapper.classList.add('notice-clamped');
+            wrapper.classList.remove('notice-expanded');
+            wrapper.style.maxHeight = '90px'; // Same as CSS
+            
+            btn.innerHTML = `Read Full Notice <i class="fa-solid fa-arrow-down text-[9px] ml-1"></i>`;
+        }
+    }
+
+    // Copy with Professional Feedback
+    function copyNotice(elementId, btn) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check text-green-600"></i> Copied!';
+            btn.classList.add('border-green-300', 'bg-green-50', 'text-green-700');
+            btn.classList.remove('border-slate-200', 'bg-slate-50', 'text-slate-500', 'hover:text-red-600');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.remove('border-green-300', 'bg-green-50', 'text-green-700');
+                btn.classList.add('border-slate-200', 'bg-slate-50', 'text-slate-500', 'hover:text-red-600');
+            }, 2000);
+        });
+    }
+
+    // Image Modal Logic
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    
+    function openImageModal(url) {
+        modalImg.src = url;
+        modal.classList.remove('hidden');
+        setTimeout(() => modal.classList.remove('opacity-0'), 10);
+    }
+    function closeModal() {
+        modal.classList.add('opacity-0');
+        setTimeout(() => { modal.classList.add('hidden'); modalImg.src = ''; }, 300);
+    }
+
+    // Admin Image Preview Logic
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('imagePreviewBox').classList.remove('hidden');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    function removeImage() {
+        document.getElementById('imageInput').value = "";
+        document.getElementById('imagePreviewBox').classList.add('hidden');
+    }
+    function showPublishLoader() {
+        const btn = document.getElementById('publishBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Syncing...';
+        btn.classList.add('opacity-90', 'cursor-not-allowed');
+    }
+</script>
+
+{% endblock %}

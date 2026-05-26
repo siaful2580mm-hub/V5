@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #FF1F40 0%, #941125 100%);
+        --glass-bg: rgba(255, 255, 255, 0.8);
+        --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+
+    .premium-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 28px;
+        box-shadow: var(--card-shadow);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .premium-card:active {
+        transform: scale(0.98);
+    }
+
+    .action-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-badge {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 4px 10px;
+        border-radius: 10px;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+    }
+
+    .icon-box {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        font-size: 1.2rem;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+</style>
+
+<div class="max-w-md mx-auto px-4 pt-4 pb-20 space-y-6">
+
+    <!-- 1. ELITE PROFILE CARD -->
+    <div class="premium-card bg-gradient-to-br from-slate-900 to-slate-800 p-6 relative overflow-hidden animate-up">
+        <div class="absolute -right-6 -top-6 w-32 h-32 bg-red-600/20 rounded-full blur-3xl"></div>
+        
+        <div class="flex items-center gap-4 relative z-10">
+            <div class="h-14 w-14 rounded-2xl bg-gradient-to-tr from-red-500 to-rose-400 p-[2px]">
+                <div class="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center text-xl font-bold text-white">
+                    {{ user.email[0] | upper }}
+                </div>
+            </div>
+            <div>
+                <h2 class="text-white font-bold text-lg leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h2>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="stat-badge text-red-400 border border-red-500/30">Lvl {{ user.current_level or '1' }}</span>
+                    <span class="text-slate-400 text-[10px] font-mono tracking-tighter">{{ user.email }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 flex items-center justify-between bg-white/5 rounded-2xl p-3 border border-white/5">
+            <div>
+                <p class="text-[10px] text-slate-400 uppercase font-bold">Referral Code</p>
+                <p class="text-white font-mono font-bold">{{ user.referral_code }}</p>
+            </div>
+            <button onclick="copyText('{{ user.referral_code }}')" class="h-10 w-10 rounded-xl bg-red-600 text-white flex items-center justify-center active:scale-90 transition">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. QUICK ACTIONS (BENTO GRID) -->
+    <div class="space-y-3 animate-up" style="animation-delay: 0.1s">
+        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[2px] ml-2">Wallet & Assets</h3>
+        <div class="action-grid">
+            <a href="/income" class="premium-card p-5 flex flex-col items-start">
+                <div class="icon-box bg-emerald-100 text-emerald-600"><i class="fa-solid fa-chart-line"></i></div>
+                <span class="font-bold text-slate-800 text-sm">Earnings</span>
+                <span class="text-[10px] text-slate-500">View Analytics</span>
+            </a>
+            <a href="/withdraw" class="premium-card p-5 flex flex-col items-start">
+                <div class="icon-box bg-rose-100 text-rose-600"><i class="fa-solid fa-wallet"></i></div>
+                <span class="font-bold text-slate-800 text-sm">Withdraw</span>
+                <span class="text-[10px] text-slate-500">Cash Out Now</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. NETWORK SECTION -->
+    <div class="space-y-3 animate-up" style="animation-delay: 0.2s">
+        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[2px] ml-2">Growth Network</h3>
+        <div class="premium-card overflow-hidden">
+            <a href="/referrals" class="flex items-center justify-between p-4 border-bottom border-slate-50 hover:bg-slate-50 transition">
+                <div class="flex items-center gap-4">
+                    <div class="h-10 w-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center"><i class="fa-solid fa-users-viewfinder"></i></div>
+                    <div>
+                        <p class="font-bold text-slate-800 text-sm">My Network</p>
+                        <p class="text-[10px] text-slate-500">Manage your referrals</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+            </a>
+            <a href="/vip" class="flex items-center justify-between p-4 border-t border-slate-100 hover:bg-slate-50 transition">
+                <div class="flex items-center gap-4">
+                    <div class="h-10 w-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-crown"></i></div>
+                    <div>
+                        <p class="font-bold text-slate-800 text-sm">VIP Membership</p>
+                        <p class="text-[10px] text-slate-500">Unlock premium perks</p>
+                    </div>
+                </div>
+                <span class="bg-amber-100 text-amber-700 text-[9px] px-2 py-0.5 rounded-md font-bold">UPGRADE</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 4. SYSTEM & GUIDES -->
+    <div class="grid grid-cols-2 gap-3 animate-up" style="animation-delay: 0.3s">
+        <a href="/notice" class="premium-card p-4 flex items-center gap-3">
+            <div class="h-8 w-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xs"><i class="fa-solid fa-bell"></i></div>
+            <span class="font-bold text-slate-700 text-xs">News</span>
+        </a>
+        <a href="/tutorial" class="premium-card p-4 flex items-center gap-3">
+            <div class="h-8 w-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xs"><i class="fa-solid fa-play"></i></div>
+            <span class="font-bold text-slate-700 text-xs">Guides</span>
+        </a>
+    </div>
+
+    <!-- 5. LOGOUT -->
+    <div class="pt-4 animate-up" style="animation-delay: 0.4s">
+        <a href="/logout" class="w-full py-4 rounded-3xl border-2 border-dashed border-slate-200 flex items-center justify-center gap-2 text-slate-400 hover:text-red-500 hover:border-red-200 transition group">
+            <i class="fa-solid fa-power-off group-hover:rotate-90 transition-transform"></i>
+            <span class="font-bold text-sm uppercase tracking-widest">Sign Out Securely</span>
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="text-center space-y-1 opacity-40">
+        <p class="text-[9px] font-black uppercase tracking-[3px]">GrowEarn Elite</p>
+        <p class="text-[8px] font-mono">Build v3.5 • Encrypted Session</p>
+    </div>
+
+</div>
+
+<script>
+    function copyText(text) {
+        navigator.clipboard.writeText(text);
+        // Simple elegant toast can be added here
+        alert("Copied to clipboard!");
+    }
+</script>
+
+{% endblock %}
