@@ -1,0 +1,145 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Custom Rating Stars */
+    .star-rating { display: flex; flex-direction: row-reverse; gap: 4px; justify-content: center; }
+    .star-rating input { display: none; }
+    .star-rating label { font-size: 24px; color: #CBD5E1; cursor: pointer; transition: color 0.2s; }
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label { color: #F59E0B; } /* Amber-500 */
+</style>
+
+<div class="max-w-2xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
+
+    <!-- 1. HEADER -->
+    <div class="bg-gradient-to-r from-red-600 to-rose-600 rounded-[24px] p-8 text-white shadow-xl relative overflow-hidden text-center">
+        <i class="fa-solid fa-star absolute right-4 top-1/2 transform -translate-y-1/2 text-8xl opacity-10 rotate-12"></i>
+        <div class="relative z-10">
+            <h2 class="text-3xl font-black tracking-tight mb-2">User Testimonials</h2>
+            <p class="text-xs text-red-100 font-medium">Read what our users are saying about GrowEarn.</p>
+        </div>
+    </div>
+
+    <!-- 2. WRITE REVIEW FORM -->
+    <div class="bg-white p-6 rounded-[24px] shadow-sm border border-slate-100">
+        <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 border-b border-slate-50 pb-3">
+            <i class="fa-solid fa-pen-to-square text-red-500"></i> Write a Review
+        </h3>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-4" onsubmit="showLoading(this)">
+            
+            <!-- (Admin Only) Fake Name Input -->
+            {% if user.role == 'admin' %}
+            <div class="bg-red-50 border border-red-100 p-4 rounded-xl mb-4">
+                <p class="text-[9px] font-black text-red-500 uppercase tracking-widest mb-2"><i class="fa-solid fa-mask"></i> Admin Control: Fake User Details</p>
+                <input type="text" name="fake_name" required placeholder="Type a fake user name..." class="w-full p-3 border border-red-200 rounded-lg text-sm font-bold bg-white focus:outline-red-500">
+            </div>
+            {% endif %}
+
+            <!-- Rating Stars -->
+            <div class="text-center bg-slate-50 py-3 rounded-xl border border-slate-100">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Rate your experience</p>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" checked><label for="star5" class="fa-solid fa-star"></label>
+                    <input type="radio" id="star4" name="rating" value="4"><label for="star4" class="fa-solid fa-star"></label>
+                    <input type="radio" id="star3" name="rating" value="3"><label for="star3" class="fa-solid fa-star"></label>
+                    <input type="radio" id="star2" name="rating" value="2"><label for="star2" class="fa-solid fa-star"></label>
+                    <input type="radio" id="star1" name="rating" value="1"><label for="star1" class="fa-solid fa-star"></label>
+                </div>
+            </div>
+
+            <textarea name="review_text" rows="3" required placeholder="আপনার মতামত লিখুন..." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-red-500 text-sm font-medium text-slate-700 resize-none"></textarea>
+
+            <div class="flex items-center justify-between gap-3">
+                <label class="bg-slate-100 text-slate-600 px-4 py-3.5 rounded-xl text-xs font-bold cursor-pointer hover:bg-slate-200 transition flex items-center gap-2 border border-slate-200 w-auto">
+                    <i class="fa-solid fa-camera"></i> Add Photo
+                    <input type="file" name="image" class="hidden" accept="image/*" onchange="previewImage(this)">
+                </label>
+                <button type="submit" id="submitBtn" class="flex-grow bg-slate-900 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-md hover:bg-red-600 active:scale-95 transition-colors flex items-center justify-center gap-2">
+                    Publish <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <div id="imagePreviewBox" class="hidden mt-2 flex items-center gap-2">
+                <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded"><i class="fa-solid fa-check"></i> Image selected</span>
+            </div>
+        </form>
+    </div>
+
+    <!-- 3. REVIEWS FEED -->
+    <div class="space-y-4 mt-8">
+        <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 px-2 uppercase tracking-widest">
+            <i class="fa-solid fa-comments text-blue-500"></i> Recent Reviews
+        </h3>
+
+        {% for review in reviews %}
+        <div class="bg-white p-5 rounded-[24px] shadow-sm border border-slate-100 flex flex-col gap-4 relative group">
+            
+            <!-- User Info & Rating -->
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 bg-gradient-to-br from-slate-200 to-slate-300 text-slate-600 rounded-full flex items-center justify-center font-black text-sm border-2 border-white shadow-sm">
+                        {{ review.reviewer_name[0] | upper }}
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-1">
+                            {{ review.reviewer_name }}
+                            {% if review.is_admin_post %}<i class="fa-solid fa-circle-check text-blue-500 text-[10px]" title="Verified"></i>{% endif %}
+                        </h4>
+                        <p class="text-[9px] text-slate-400 font-mono">{{ review.created_at[:10] }}</p>
+                    </div>
+                </div>
+                <!-- Delete Button for Admin -->
+                {% if user.role == 'admin' %}
+                    <a href="/admin/review/delete/{{ review.id }}" class="text-slate-300 hover:text-red-500 transition"><i class="fa-solid fa-trash-can"></i></a>
+                {% endif %}
+            </div>
+
+            <!-- Review Text -->
+            <p class="text-sm text-slate-600 font-medium leading-relaxed">{{ review.review_text }}</p>
+
+            <!-- Optional Image -->
+            {% if review.image_url %}
+            <div class="rounded-[16px] overflow-hidden border border-slate-100">
+                <img src="{{ review.image_url }}" alt="Review Image" class="w-full max-h-60 object-cover">
+            </div>
+            {% endif %}
+
+            <!-- Stars Row -->
+            <div class="flex items-center gap-1 text-amber-400 text-xs">
+                {% for i in range(review.rating) %} <i class="fa-solid fa-star"></i> {% endfor %}
+                {% for i in range(5 - review.rating) %} <i class="fa-regular fa-star text-slate-300"></i> {% endfor %}
+            </div>
+            
+        </div>
+        {% else %}
+        <div class="text-center py-16 bg-white rounded-[24px] border border-dashed border-slate-200">
+            <i class="fa-regular fa-star-half-stroke text-4xl text-slate-300 mb-3"></i>
+            <h3 class="text-sm font-bold text-slate-700">No Reviews Yet</h3>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            document.getElementById('imagePreviewBox').classList.remove('hidden');
+        }
+    }
+    function showLoading(form) {
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+        return true;
+    }
+</script>
+
+{% endblock %}
