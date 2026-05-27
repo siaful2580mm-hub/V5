@@ -339,6 +339,7 @@ def before_request_checks():
 
 
 
+
 # -------------------------------------------------------------------
 # 4. ROUTES
 # -------------------------------------------------------------------
@@ -348,6 +349,78 @@ def index():
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
     return render_template('home.html')
+
+
+# ==========================================
+# ⭐ REVIEW & RATING SYSTEM (Shadow Ban Logic)
+# ==========================================
+@app.route('/reviews', methods=['GET', 'POST'])
+@login_required
+def reviews_page():
+    if request.method == 'POST':
+        review_text = request.form.get('review_text')
+        rating = int(request.form.get('rating', 5))
+        file = request.files.get('image')
+        image_url = None
+        
+        # Admin posting as a Fake User
+        if g.user.get('role') == 'admin':
+            fake_name = request.form.get('fake_name', 'Anonymous User')
+            is_admin_post = True
+        else:
+            # Real User posting
+            fake_name = g.user.get('full_name') or g.user.get('email').split('@')[0]
+            is_admin_post = False
+
+        try:
+            # Upload Image if exists
+            if file and file.filename != '':
+                img_url, err = smart_imgbb_upload(file)
+                if img_url: image_url = img_url
+
+            # Save Review
+            supabase.table('reviews').insert({
+                'user_id': session['user_id'],
+                'reviewer_name': fake_name,
+                'review_text': review_text,
+                'image_url': image_url,
+                'rating': rating,
+                'is_admin_post': is_admin_post
+            }).execute()
+            
+            flash("✅ আপনার রিভিউ সফলভাবে পাবলিশ হয়েছে!", "success")
+        except Exception as e:
+            print(f"Review Submit Error: {e}")
+            flash("❌ রিভিউ জমা দিতে সমস্যা হয়েছে।", "error")
+            
+        return redirect(url_for('reviews_page'))
+
+    # 💡 SHADOW BAN LOGIC: 
+    # ১. সব অ্যাডমিনের পোস্ট (is_admin_post = True) আনো
+    # ২. অথবা শুধুমাত্র কারেন্ট ইউজারের পোস্টগুলো আনো (যাতে সে তার নিজেরটা দেখতে পারে)
+    try:
+        query = supabase.table('reviews').select('*')
+        # Using Supabase 'or' filter correctly
+        res = query.or_(f"is_admin_post.eq.true,user_id.eq.{session['user_id']}").order('created_at', desc=True).execute()
+        all_reviews = res.data
+    except Exception as e:
+        print(f"Review Fetch Error: {e}")
+        all_reviews = []
+
+    return render_template('reviews.html', reviews=all_reviews, user=g.user)
+
+# --- ADMIN ROUTE: Delete Review ---
+@app.route('/admin/review/delete/<int:review_id>')
+@login_required
+@admin_required
+def delete_review(review_id):
+    try:
+        supabase.table('reviews').delete().eq('id', review_id).execute()
+        flash("🗑️ রিভিউটি ডিলিট করা হয়েছে।", "success")
+    except:
+        pass
+    return redirect(url_for('reviews_page'))
+    
 
 # ==========================================
 # 💎 PREMIUM WORK ZONE (VIP BAIT / FAKE TASKS)
