@@ -20,7 +20,7 @@
     .vip-store-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 20px 40px -10px rgba(225, 29, 72, 0.15);
-        border-color: #FECDD3;
+        border-color: #FECDD3; /* Red-200 */
     }
 
     /* Popular / Recommended Card Glow */
@@ -38,6 +38,9 @@
     .feature-list li i {
         color: #10B981; font-size: 14px; margin-top: 2px;
     }
+    
+    /* Highlight feature style (Star icon) */
+    .feature-list li.pro-feature i { color: #F59E0B; }
     
     /* Background Watermark */
     .vip-watermark {
@@ -127,7 +130,6 @@
             {% for id, plan in plans.items() %}
             <div class="vip-store-card {{ 'vip-card-popular' if id == 3 else '' }}">
                 
-                <!-- Background Number -->
                 <div class="vip-watermark">0{{ id }}</div>
 
                 <div class="relative z-10 p-6 sm:p-8 flex-grow">
@@ -155,14 +157,20 @@
                         <p class="text-[11px] text-slate-500 font-medium mt-2">এককালীন ইনভেস্ট ({{ plan.days }} দিনের জন্য)</p>
                     </div>
 
-                    <!-- Features List (Detailed & Bengali) -->
+                    <!-- Features List (Dynamic based on ID) -->
                     <ul class="feature-list mb-8 border-t border-slate-100 pt-5">
+                        <!-- Standard Features for All Plans -->
                         <li><i class="fa-solid fa-circle-check"></i> <span>প্রতিদিন অটোমেটিক <b>৳{{ plan.daily_profit }}</b> প্রফিট।</span></li>
                         <li><i class="fa-solid fa-circle-check"></i> <span>টোটাল রিটার্ন: <b>৳{{ plan.daily_profit * plan.days }}</b></span></li>
                         <li><i class="fa-solid fa-circle-check"></i> <span>টাকা তুলতে <b>কোনো রেফার লাগবে না</b>।</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i> <span>মিনিমাম উইথড্র মাত্র <b>৳৫০</b> (ইনস্ট্যান্ট পেমেন্ট)।</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i> <span>কাজ জমা দেওয়ার সাথে সাথেই <b>অটো-অ্যাপ্রুভ</b> হবে।</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i> <span>স্পিন ও মিনি গেমগুলোতে <b>দ্বিগুণ (2x)</b> টাকা আয়।</span></li>
+                        <li><i class="fa-solid fa-circle-check"></i> <span>মিনিমাম উইথড্র মাত্র <b>৳৫০</b>।</span></li>
+                        
+                        <!-- Pro Features for Elite 2, 3, 4, 5 -->
+                        {% if id >= 2 %}
+                        <li class="pro-feature"><i class="fa-solid fa-star"></i> <span>লক করা <b>Premium Work</b> এক্সেস।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-bolt-lightning"></i> <span>উইথড্র রিকোয়েস্ট দিলে <b>১০ মিনিটে পেমেন্ট</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-headset"></i> <span>অ্যাডমিনের সাথে <b>VIP Live Support</b>।</span></li>
+                        {% endif %}
                     </ul>
                 </div>
 
