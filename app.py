@@ -1888,7 +1888,7 @@ def withdraw():
                 if ref_count < 3:
                     flash("❌ ফ্রি ইউজারদের ৩টি রেফার প্রয়োজন।", "error")
                     return redirect(url_for('withdraw'))
-                if account_days < 1:
+                if account_days < 0:
                     flash("❌ আপনার একাউন্টের বয়স ১ দিন হতে হবে।", "error")
                     return redirect(url_for('withdraw'))
                 if amount < 280:
