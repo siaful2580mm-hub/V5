@@ -525,6 +525,12 @@ def captcha_page():
     response.headers['Pragma'] = 'no-cache'
     
     return response
+# ==========================================
+# 📱 APP DOWNLOAD PAGE
+# ==========================================
+@app.route('/app')
+def download_app():
+    return render_template('app_download.html', user=g.user if 'user' in g else None)
     
 
 # ==========================================
