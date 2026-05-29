@@ -56,7 +56,7 @@ def send_to_telegram_channel(title, content, image_url=None):
 # ==========================================
         
 SPECIAL_TASK_INFO = {
-    'title': '🔥 Special Task + 10$ Bonus এবং সাথে ৯০ টাকা,
+    'title': '🔥 Special Task + 10$ Bonus এবং সাথে ৯০ টাকা'
     'reward': 90.00,
     'link': 'https://t.me/USDTInstantRewardsBot?start=8641598505', 
     'tutorial': 'https://growearn.site/st', 
