@@ -17,32 +17,25 @@
         overflow: hidden;
     }
     .payment-card:hover {
-        border-color: #FECDD3; /* Red-200 */
+        border-color: #FECDD3; 
         background: #FFFFFF;
         box-shadow: 0 4px 15px rgba(225, 29, 72, 0.05);
     }
     
-    /* Checked State */
-    input[type="radio"]:checked + .payment-card {
-        border-color: #E11D48; /* Crimson Red */
-        background: #FFF1F2;
-        box-shadow: 0 4px 20px rgba(225, 29, 72, 0.15);
-    }
+    /* Checked State Base */
     input[type="radio"]:checked + .payment-card::before {
-        content: '\f00c'; /* FontAwesome Check */
-        font-family: 'Font Awesome 6 Free'; font-weight: 900;
-        position: absolute; top: 8px; right: 8px;
-        color: #E11D48; font-size: 12px;
+        content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+        position: absolute; top: 8px; right: 8px; font-size: 12px;
     }
 
     /* specific brand colors on focus/active */
-    input[value="bKash"]:checked + .payment-card { border-color: #E2136E; background: #FDF2F8; color: #E2136E; }
+    input[value="bKash"]:checked + .payment-card { border-color: #E2136E; background: #FDF2F8; color: #E2136E; box-shadow: 0 4px 20px rgba(226, 19, 110, 0.15); }
     input[value="bKash"]:checked + .payment-card::before { color: #E2136E; }
     
-    input[value="Nagad"]:checked + .payment-card { border-color: #F59E0B; background: #FFFBEB; color: #F59E0B; }
+    input[value="Nagad"]:checked + .payment-card { border-color: #F59E0B; background: #FFFBEB; color: #F59E0B; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15); }
     input[value="Nagad"]:checked + .payment-card::before { color: #F59E0B; }
 
-    /* Custom Input styling */
+    /* Custom Input styling (No Border, Only Bottom Border) */
     .uniq-input {
         background: transparent;
         border: none; border-bottom: 2px solid #E2E8F0;
@@ -104,64 +97,60 @@
     </div>
 
     <!-- ==========================================
-         3. PAYMENT INSTRUCTIONS
+         3. CHECKOUT FORM WITH DYNAMIC INFO
     ========================================== -->
-    <div class="bg-white p-6 rounded-[24px] shadow-sm border border-slate-100 relative overflow-hidden">
-        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-600"></div>
+    <form id="vipBuyForm" method="POST" class="bg-white p-6 sm:p-8 rounded-[28px] shadow-sm border border-slate-100 space-y-6" onsubmit="return preventDoubleSubmit()">
         
+        <!-- Payment Details & Dynamic Box inside form to act smoothly -->
         <h3 class="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2 uppercase tracking-widest">
             <i class="fa-solid fa-building-columns text-red-500"></i> Payment Details
         </h3>
 
         <!-- Instruction Steps -->
-        <div class="space-y-4 mb-5">
+        <div class="space-y-4 mb-5 border-b border-slate-50 pb-5">
             <div class="flex items-start gap-3">
                 <div class="h-6 w-6 rounded-full bg-red-50 text-red-600 flex items-center justify-center text-xs font-black flex-shrink-0">1</div>
-                <p class="text-xs text-slate-600 font-medium leading-relaxed pt-0.5">নিচের যেকোনো একটি মেথড (bKash/Nagad) সিলেক্ট করুন।</p>
+                <p class="text-[11px] text-slate-600 font-medium leading-relaxed pt-0.5">নিচ থেকে আপনার পছন্দের মেথড (bKash/Nagad) সিলেক্ট করুন।</p>
             </div>
             <div class="flex items-start gap-3">
                 <div class="h-6 w-6 rounded-full bg-red-50 text-red-600 flex items-center justify-center text-xs font-black flex-shrink-0">2</div>
-                <p class="text-xs text-slate-600 font-medium leading-relaxed pt-0.5">আমাদের অফিসিয়াল নম্বরে <b>৳{{ plan.price }}</b> টাকা <b>Send Money</b> করুন।</p>
+                <p class="text-[11px] text-slate-600 font-medium leading-relaxed pt-0.5">বক্সে দেওয়া নম্বরে <b>৳{{ plan.price }}</b> টাকা <b>Send Money</b> করে তথ্য পূরণ করুন।</p>
             </div>
         </div>
 
-        <!-- Official Number Box -->
-        <div class="bg-slate-50 border border-slate-200 p-4 rounded-[16px] flex items-center justify-between group">
-            <div>
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.1em] mb-1">Official Receiver Number</p>
-                <p class="text-xl font-black text-slate-800 font-mono tracking-widest select-all" id="payNumber">01912107604</p>
-            </div>
-            <button type="button" onclick="copyAdminNumber(this)" class="h-10 w-10 bg-white border border-slate-200 rounded-xl text-slate-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition shadow-sm active:scale-95 flex items-center justify-center flex-shrink-0">
-                <i class="fa-regular fa-copy text-sm"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         4. CHECKOUT FORM
-    ========================================== -->
-    <form id="vipBuyForm" method="POST" class="bg-white p-6 sm:p-8 rounded-[24px] shadow-sm border border-slate-100 space-y-6" onsubmit="return preventDoubleSubmit()">
-        
-        <!-- Field 1: Gateway Selection (Rocket Removed, Grid layout adjusted) -->
+        <!-- Field 1: Gateway Selection -->
         <div>
             <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 ml-1">1. Select Payment Method</label>
             <div class="grid grid-cols-2 gap-4">
                 <label class="cursor-pointer relative">
-                    <input type="radio" name="method" value="bKash" class="peer sr-only" required>
+                    <input type="radio" name="method" value="bKash" class="peer sr-only" required onchange="changeNumberInfo('bKash')">
                     <div class="payment-card py-4 text-center flex flex-col items-center justify-center">
                         <span class="block text-xs font-black text-slate-600 tracking-wide uppercase">bKash</span>
                     </div>
                 </label>
                 <label class="cursor-pointer relative">
-                    <input type="radio" name="method" value="Nagad" class="peer sr-only" required>
+                    <input type="radio" name="method" value="Nagad" class="peer sr-only" required onchange="changeNumberInfo('Nagad')">
                     <div class="payment-card py-4 text-center flex flex-col items-center justify-center">
                         <span class="block text-xs font-black text-slate-600 tracking-wide uppercase">Nagad</span>
                     </div>
                 </label>
             </div>
         </div>
+
+        <!-- Dynamic Official Number Box -->
+        <div id="numberInfoBox" class="hidden bg-slate-50 border border-slate-200 p-4 rounded-[16px] flex items-center justify-between group transition-all">
+            <div>
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.1em] mb-1">
+                    Send Money To <span id="methodLabel" class="text-red-500"></span>
+                </p>
+                <p class="text-lg sm:text-xl font-black text-slate-800 font-mono tracking-widest select-all" id="payNumber"></p>
+            </div>
+            <button type="button" onclick="copyAdminNumber(this)" class="h-10 w-10 bg-white border border-slate-200 rounded-xl text-slate-500 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition shadow-sm active:scale-95 flex items-center justify-center flex-shrink-0">
+                <i class="fa-regular fa-copy text-sm"></i>
+            </button>
+        </div>
         
-        <div class="grid sm:grid-cols-2 gap-6">
+        <div class="grid sm:grid-cols-2 gap-6 mt-6">
             <!-- Field 2: Sender Number -->
             <div class="relative flex flex-col justify-end h-14 group">
                 <input type="tel" name="sender" id="senderInput" required pattern="01[3-9][0-9]{8}" 
@@ -178,7 +167,7 @@
         </div>
         
         <!-- Warning Notice -->
-        <div class="p-4 rounded-[16px] bg-red-50 border border-red-100 flex items-start gap-2.5">
+        <div class="p-4 rounded-[16px] bg-red-50/50 border border-red-100 flex items-start gap-2.5 mt-6">
             <i class="fa-solid fa-triangle-exclamation text-red-500 text-[10px] mt-0.5"></i>
             <p class="text-[9px] text-red-600 font-bold uppercase tracking-wider leading-relaxed">সতর্কতা: ভুয়া ট্রানজেকশন আইডি দিলে আপনার একাউন্ট সাথে সাথে ব্যান করা হবে।</p>
         </div>
@@ -202,6 +191,27 @@
 
 <!-- Scripts -->
 <script>
+    // Smart Method Switcher Logic
+    function changeNumberInfo(method) {
+        const infoBox = document.getElementById("numberInfoBox");
+        const methodLabel = document.getElementById("methodLabel");
+        const payNumber = document.getElementById("payNumber");
+
+        if (method === 'bKash') {
+            methodLabel.innerText = '(bKash)';
+            methodLabel.className = 'text-[#E2136E] font-black'; // bKash Pink
+            payNumber.innerText = '+880 1624-175616';
+        } else if (method === 'Nagad') {
+            methodLabel.innerText = '(Nagad)';
+            methodLabel.className = 'text-[#F59E0B] font-black'; // Nagad Orange
+            payNumber.innerText = '01912107604';
+        }
+
+        // Add smooth slide-down animation
+        infoBox.classList.remove("hidden");
+        infoBox.style.animation = "fadeInUp 0.3s ease-out forwards";
+    }
+
     // Copy Admin Number with UI Feedback
     function copyAdminNumber(btn) {
         const num = document.getElementById("payNumber").innerText;
@@ -219,10 +229,11 @@
         });
     }
 
-    // Submit Loader to Prevent Double Clicks & Validate Fields
+    // Submit Loader to Prevent Double Clicks
     function preventDoubleSubmit() {
         const form = document.getElementById('vipBuyForm');
         
+        // Ensure standard HTML5 validation passes before animating
         if(form.checkValidity()) {
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
