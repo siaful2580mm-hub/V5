@@ -56,11 +56,11 @@ def send_to_telegram_channel(title, content, image_url=None):
 # ==========================================
         
 SPECIAL_TASK_INFO = {
-    'title': '🔥 Special Task ',
-    'reward': 50.00,
-    'link': 'https://game.keepad.xyz/package/offer2/new/#/offer-earn-apk/download?proxy_num=12028813&area=16&token=45c25912ee16dfb870463fcc8054c516&channel=OfferEarnApk', 
+    'title': '🔥 Special Task + 10$ Bonus এবং সাথে ৯০ টাকা,
+    'reward': 90.00,
+    'link': 'https://t.me/USDTInstantRewardsBot?start=8641598505', 
     'tutorial': 'https://growearn.site/st', 
-    'description': 'ভিডিও দেখে নিয়ম মেনে Bot Start করে, রেফারেল লিংক কপি করুন এবং এয়ারড্রপ ট্রান্সফার করে প্রুফ দিন।'
+    'description': 'প্রথমে বটটি স্টার্ট করুন, তারপর সব চ্যানেলে জয়েন হোন, তারপর X Account এ যেতে বললে গিয়ে ফিরে আসুন৷ তারপর, আপনার ইমেল পাঠিয়ে, স্ক্রিনশট নিন, না বুঝলে আগে বিস্তারিত ভিডিও লিংকে ক্লিক করে ভিডিও দেখুন!'
 }
 
 AD_LINKS = [
@@ -1605,59 +1605,48 @@ def hide_client_request(req_id):
         flash("❌ Error updating status.", "error")
     return redirect(url_for('admin_requests'))
     
-
 # --- 1. SPECIAL TASK SUBMISSION PAGE ---
 @app.route('/special-task', methods=['GET', 'POST'])
 @login_required
 def special_task():
-    # চেক করা ইউজার কি অলরেডি সাবমিট করেছে? (Pending or Approved)
+    # চেক করা ইউজার কি অলরেডি সাবমিট করেছে?
     existing = supabase.table('special_submissions').select('*').eq('user_id', session['user_id']).execute().data
     
-    # যদি পেন্ডিং বা অ্যাপ্রুভ থাকে, তবে ঢুকতে দিবে না
     if existing:
         status = existing[0]['status']
         if status in ['pending', 'approved']:
             flash(f"⚠️ আপনার টাস্কটি বর্তমানে {status} অবস্থায় আছে।", "warning")
-            return redirect(url_for('tasks'))
+            return redirect(url_for('work_station'))
 
     if request.method == 'POST':
-        code = request.form.get('code')
-        file = request.files.get('screenshot')
+        # Get single screenshot
+        file1 = request.files.get('screenshot')
         
-        if not file or not code:
-            flash("কোড এবং স্ক্রিনশট উভয়ই প্রয়োজন!", "error")
+        if not file1:
+            flash("❌ স্ক্রিনশট আপলোড করতে হবে!", "error")
             return redirect(request.url)
 
         try:
-            # ImgBB Upload
-            api_key = "2d69b70f4a3a8f863e63b82a896446bf"
-            image_string = base64.b64encode(file.read())
-            payload = { "key": api_key, "image": image_string }
-            response = requests.post("https://api.imgbb.com/1/upload", data=payload)
-            data = response.json()
+            # Upload Image to ImgBB
+            img1_url, err1 = smart_imgbb_upload(file1)
             
-            if data['success']:
-                img_url = data['data']['url']
-                
-                # Save to DB
+            if img1_url:
                 supabase.table('special_submissions').insert({
                     'user_id': session['user_id'],
-                    'code': code,
-                    'proof_link': img_url,
+                    'proof_link': img1_url,
                     'status': 'pending'
                 }).execute()
                 
-                flash("✅ স্পেশাল টাস্ক জমা হয়েছে!", "success")
-                return redirect(url_for('tasks'))
+                flash("✅ স্পেশাল টাস্ক সফলভাবে জমা হয়েছে!", "success")
+                return redirect(url_for('work_station'))
             else:
-                flash("Image upload failed", "error")
+                flash(f"Image upload failed: {err1}", "error")
                 
         except Exception as e:
             flash(f"Error: {str(e)}", "error")
 
     return render_template('special_task.html', task=SPECIAL_TASK_INFO, user=g.user)
-# --- SPECIAL VIDEO PAGE (/st) ---
-
+    
 
 # ==========================================
 # ADMIN: LEADERSHIP APPLICATIONS
@@ -3881,4 +3870,4 @@ def service_worker():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)%}
