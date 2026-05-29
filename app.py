@@ -3865,7 +3865,7 @@ def manifest():
         "background_color": "#F3F4F6",
         "theme_color": "#4F46E5",
         "icons":[{
-            "src": "https://i.ibb.co.com/99bW9mW4/1779162852275.png", # Default App Icon
+            "src": "https://i.ibb.co.com/6RMN0j7W/file-00000000cb78720884353d8223cf6438.png", # Default App Icon
             "sizes": "512x512",
             "type": "image/png"
         }]
