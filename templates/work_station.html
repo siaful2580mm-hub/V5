@@ -2,171 +2,157 @@
 {% block content %}
 
 <style>
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    
     .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Custom Modern Cards */
-    .hub-card {
-        background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px;
-        padding: 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* ==========================================
+       MODERN WORK CARDS (Monochrome Theme)
+    ========================================== */
+    .work-group-title {
+        font-size: 11px; font-weight: 800; color: #666666;
+        text-transform: uppercase; letter-spacing: 1px;
+        margin-bottom: 12px; margin-top: 24px; padding-left: 4px;
+        display: flex; align-items: center; gap: 8px;
+    }
+
+    .work-card {
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
+        padding: 20px; transition: all 0.3s ease;
         display: flex; flex-direction: column; position: relative; overflow: hidden;
     }
-    .hub-card:hover {
-        transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.1); border-color: #FECDD3;
+    .work-card:hover { border-color: #333333; background: #0F0F0F; transform: translateY(-4px); }
+    
+    .work-icon {
+        height: 48px; width: 48px; border-radius: 16px;
+        background: #141414; color: #E5E5E5; border: 1px solid #222222;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; margin-bottom: 16px; transition: all 0.3s ease;
     }
+    .work-card:hover .work-icon { background: #E5E5E5; color: #0A0A0A; }
 
-    /* Shimmer Effect for Premium Cards */
-    .shimmer-bg { position: relative; overflow: hidden; }
-    .shimmer-bg::after {
-        content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-        background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-        transform: skewX(-20deg); animation: shimmerFast 3s infinite; pointer-events: none;
+    /* VIP Banner */
+    .vip-banner {
+        background: linear-gradient(135deg, #111111 0%, #1A1A1A 100%);
+        border: 1px solid #333333; border-radius: 28px;
+        padding: 24px; transition: all 0.3s ease;
     }
-    @keyframes shimmerFast { 100% { left: 200%; } }
+    .vip-banner:hover { border-color: #555555; }
+    
+    .badge-dark {
+        background: #FFFFFF; color: #000000; font-size: 9px; font-weight: 900;
+        padding: 2px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px;
+        position: absolute; top: 16px; right: 16px;
+    }
 </style>
 
-<div class="max-w-2xl mx-auto space-y-6 fade-in-up pb-8 px-1">
+<div class="max-w-md mx-auto space-y-4 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- 1. PAGE HEADER -->
-    <div class="flex items-center gap-3 mb-2 pt-2 px-1">
-        <div class="h-12 w-12 bg-red-50 text-red-600 rounded-[14px] flex items-center justify-center text-xl shadow-sm border border-red-100 flex-shrink-0">
-            <i class="fa-solid fa-briefcase"></i>
-        </div>
-        <div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Work Station</h2>
-            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Free & Premium Jobs</p>
-        </div>
+    <!-- 1. TOP HEADER -->
+    <div class="flex items-center justify-between mb-6">
+        <a href="/dashboard" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+        </a>
+        <h2 class="text-lg font-bold text-white tracking-wide">ওয়ার্ক স্টেশন</h2>
+        <div class="w-10"></div> <!-- Spacer for centering -->
     </div>
 
-    <!-- ==========================================
-         2. FREE & REGULAR TASKS (Top Priority)
-    ========================================== -->
-    <div>
-        <h3 class="font-bold text-slate-800 text-xs uppercase tracking-widest mb-3 px-1 mt-6 flex items-center gap-1.5">
-            <i class="fa-solid fa-bolt text-red-500"></i> Regular Tasks (Free)
-        </h3>
-        <div class="grid grid-cols-2 gap-3">
-            
-            <a href="/tasks" class="hub-card group border-l-4 border-l-indigo-500">
-                <div class="h-10 w-10 bg-indigo-50 text-indigo-600 rounded-[12px] flex items-center justify-center text-lg mb-2 shadow-sm border border-indigo-100 group-hover:scale-110 transition"><i class="fa-solid fa-list-check"></i></div>
-                <div>
-                    <h4 class="font-bold text-slate-800 text-sm">Micro Tasks</h4>
-                    <p class="text-[10px] text-slate-500 mt-0.5 font-medium">Easy Social Actions</p>
-                </div>
-            </a>
-
-            <a href="/play" class="hub-card group border-l-4 border-l-emerald-500">
-                <div class="h-10 w-10 bg-emerald-50 text-emerald-600 rounded-[12px] flex items-center justify-center text-lg mb-2 shadow-sm border border-emerald-100 group-hover:scale-110 transition"><i class="fa-brands fa-google-play"></i></div>
-                <div>
-                    <h4 class="font-bold text-slate-800 text-sm">App Reviews</h4>
-                    <p class="text-[10px] text-slate-500 mt-0.5 font-medium">Install & Rating</p>
-                </div>
-            </a>
-            
-        </div>
-    </div>
-
-    <!-- ==========================================
-         3. HIGHLIGHTED SECTION (Elite & Premium - Middle)
-    ========================================== -->
-    <div class="grid grid-cols-2 gap-3 mt-4">
-        <!-- Elite Plans -->
-        <a href="/vip" class="bg-gradient-to-br from-slate-900 to-[#1E293B] p-5 rounded-[24px] shadow-[0_10px_30px_rgba(0,0,0,0.1)] flex flex-col items-start gap-3 relative overflow-hidden group border border-slate-700 shimmer-bg hover:-translate-y-1 transition duration-300">
-            <i class="fa-solid fa-crown absolute -right-4 -bottom-4 text-7xl text-amber-500/10 group-hover:scale-110 transition duration-500"></i>
-            <div class="h-12 w-12 bg-gradient-to-br from-amber-400 to-amber-600 text-white rounded-xl flex items-center justify-center text-xl shadow-md border border-amber-300 relative z-10"><i class="fa-solid fa-gem"></i></div>
-            <div class="relative z-10 mt-auto pt-2">
-                <span class="text-[8px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded font-black uppercase tracking-widest mb-1.5 inline-block">Best ROI</span>
-                <h4 class="font-black text-white text-base leading-tight">Elite Plans</h4>
-                <p class="text-[9px] text-slate-400 mt-1 font-medium">Daily Auto Profit Generation</p>
+    <!-- 2. PREMIUM BANNER -->
+    <a href="/premium-tasks" class="block vip-banner group">
+        <div class="flex items-center gap-5 relative z-10">
+            <div class="h-14 w-14 rounded-full bg-[#1C1C1E] border border-[#333333] text-white flex items-center justify-center text-2xl group-hover:bg-white group-hover:text-black transition">
+                <i class="fa-solid fa-gem"></i>
             </div>
+            <div>
+                <h3 class="font-bold text-white text-base">এলিট টাস্ক (Premium)</h3>
+                <p class="text-[#888888] text-xs mt-1">লক করা হাই-পেইং এক্সক্লুসিভ কাজ</p>
+            </div>
+        </div>
+    </a>
+
+    <!-- 3. FREE & REGULAR TASKS -->
+    <h3 class="work-group-title">
+        <span class="w-2 h-2 bg-[#555555] rounded-full"></span> রেগুলার টাস্ক
+    </h3>
+    <div class="grid grid-cols-2 gap-3">
+        <a href="/tasks" class="work-card group">
+            <div class="work-icon"><i class="fa-solid fa-list-check"></i></div>
+            <h4 class="font-bold text-white text-sm">মাইক্রো টাস্ক</h4>
+            <p class="text-[10px] text-[#666666] mt-1 font-medium">লাইক, কমেন্ট ও শেয়ার</p>
         </a>
 
-        <!-- Premium Work -->
-        <a href="/premium-tasks" class="bg-gradient-to-br from-[#E11D48] to-[#BE123C] p-5 rounded-[24px] shadow-[0_10px_30px_rgba(225,29,72,0.2)] flex flex-col items-start gap-3 relative overflow-hidden group border border-[#9F1239] shimmer-bg hover:-translate-y-1 transition duration-300">
-            <div class="absolute right-0 top-0 w-32 h-32 bg-white opacity-10 rounded-bl-full pointer-events-none group-hover:scale-110 transition duration-500"></div>
-            <div class="h-12 w-12 bg-white text-rose-600 rounded-xl flex items-center justify-center text-xl shadow-md border border-rose-100 relative z-10"><i class="fa-solid fa-lock"></i></div>
-            <div class="relative z-10 mt-auto pt-2">
-                <span class="text-[8px] bg-white/20 text-white px-2 py-0.5 rounded font-black uppercase tracking-widest mb-1.5 inline-block">Exclusive</span>
-                <h4 class="font-black text-white text-base leading-tight">Premium Work</h4>
-                <p class="text-[9px] text-rose-200 mt-1 font-medium">High Paying Hidden Tasks</p>
-            </div>
+        <a href="/play" class="work-card group">
+            <div class="work-icon"><i class="fa-brands fa-google-play"></i></div>
+            <h4 class="font-bold text-white text-sm">অ্যাপ রিভিউ</h4>
+            <p class="text-[10px] text-[#666666] mt-1 font-medium">ইন্সটল এবং রেটিং</p>
         </a>
     </div>
 
-    <!-- ==========================================
-         4. HIGH PAYING FARMING (Accounts)
-    ========================================== -->
-    <div>
-        <h3 class="font-bold text-slate-800 text-xs uppercase tracking-widest mb-3 px-1 mt-6 flex items-center gap-1.5">
-            <i class="fa-solid fa-fire text-red-500"></i> High Pay (Farming)
-        </h3>
-        <div class="grid grid-cols-2 gap-3">
-            <a href="/gmail-tasks" class="hub-card group border-l-4 border-l-red-500">
-                <span class="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black px-2 py-0.5 rounded-bl-lg uppercase tracking-widest">Hot</span>
-                <div class="h-10 w-10 bg-red-50 text-red-500 rounded-[12px] flex items-center justify-center text-lg mb-2 shadow-sm border border-red-100 group-hover:scale-110 transition"><i class="fa-brands fa-google"></i></div>
-                <div>
-                    <h4 class="font-bold text-slate-800 text-xs">Gmail Creation</h4>
-                    <p class="text-[9px] text-slate-400 mt-0.5">৳5 - ৳100</p>
-                </div>
-            </a>
-            
-            <a href="/fb-task" class="hub-card group border-l-4 border-l-blue-600">
-                <div class="h-10 w-10 bg-blue-50 text-blue-600 rounded-[12px] flex items-center justify-center text-lg mb-2 shadow-sm border border-blue-100 group-hover:scale-110 transition"><i class="fa-brands fa-facebook-f"></i></div>
-                <div>
-                    <h4 class="font-bold text-slate-800 text-xs">FB Farming</h4>
-                    <p class="text-[9px] text-slate-400 mt-0.5">Submit & Earn</p>
-                </div>
-            </a>
-            
-            <a href="/ig-task" class="hub-card group border-l-4 border-l-pink-500">
-                <div class="h-10 w-10 bg-pink-50 text-pink-600 rounded-[12px] flex items-center justify-center text-lg mb-2 shadow-sm border border-pink-100 group-hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></div>
-                <div>
-                    <h4 class="font-bold text-slate-800 text-xs">IG Farming</h4>
-                    <p class="text-[9px] text-slate-400 mt-0.5">Submit & Earn</p>
-                </div>
-            </a>
-        </div>
+    <!-- 4. HIGH PAYING FARMING -->
+    <h3 class="work-group-title">
+        <span class="w-2 h-2 bg-[#ffffff] rounded-full animate-pulse"></span> হাই-পেইং (Farming)
+    </h3>
+    <div class="grid grid-cols-2 gap-3">
+        <a href="/gmail-tasks" class="work-card group">
+            <span class="badge-dark">Hot</span>
+            <div class="work-icon"><i class="fa-brands fa-google"></i></div>
+            <h4 class="font-bold text-white text-sm">জিমেইল ফার্ম</h4>
+            <p class="text-[10px] text-[#666666] mt-1">তৈরি করে আয় করুন</p>
+        </a>
+        
+        <a href="/fb-task" class="work-card group">
+            <div class="work-icon"><i class="fa-brands fa-facebook-f"></i></div>
+            <h4 class="font-bold text-white text-sm">ফেসবুক ফার্ম</h4>
+            <p class="text-[10px] text-[#666666] mt-1">একাউন্ট ডেটা জমা দিন</p>
+        </a>
+        
+        <a href="/ig-task" class="work-card group">
+            <div class="work-icon"><i class="fa-brands fa-instagram"></i></div>
+            <h4 class="font-bold text-white text-sm">আইজি ফার্ম</h4>
+            <p class="text-[10px] text-[#666666] mt-1">ইনস্টাগ্রাম একাউন্ট সেল</p>
+        </a>
+        
+        <a href="/special-task" class="work-card group">
+            <div class="work-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h4 class="font-bold text-white text-sm">স্পেশাল টাস্ক</h4>
+            <p class="text-[10px] text-[#666666] mt-1">মেগা রিওয়ার্ড</p>
+        </a>
     </div>
 
-    <!-- ==========================================
-         5. MINI GAMES & OFFERS
-    ========================================== -->
-    <div>
-        <h3 class="font-bold text-slate-800 text-xs uppercase tracking-widest mb-3 px-1 mt-6 flex items-center gap-1.5">
-            <i class="fa-solid fa-gamepad text-purple-500"></i> Mini Games
-        </h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <a href="/captcha" class="hub-card !p-3 group">
-                <div class="h-8 w-8 bg-teal-50 text-teal-600 rounded-[10px] flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition"><i class="fa-solid fa-keyboard"></i></div>
-                <span class="text-[10px] font-bold text-slate-700">Captcha</span>
-            </a>
-            <a href="/spin" class="hub-card !p-3 group">
-                <div class="h-8 w-8 bg-orange-50 text-orange-500 rounded-[10px] flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition"><i class="fa-solid fa-dharmachakra"></i></div>
-                <span class="text-[10px] font-bold text-slate-700">Lucky Spin</span>
-            </a>
-            <a href="/skatch" class="col-span-2 sm:col-span-1 hub-card !p-3 group flex items-center justify-between sm:flex-col sm:justify-center">
-                <div class="flex items-center sm:flex-col gap-3 sm:gap-1.5">
-                    <div class="h-8 w-8 bg-indigo-50 text-indigo-500 rounded-[10px] flex items-center justify-center text-sm group-hover:scale-110 transition"><i class="fa-solid fa-ticket"></i></div>
-                    <span class="text-[10px] font-bold text-slate-700">Scratch</span>
-                </div>
-            </a>
-        </div>
+    <!-- 5. MINI GAMES -->
+    <h3 class="work-group-title">
+        <span class="w-2 h-2 bg-[#555555] rounded-full"></span> মিনি গেমস
+    </h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <a href="/captcha" class="work-card !p-4 group items-center text-center">
+            <div class="work-icon !mb-2 !h-10 !w-10 !text-sm"><i class="fa-solid fa-keyboard"></i></div>
+            <span class="text-[11px] font-bold text-white">ক্যাপচা এন্ট্রি</span>
+        </a>
+        <a href="/spin" class="work-card !p-4 group items-center text-center">
+            <div class="work-icon !mb-2 !h-10 !w-10 !text-sm"><i class="fa-solid fa-dharmachakra"></i></div>
+            <span class="text-[11px] font-bold text-white">লাকি স্পিন</span>
+        </a>
+        <a href="/skatch" class="work-card !p-4 group items-center text-center col-span-2 sm:col-span-1">
+            <div class="work-icon !mb-2 !h-10 !w-10 !text-sm"><i class="fa-solid fa-ticket"></i></div>
+            <span class="text-[11px] font-bold text-white">স্ক্র্যাচ কার্ড</span>
+        </a>
     </div>
 
-    <!-- ==========================================
-         6. LEADERSHIP CTA BANNER
-    ========================================== -->
-    <a href="/apply-leader" class="block bg-gradient-to-r from-red-600 to-rose-600 p-6 rounded-[24px] shadow-[0_15px_40px_rgba(225,29,72,0.3)] relative overflow-hidden group mt-8 border border-red-500">
-        <div class="absolute right-0 top-0 w-32 h-32 bg-white opacity-10 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-700"></div>
-        <div class="flex items-center justify-between relative z-10">
+    <!-- 6. LEADERSHIP BANNER -->
+    <a href="/apply-leader" class="block bg-[#111111] p-6 rounded-[28px] border border-[#222222] mt-6 hover:border-[#444444] transition group">
+        <div class="flex items-center justify-between">
             <div class="pr-4">
-                <span class="bg-white/20 text-white px-2.5 py-1 rounded text-[8px] font-black uppercase tracking-widest shadow-sm backdrop-blur-sm border border-white/20 inline-flex items-center gap-1 mb-2">
-                    <i class="fa-solid fa-star text-yellow-300"></i> Career
+                <span class="bg-[#1C1C1E] text-[#AAAAAA] px-2.5 py-1 rounded text-[9px] font-bold uppercase tracking-widest border border-[#333333] mb-2 inline-block">
+                    ক্যারিয়ার
                 </span>
-                <h3 class="font-black text-white text-xl leading-tight">Become an Ambassador!</h3>
-                <p class="text-[11px] text-red-100 mt-1 font-medium leading-relaxed">Join our leadership program and earn <b>৳8000 fixed salary</b> every 15 days.</p>
+                <h3 class="font-bold text-white text-lg">অ্যাম্বাসেডর হোন!</h3>
+                <p class="text-[10px] text-[#666666] mt-1.5 font-medium leading-relaxed">আমাদের লিডারশিপ প্রোগ্রামে যোগ দিন এবং প্রতি ১৫ দিনে <b>৮,০০০ টাকা ফিক্সড স্যালারি</b> আয় করুন।</p>
             </div>
-            <div class="h-12 w-12 bg-white text-red-600 rounded-full flex items-center justify-center shadow-lg flex-shrink-0 group-hover:bg-slate-50 transition">
+            <div class="h-10 w-10 bg-white text-black rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition">
                 <i class="fa-solid fa-arrow-right"></i>
             </div>
         </div>
