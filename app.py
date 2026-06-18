@@ -532,7 +532,34 @@ def captcha_page():
 def download_app():
     return render_template('app_download.html', user=g.user if 'user' in g else None)
     
-
+# --- USER PROFILE UPDATE ROUTE ---
+@app.route('/update-profile', methods=['POST'])
+@login_required
+def update_profile():
+    full_name = request.form.get('full_name')
+    file = request.files.get('profile_image')
+    
+    update_data = {'full_name': full_name}
+    
+    try:
+        # যদি ইউজার নতুন ছবি আপলোড করে, তবে সেটি ImgBB তে আপলোড হবে
+        if file and file.filename != '':
+            img_url, err = smart_imgbb_upload(file) # আপনার আগের ফাংশন ব্যবহার করা হলো
+            if img_url:
+                update_data['profile_pic'] = img_url
+            else:
+                flash(f"Image upload failed: {err}", "error")
+                return redirect(url_for('account'))
+                
+        # ডাটাবেসে প্রোফাইল আপডেট
+        supabase.table('profiles').update(update_data).eq('id', session['user_id']).execute()
+        flash("✅ আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে!", "success")
+        
+    except Exception as e:
+        flash(f"Error updating profile: {str(e)}", "error")
+        
+    return redirect(url_for('account'))
+    
 # ==========================================
 # 🎟️ SCRATCH CARD SYSTEM (Daily 3)
 # ==========================================
