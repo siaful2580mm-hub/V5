@@ -2,121 +2,94 @@
 {% block content %}
 
 <style>
-    /* Premium Entry Animations */
-    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    .fade-in-up { animation: fadeInUp 0.5s forwards; opacity: 0; transform: translateY(15px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Captcha Box Pattern (Security Vibe) */
+    /* Captcha Box (Unreadable for bots, dark for users) */
     .captcha-box {
-        background-color: #f8fafc;
-        background-image: radial-gradient(#cbd5e1 2px, transparent 2px), radial-gradient(#cbd5e1 2px, transparent 2px);
-        background-size: 20px 20px;
-        background-position: 0 0, 10px 10px;
-        user-select: none; /* Prevent Copying */
-        box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
+        background-color: #0A0A0A;
+        background-image: radial-gradient(#333333 2px, transparent 2px), radial-gradient(#222222 2px, transparent 2px);
+        background-size: 20px 20px; background-position: 0 0, 10px 10px;
+        user-select: none; border: 1px solid #1C1C1E;
     }
 
-    /* Custom Input Field */
-    .captcha-input {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-transform: uppercase;
-        letter-spacing: 0.2em;
+    .dark-input {
+        width: 100%; background: #111111; border: 1px solid #222222;
+        color: #ffffff; padding: 20px; border-radius: 16px; text-align: center;
+        font-size: 20px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase;
+        outline: none; transition: all 0.3s ease;
     }
-    .captcha-input:focus {
-        border-color: #E11D48; /* Red 600 */
-        box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1);
-        outline: none;
+    .dark-input:focus { border-color: #ffffff; background: #000000; }
+
+    .btn-white {
+        background: #ffffff; color: #000000; width: 100%; padding: 18px;
+        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
+        letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
     }
+    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    .btn-white:disabled { background: #222222; color: #666666; cursor: not-allowed; transform: none; }
 </style>
 
-<div class="max-w-md mx-auto space-y-6 fade-in-up pb-8 px-1 mt-2">
+<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- ==========================================
-         1. PAGE HEADER (Navigation)
-    ========================================== -->
-    <div class="flex items-center gap-4 mb-4 px-2">
-        <a href="/work" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-500 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-slate-100 hover:text-red-600 hover:bg-red-50 transition-all active:scale-95">
-            <i class="fa-solid fa-arrow-left"></i>
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <a href="/work" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
         </a>
+        <h2 class="text-lg font-bold text-white tracking-wide">ক্যাপচা</h2>
+        <div class="w-10"></div> 
+    </div>
+
+    <!-- Status -->
+    <div class="bg-[#0A0A0A] border border-[#1C1C1E] rounded-3xl p-6 flex items-center justify-between">
         <div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Captcha Entry</h2>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Daily Micro Reward</p>
+            <p class="text-[10px] text-[#888888] font-bold uppercase tracking-widest mb-1">Daily Target</p>
+            <p class="text-xs font-medium text-white">কোড লিখুন এবং ১ টাকা পান</p>
+        </div>
+        <div class="text-right">
+            <p class="text-2xl font-black font-mono text-white leading-none">{{ count }}<span class="text-sm text-[#444444]">/10</span></p>
         </div>
     </div>
 
-    <!-- ==========================================
-         2. STATUS HEADER (Red Gradient)
-    ========================================== -->
-    <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-red-900 rounded-[28px] p-6 text-white shadow-xl relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-32 h-32 bg-white opacity-5 rounded-bl-full pointer-events-none"></div>
-        <i class="fa-solid fa-keyboard absolute right-4 top-1/2 transform -translate-y-1/2 text-7xl opacity-5 pointer-events-none -rotate-12"></i>
+    <!-- Captcha Form -->
+    <form method="POST" class="bg-[#0A0A0A] p-6 sm:p-8 rounded-3xl border border-[#1C1C1E]" onsubmit="return showSubmitLoader()">
         
-        <div class="relative z-10 flex items-center justify-between">
-            <div>
-                <span class="bg-red-500/20 text-red-300 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-red-500/30 mb-2 inline-block shadow-sm">
-                    Easy Money
-                </span>
-                <p class="text-xs text-slate-300 font-medium">ক্যাপচা পূরণ করুন এবং ১ টাকা পান</p>
-            </div>
-            
-            <div class="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl text-center shadow-inner">
-                <p class="text-[8px] font-black uppercase tracking-widest text-red-200 mb-0.5">Today's Target</p>
-                <p class="text-2xl font-black font-mono leading-none">{{ count }}<span class="text-sm text-slate-400">/10</span></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         3. CAPTCHA FORM
-    ========================================== -->
-    <form method="POST" class="bg-white p-6 sm:p-8 rounded-[32px] shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-100 relative overflow-hidden" onsubmit="return showSubmitLoader()">
-        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-600"></div>
-
-        <p class="text-center text-[10px] text-slate-400 font-black uppercase tracking-widest mb-4">Type the code below</p>
+        <p class="text-center text-[10px] text-[#666666] font-bold uppercase tracking-widest mb-4">Captcha Code</p>
         
-        <!-- The Captcha Display -->
-        <div class="captcha-box border-2 border-slate-200 rounded-[20px] py-8 px-4 text-center mb-6 relative group">
-            <!-- Strike-through line to make it harder for bots -->
-            <div class="absolute top-1/2 left-0 w-full h-0.5 bg-slate-400/50 transform -rotate-3 pointer-events-none"></div>
-            
-            <h1 class="text-[40px] font-black text-slate-800 tracking-[0.3em] font-mono italic mix-blend-multiply select-none">
+        <!-- Code Display -->
+        <div class="captcha-box rounded-2xl py-10 px-4 text-center mb-6 relative overflow-hidden">
+            <div class="absolute top-1/2 left-0 w-full h-0.5 bg-[#444444] transform -rotate-6 pointer-events-none"></div>
+            <h1 class="text-4xl font-black text-white tracking-[0.4em] font-mono italic mix-blend-screen drop-shadow-lg">
                 {{ captcha_text }}
             </h1>
         </div>
 
-        <!-- Input Field -->
-        <div class="mb-6 relative">
-            <input type="text" name="captcha_input" id="captchaInput" required autocomplete="off" placeholder="ENTER CODE HERE" 
-                   class="captcha-input w-full bg-slate-50 border-2 border-slate-200 rounded-[16px] px-4 py-4 text-center text-xl font-black text-red-600">
+        <!-- Input -->
+        <div class="mb-6">
+            <input type="text" name="captcha_input" id="captchaInput" required autocomplete="off" placeholder="CODE" class="dark-input">
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" id="submitBtn" class="w-full bg-red-600 text-white py-4 rounded-[16px] font-black text-sm uppercase tracking-widest shadow-[0_8px_20px_rgba(225,29,72,0.25)] hover:bg-red-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 border border-red-700">
-            <span>Verify & Claim</span>
-            <i class="fa-solid fa-arrow-right"></i>
+        <!-- Submit -->
+        <button type="submit" id="submitBtn" class="btn-white">
+            <span>Verify Code</span> <i class="fa-solid fa-arrow-right"></i>
         </button>
         
-        <p class="text-center text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-5 flex items-center justify-center gap-1.5">
-            <i class="fa-solid fa-shield-halved text-red-400"></i> Secured by GrowEarn
+        <p class="text-center text-[9px] text-[#444444] font-bold uppercase tracking-widest mt-6 font-mono">
+            Secured Validation
         </p>
     </form>
 
 </div>
 
 <script>
-    // Focus the input automatically for better UX
-    document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-            document.getElementById('captchaInput').focus();
-        }, 300);
-    });
-
-    // Loading State
+    document.addEventListener("DOMContentLoaded", () => { setTimeout(() => { document.getElementById('captchaInput').focus(); }, 300); });
     function showSubmitLoader() {
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="tracking-widest">Verifying...</span>';
-        btn.classList.add('opacity-90', 'cursor-not-allowed');
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+        btn.style.background = "#222222"; btn.style.color = "#ffffff";
         return true;
     }
 </script>
