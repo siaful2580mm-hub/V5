@@ -4,306 +4,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#ffffff">
-    <title>GrowEarn | Best Earning Site in Bangladesh </title>
+    <meta name="theme-color" content="#000000">
+    <title>PayLix | Premium Earning Network</title>
     
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/192/3135/3135715.png">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#fff1f2', 100: '#ffe4e6', 200: '#fecdd3',
-                            300: '#fda4af', 400: '#fb7185', 500: '#f43f5e',
-                            600: '#e11d48', /* Premium Crimson Red */
-                            700: '#be123c', 800: '#9f1239', 900: '#881337',
-                        },
-                        surface: '#ffffff',
-                        background: '#F8FAFC',
-                    }
-                }
-            }
-        }
-    </script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* ==========================================
+           GLOBAL DARK THEME
+        ========================================== */
         body { 
-            font-family: 'Hind Siliguri', 'Inter', sans-serif; 
-            background-color: theme('colors.background');
-            color: theme('colors.slate.800');
+            font-family: 'Inter', 'Hind Siliguri', sans-serif; 
+            background-color: #000000;
+            color: #ffffff;
             -webkit-tap-highlight-color: transparent;
             overflow-x: hidden;
         }
 
-        /* --- Global Button Override (Red Theme) --- */
-        .btn-emerald {
-            background: linear-gradient(135deg, theme('colors.primary.500') 0%, theme('colors.primary.700') 100%) !important;
-            box-shadow: 0 8px 20px -5px rgba(225, 29, 72, 0.4) !important;
-            border-radius: 16px !important;
-            border: 1px solid theme('colors.primary.400') !important;
-            color: white !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .clean-card, .clean-card-ui, .ai-glass-card {
-            background: theme('colors.surface') !important;
-            border: 1px solid theme('colors.slate.100') !important;
-            border-radius: 24px !important;
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03) !important;
-        }
-
-        /* --- SOLID NAVBAR FIX --- */
-        .top-navbar {
-            background: #ffffff;
-            border-bottom: 1px solid theme('colors.slate.200');
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            z-index: 50;
+        main {
+            padding-top: 80px !important;
+            padding-bottom: 120px !important; 
         }
 
         /* ==========================================
-           GLASSMORPHISM BOTTOM NAV (GLOWING)
+           1. NEW HEADER (Top Nav)
         ========================================== */
-        .glass-bottom-nav {
-            background: rgba(255, 255, 255, 0.9);
+        .top-header {
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 -5px 30px rgba(225, 29, 72, 0.05); 
+            border-bottom: 1px solid #1C1C1E;
+            z-index: 50;
+        }
+
+        .avatar-mini {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: #1C1C1E; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: bold; color: #fff; object-fit: cover;
+            border: 1px solid #333;
+        }
+
+        /* ==========================================
+           2. PREMIUM BOTTOM NAVIGATION (Replica)
+        ========================================== */
+        .premium-bottom-nav {
+            background: linear-gradient(180deg, #1A1A1D 0%, #000000 40%);
+            border-top: 1px solid #2C2C2E;
+            border-radius: 36px 36px 0 0;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 -10px 30px rgba(0,0,0,0.8);
             padding-bottom: env(safe-area-inset-bottom);
+            z-index: 50;
         }
         
-        .tab-item { color: theme('colors.slate.400'); transition: all 0.3s ease; }
-        .tab-item.active { 
-            color: theme('colors.primary.600'); 
-            transform: translateY(-2px); 
-            text-shadow: 0 4px 10px rgba(225, 29, 72, 0.2); 
+        .nav-item {
+            display: flex; flex-direction: column; items-center: center; justify-content: center;
+            color: #8E8E93; transition: all 0.3s ease; text-align: center; gap: 4px;
+            width: 60px;
         }
+        .nav-item i { font-size: 20px; transition: transform 0.2s ease; }
+        .nav-item span { font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
         
-        /* --- GLOWING CENTER FLOATING BUTTON (/work) --- */
-        .center-fab-wrapper {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            top: -26px; 
-            z-index: 100;
-        }
-        .center-action-btn {
-            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
-            color: white;
-            box-shadow: 0 8px 25px rgba(225, 29, 72, 0.5); 
-            border: 6px solid #ffffff; 
-            height: 68px; width: 68px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 26px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .center-action-btn:active { transform: scale(0.95); box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3); }
+        .nav-item.active { color: #FFFFFF; }
+        .nav-item.active i { transform: translateY(-2px); text-shadow: 0 0 10px rgba(255,255,255,0.4); }
 
-        /* --- Fix Main Container Spacing --- */
-        main {
-            padding-top: 75px !important;
-            padding-bottom: 110px !important; 
+        /* Indicator Line below active item */
+        .indicator-dot {
+            width: 4px; height: 4px; background: #fff; border-radius: 50%;
+            opacity: 0; transition: opacity 0.3s; margin: 2px auto 0;
+        }
+        .nav-item.active .indicator-dot { opacity: 1; }
+
+        /* ==========================================
+           3. TOGGLE SIDEBAR (Odama Style - Dark)
+        ========================================== */
+        #sidebarOverlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px); z-index: 60;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        #sidebarOverlay.show { opacity: 1; pointer-events: auto; }
+
+        #sidebar {
+            position: fixed; top: 0; left: 0; height: 100vh;
+            width: 300px; max-width: 85vw;
+            background: #111111;
+            border-right: 1px solid #222;
+            border-radius: 0 40px 40px 0; /* The signature curve */
+            z-index: 70;
+            transform: translateX(-100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column;
+            box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+        }
+        #sidebar.open { transform: translateX(0); }
+
+        .side-menu-item {
+            display: flex; items-center: center; gap: 16px;
+            padding: 14px 20px; border-radius: 16px;
+            color: #888888; font-size: 15px; font-weight: 600;
+            transition: all 0.2s ease; margin-bottom: 4px;
+        }
+        .side-menu-item i { width: 24px; text-align: center; font-size: 18px; }
+        .side-menu-item:hover, .side-menu-item.active {
+            background: #1C1C1E; color: #FFFFFF;
         }
 
-        /* --- Sidebar --- */
-        #sidebar { transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
-        .sidebar-open { transform: translateX(0); }
-        .sidebar-closed { transform: translateX(-100%); }
-        .menu-title { font-size: 10px; font-weight: 800; color: theme('colors.slate.400'); text-transform: uppercase; letter-spacing: 0.15em; margin: 24px 0 8px 16px; }
-        .menu-item { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 16px; color: theme('colors.slate.700'); font-size: 14px; font-weight: 600; transition: all 0.2s ease; margin-bottom: 4px;}
-        .menu-item:hover { background: theme('colors.primary.50'); color: theme('colors.primary.600'); }
-        .menu-item.active { background: theme('colors.primary.50'); color: theme('colors.primary.700'); }
-
+        /* Toast Animation */
         .toast-enter { animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body>
 
-    <!-- ================= 1. SOLID TOP NAVBAR (Fixed Issue) ================= -->
-    <nav class="top-navbar fixed top-0 w-full h-[70px]" style="background: #fff;">
+    <!-- ==========================================
+         1. HEADER
+    ========================================== -->
+    <nav class="top-header fixed top-0 w-full h-[70px]">
         <div class="max-w-7xl mx-auto px-4 h-full flex justify-between items-center">
             
-            <div class="flex items-center gap-3 md:gap-4">
-                <button onclick="toggleSidebar()" class="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200 hover:bg-red-50 text-slate-600 hover:text-red-600 transition shadow-sm">
-                    <i class="fa-solid fa-bars-staggered"></i>
-                </button>
-                
-                <!-- Clear Brand Name (GrowEarn) -->
-                <a href="/" class="flex items-center gap-2 group">
-                    <div class="bg-red-600 text-white h-8 w-8 flex items-center justify-center rounded-[10px] shadow-md group-hover:scale-105 transition">
-                     <i class="fa-brands fa-buffer"></i>
-                    </div>
-                    <span class="text-xl font-black tracking-tight text-slate-900">Grow<span class="text-red-600">Earn</span></span>
-                </a>
-            </div>
+            <!-- Left: Toggle Menu -->
+            <button onclick="toggleSidebar()" class="h-10 w-10 flex items-center justify-start text-white hover:text-gray-300 transition text-xl">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+            
+            <!-- Middle: Brand Name -->
+            <a href="/" class="flex items-center gap-2 text-white font-black text-xl tracking-tight absolute left-1/2 transform -translate-x-1/2">
+                <i class="fa-solid fa-bangladeshi-taka-sign text-[18px]"></i> PayLix
+            </a>
 
-            <div class="flex items-center gap-2 md:gap-3">
-                <button onclick="triggerInstall()" class="hidden md:flex items-center justify-center h-10 w-10 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition shadow-sm border border-red-100" title="Install App">
-                    <i class="fa-solid fa-download"></i>
-                </button>
-                
-                <a href="/notice" class="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-50 border border-slate-200 hover:bg-slate-100 transition text-slate-500 relative shadow-sm">
-                    <i class="fa-regular fa-bell text-lg"></i>
+            <!-- Right: Notif & Avatar -->
+            <div class="flex items-center gap-4">
+                <a href="/notice" class="relative text-white hover:text-gray-300 transition text-xl">
+                    <i class="fa-regular fa-bell"></i>
                     {% if settings and settings.notice_text %}
-                    <span class="absolute top-2.5 right-2.5 h-2 w-2 bg-red-500 rounded-full animate-ping"></span>
-                    <span class="absolute top-2.5 right-2.5 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    <span class="absolute top-0 right-0 h-2.5 w-2.5 bg-red-500 rounded-full border-2 border-black animate-pulse"></span>
+                    {% endif %}
+                </a>
+                
+                <a href="/account">
+                    {% if session.get('user_id') and user %}
+                        {% if user.profile_pic %}
+                            <img src="{{ user.profile_pic }}" class="avatar-mini">
+                        {% else %}
+                            <div class="avatar-mini">{{ user.email[0] | upper }}</div>
+                        {% endif %}
+                    {% else %}
+                        <div class="avatar-mini"><i class="fa-solid fa-user text-sm"></i></div>
                     {% endif %}
                 </a>
             </div>
         </div>
     </nav>
 
-    <!-- ================= 2. ADVANCED SIDEBAR ================= -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300"></div>
+    <!-- ==========================================
+         2. SIDEBAR (Toggle Menu)
+    ========================================== -->
+    <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
     
-    <div id="sidebar" class="fixed top-0 left-0 h-full w-[290px] bg-white z-[70] sidebar-closed flex flex-col shadow-[20px_0_40px_rgba(0,0,0,0.08)]">
-        
-        <div class="p-6 bg-gradient-to-br from-red-700 to-red-900 text-white relative overflow-hidden">
-            <div class="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+    <div id="sidebar">
+        <!-- Close Button & Profile Area -->
+        <div class="p-6 relative pt-12">
+            <button onclick="toggleSidebar()" class="absolute top-6 left-6 text-gray-500 hover:text-white text-xl transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
             
-            <div class="relative z-10">
-                <div class="flex justify-between items-start mb-4">
-                    {% if session.get('user_id') %}
-                        <div class="h-14 w-14 bg-white text-red-600 rounded-[16px] flex items-center justify-center text-2xl font-black shadow-lg">
-                            {{ session.get('email', 'U')[0] | upper }}
-                        </div>
+            <div class="mt-8 flex flex-col items-center sm:items-start text-center sm:text-left">
+                {% if session.get('user_id') and user %}
+                    {% if user.profile_pic %}
+                        <img src="{{ user.profile_pic }}" class="w-20 h-20 rounded-full object-cover border-[3px] border-[#333] mb-4">
                     {% else %}
-                        <div class="h-14 w-14 bg-slate-800 text-slate-400 rounded-[16px] flex items-center justify-center text-2xl"><i class="fa-solid fa-user"></i></div>
+                        <div class="w-20 h-20 rounded-full bg-[#1C1C1E] border-[3px] border-[#333] flex items-center justify-center text-3xl font-bold text-white mb-4">
+                            {{ user.email[0] | upper }}
+                        </div>
                     {% endif %}
                     
-                    <button onclick="toggleSidebar()" class="h-8 w-8 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-slate-900 transition">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                
-                {% if session.get('user_id') %}
-                    <h3 class="font-bold text-lg leading-tight truncate w-full">{{ user.full_name or user.email.split('@')[0] }}</h3>
-                    <p class="text-[11px] text-red-200 mt-0.5 font-medium">{{ session.get('email', '') }}</p>
-                    <div class="mt-3 bg-white/10 border border-white/20 px-3 py-1.5 rounded-lg text-xs font-mono font-bold inline-block shadow-sm">
-                        UID: {{ user.referral_code }}
-                    </div>
+                    <h2 class="text-xl font-bold text-white leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h2>
+                    <p class="text-[#888] text-xs font-mono mt-1">@{{ user.referral_code or 'user' }}</p>
                 {% else %}
-                    <h2 class="text-xl font-bold">Welcome Guest</h2>
-                    <a href="/login" class="inline-block mt-2 bg-red-500 text-white px-5 py-2 rounded-lg text-sm font-bold shadow-md">Login</a>
+                    <div class="w-20 h-20 rounded-full bg-[#1C1C1E] flex items-center justify-center text-3xl text-[#555] mb-4"><i class="fa-solid fa-user"></i></div>
+                    <h2 class="text-xl font-bold text-white">Guest User</h2>
+                    <a href="/login" class="mt-2 text-sm text-blue-400 font-bold hover:underline">Log In</a>
                 {% endif %}
             </div>
         </div>
 
-        <div class="flex-grow overflow-y-auto p-4 pb-24">
-            <p class="menu-title">Navigation</p>
-            <a href="/dashboard" class="menu-item {{ 'active' if request.endpoint == 'dashboard' }}"><i class="fa-solid fa-house w-6 text-center text-slate-400"></i> <span>Dashboard</span></a>
-            <a href="/withdraw" class="menu-item {{ 'active' if request.endpoint == 'withdraw' }}"><i class="fa-solid fa-money-bill-transfer w-6 text-center text-emerald-500"></i> <span>Withdraw</span></a>
-            <a href="/work" class="menu-item {{ 'active' if request.endpoint == 'tasks' or request.endpoint == 'work' }}"><i class="fa-solid fa-bolt w-6 text-center text-amber-500"></i> <span>Earn (Work)</span></a>
-            <a href="/history" class="menu-item {{ 'active' if request.endpoint == 'history' }}"><i class="fa-solid fa-clock-rotate-left w-6 text-center text-red-400"></i> <span>History Logs</span></a>
-            <a href="/drivepack" class="menu-item {{ 'active' if request.endpoint == 'drive_store' or request.endpoint == 'drivepack' }}"><i class="fa-solid fa-wifi w-6 text-center text-sky-500"></i> <span>Drivepack</span></a>
-            <a href="/hire-us" class="menu-item {{ 'active' if request.endpoint == 'hire_us' or request.endpoint == 'givework' }}"><i class="fa-solid fa-briefcase w-6 text-center text-indigo-500"></i> <span>Give Work (B2B)</span></a>
-            <a href="/menu" class="menu-item {{ 'active' if request.endpoint == 'account' or request.endpoint == 'menu' }}"><i class="fa-solid fa-bars w-6 text-center text-slate-500"></i> <span>Full Menu</span></a>
-
-            {% if user and user.role == 'admin' %}
-            <div class="my-4 border-t border-slate-100"></div>
-            <p class="menu-title text-red-400">Administration</p>
-            <a href="/admin" class="menu-item bg-slate-900 text-white hover:bg-slate-800 hover:text-white mt-1 shadow-md">
-                <i class="fa-solid fa-shield-halved w-6 text-center text-white"></i> <span>Admin Portal</span>
+        <!-- Menu Links -->
+        <div class="flex-grow overflow-y-auto px-4 mt-2">
+            <a href="/dashboard" class="side-menu-item {{ 'active' if request.endpoint == 'dashboard' }}">
+                <i class="fa-solid fa-house"></i> Home
             </a>
-            {% endif %}
-
-            {% if session.get('user_id') %}
-            <div class="my-4 border-t border-slate-100"></div>
-            <a href="/logout" class="menu-item text-slate-500 hover:bg-red-50 hover:text-red-600">
-                <i class="fa-solid fa-power-off w-6 text-center"></i> <span>Secure Logout</span>
+            <a href="/work" class="side-menu-item {{ 'active' if request.endpoint == 'work' or request.endpoint == 'tasks' }}">
+                <i class="fa-solid fa-layer-group"></i> Work Station
+            </a>
+            <a href="/history" class="side-menu-item {{ 'active' if request.endpoint == 'history' }}">
+                <i class="fa-regular fa-calendar-alt"></i> History
+            </a>
+            <a href="/withdraw" class="side-menu-item {{ 'active' if request.endpoint == 'withdraw' }}">
+                <i class="fa-solid fa-wallet"></i> Wallet
+            </a>
+            <a href="/referrals" class="side-menu-item {{ 'active' if request.endpoint == 'referrals' }}">
+                <i class="fa-solid fa-users"></i> Network
+            </a>
+            
+            {% if user and user.role == 'admin' %}
+            <div class="border-t border-[#222] my-4 mx-2"></div>
+            <a href="/admin" class="side-menu-item text-blue-400 hover:text-blue-300">
+                <i class="fa-solid fa-shield-halved"></i> Admin Panel
             </a>
             {% endif %}
         </div>
+
+        <!-- Logout Pushed to Bottom -->
+        {% if session.get('user_id') %}
+        <div class="p-6 mt-auto">
+            <a href="/logout" class="flex items-center gap-3 text-[#ff453a] hover:text-[#ff6961] font-bold text-sm transition px-2">
+                <i class="fa-solid fa-arrow-right-from-bracket text-lg"></i> Logout
+            </a>
+        </div>
+        {% endif %}
     </div>
 
-    <!-- ================= 3. TOAST NOTIFICATIONS ================= -->
+    <!-- ==========================================
+         3. TOAST NOTIFICATIONS
+    ========================================== -->
     <div class="fixed top-[80px] left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4 flex flex-col gap-2 pointer-events-none" id="toastContainer">
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div class="bg-white p-4 rounded-2xl shadow-xl border border-slate-100 toast-enter flex items-center gap-3 pointer-events-auto relative overflow-hidden">
-                <div class="absolute left-0 top-0 bottom-0 w-1.5 {{ 'bg-red-500' if category == 'error' else 'bg-green-500' }}"></div>
-                <div class="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 {{ 'bg-red-50 text-red-500' if category == 'error' else 'bg-green-50 text-green-500' }}">
+              <div class="bg-[#1C1C1E] text-white p-4 rounded-2xl shadow-2xl border border-[#333] toast-enter flex items-center gap-3 pointer-events-auto">
+                <div class="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 {{ 'bg-red-500/20 text-red-500' if category == 'error' else 'bg-green-500/20 text-green-500' }}">
                     <i class="fa-solid {{ 'fa-xmark' if category == 'error' else 'fa-check' }}"></i>
                 </div>
-                <p class="text-sm font-bold text-slate-700">{{ message }}</p>
+                <p class="text-sm font-bold">{{ message }}</p>
               </div>
             {% endfor %}
           {% endif %}
         {% endwith %}
     </div>
 
-    <!-- ================= 4. MAIN CONTENT AREA ================= -->
+    <!-- ==========================================
+         4. MAIN CONTENT AREA
+    ========================================== -->
     <main class="flex-grow w-full max-w-2xl mx-auto px-4 relative z-10">
         {% block content %}{% endblock %}
     </main>
 
-
-
-    <!-- ================= 5. FLOATING TELEGRAM ONLY ================= -->
-    <div class="fixed bottom-[170px] right-4 md:bottom-[95px] md:right-8 z-40 group">
-        <a href="http://wa.me/8801624175616" target="_blank" class="relative block">
-            <div class="absolute right-16 top-3 bg-slate-900 text-white text-[10px] uppercase tracking-wider px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 shadow-xl font-bold flex items-center gap-2 whitespace-nowrap">
-                <span>🖐️</span>
-            </div>
-            <div class="h-14 w-14 bg-[#3bff00] rounded-full flex items-center justify-center text-white text-3xl shadow-[0_8px_20px_#eaffbfa0] border-2 border-white transition transform hover:scale-110 hover:-rotate-12">
-                <i class="fa-brands fa-whatsapp pr-1"></i>
-            </div>
-        </a>
-    </div>
-    
-    <!-- ================= 5. FLOATING TELEGRAM ONLY ================= -->
-    <div class="fixed bottom-[95px] right-4 md:bottom-[95px] md:right-8 z-40 group">
-        <a href="https://t.me/grow_earn" target="_blank" class="relative block">
-            <div class="absolute right-16 top-3 bg-slate-900 text-white text-[10px] uppercase tracking-wider px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 shadow-xl font-bold flex items-center gap-2 whitespace-nowrap">
-                <span>🖐️</span>
-            </div>
-            <div class="h-14 w-14 bg-[#2AABEE] rounded-full flex items-center justify-center text-white text-3xl shadow-[0_8px_20px_rgba(42,171,238,0.4)] border-2 border-white transition transform hover:scale-110 hover:-rotate-12">
-                <i class="fa-brands fa-telegram pr-1"></i>
-            </div>
-        </a>
-    </div>
-
-    <!-- ================= 6. GLASSMORPHISM BOTTOM NAVIGATION ================= -->
+    <!-- ==========================================
+         5. PREMIUM BOTTOM NAVIGATION
+    ========================================== -->
     {% if session.get('user_id') %}
-    <div class="glass-bottom-nav fixed bottom-0 left-0 w-full z-50">
-        <div class="max-w-md mx-auto flex justify-between items-center h-[70px] px-6 relative">
+    <div class="premium-bottom-nav fixed bottom-0 left-0 w-full">
+        <div class="max-w-md mx-auto flex justify-between items-center h-[80px] px-6">
             
-            <a href="/dashboard" class="flex flex-col items-center justify-center w-14 tab-item {{ 'active' if request.endpoint == 'dashboard' }}">
-                <i class="fa-solid fa-house text-xl mb-1"></i>
-                <span class="text-[9px] font-bold uppercase tracking-widest">Home</span>
+            <a href="/dashboard" class="nav-item {{ 'active' if request.endpoint == 'dashboard' }}">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+                <div class="indicator-dot"></div>
             </a>
 
-            <a href="/history" class="flex flex-col items-center justify-center w-14 tab-item {{ 'active' if request.endpoint == 'history' }}">
-                <i class="fa-solid fa-clock-rotate-left text-xl mb-1"></i>
-                <span class="text-[9px] font-bold uppercase tracking-widest">Logs</span>
+            <a href="/work" class="nav-item {{ 'active' if request.endpoint == 'work' or request.endpoint == 'tasks' }}">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Categories</span>
+                <div class="indicator-dot"></div>
             </a>
 
-            <!-- GLOWING CENTER BUTTON (/work) -->
-            <div class="center-fab-wrapper">
-                <a href="/work" class="center-action-btn">
-                    <i class="fa-solid fa-bolt"></i>
-                </a>
-            </div>
-
-            <a href="/withdraw" class="flex flex-col items-center justify-center w-14 tab-item {{ 'active' if request.endpoint == 'withdraw' }}">
-                <i class="fa-solid fa-wallet text-xl mb-1"></i>
-                <span class="text-[9px] font-bold uppercase tracking-widest">Cashout</span>
+            <a href="/history" class="nav-item {{ 'active' if request.endpoint == 'history' }}">
+                <i class="fa-regular fa-comment-dots"></i>
+                <span>Chat/Logs</span>
+                <div class="indicator-dot"></div>
             </a>
 
-            <a href="/menu" class="flex flex-col items-center justify-center w-14 tab-item {{ 'active' if request.endpoint == 'account' or request.endpoint == 'menu' }}">
-                <i class="fa-solid fa-bars text-xl mb-1"></i>
-                <span class="text-[9px] font-bold uppercase tracking-widest">Menu</span>
+            <a href="/account" class="nav-item {{ 'active' if request.endpoint == 'account' }}">
+                <!-- Octagon/Hexagon settings icon replica -->
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+                <div class="indicator-dot"></div>
             </a>
 
         </div>
@@ -312,32 +293,21 @@
 
     <!-- ================= SCRIPTS ================= -->
     <script>
-        // PWA App Install
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-        function triggerInstall() {
-            if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; }); } 
-            else { alert("Already installed or browser not supported."); }
-        }
-
-        // Sidebar Toggle
+        // Sidebar Toggle Logic
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
+        
         function toggleSidebar() {
-            if (sidebar.classList.contains('sidebar-closed')) {
-                sidebar.classList.remove('sidebar-closed');
-                sidebar.classList.add('sidebar-open');
-                overlay.classList.remove('hidden');
-                requestAnimationFrame(() => overlay.classList.remove('opacity-0'));
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
             } else {
-                sidebar.classList.remove('sidebar-open');
-                sidebar.classList.add('sidebar-closed');
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
+                sidebar.classList.add('open');
+                overlay.classList.add('show');
             }
         }
 
-        // Auto Hide Flash
+        // Auto Hide Toast
         setTimeout(() => {
             document.querySelectorAll('.toast-enter').forEach(alert => {
                 alert.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
@@ -346,10 +316,6 @@
                 setTimeout(() => alert.remove(), 400);
             });
         }, 3500);
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Reg Error', err)); });
-        }
     </script>
 </body>
 </html>
