@@ -531,27 +531,48 @@ def captcha_page():
 @app.route('/app')
 def download_app():
     return render_template('app_download.html', user=g.user if 'user' in g else None)
-    
-# --- USER PROFILE UPDATE ROUTE ---
+    # --- USER PROFILE UPDATE ROUTE (24 Hour Logic) ---
 @app.route('/update-profile', methods=['POST'])
 @login_required
 def update_profile():
+    from datetime import datetime, timedelta, timezone
+
+    # ১. ডাটাবেস থেকে ইউজারের বর্তমান তথ্য আনা
+    user = supabase.table('profiles').select('*').eq('id', session['user_id']).single().execute().data
+    
+    # ২. ২৪ ঘণ্টার রেস্ট্রিকশন চেক (Security)
+    last_update_str = user.get('last_profile_update')
+    if last_update_str:
+        # ISO স্ট্রিং কে টাইমজোনে কনভার্ট করা
+        last_update = datetime.fromisoformat(last_update_str.replace('Z', '+00:00'))
+        now = datetime.now(timezone.utc)
+        
+        # যদি ২৪ ঘণ্টার কম সময় পার হয়ে থাকে
+        if now - last_update < timedelta(hours=24):
+            flash("⚠️ আপনি ২৪ ঘণ্টা পর পর প্রোফাইল আপডেট করতে পারবেন।", "warning")
+            return redirect(url_for('account'))
+
+    # ৩. নতুন ডাটা সংগ্রহ
     full_name = request.form.get('full_name')
     file = request.files.get('profile_image')
     
-    update_data = {'full_name': full_name}
+    # ৪. ডাটাবেসে পাঠানোর জন্য নতুন অবজেক্ট তৈরি
+    update_data = {
+        'full_name': full_name,
+        'last_profile_update': datetime.now(timezone.utc).isoformat() # বর্তমান সময় সেট করা
+    }
     
     try:
-        # যদি ইউজার নতুন ছবি আপলোড করে, তবে সেটি ImgBB তে আপলোড হবে
+        # ৫. ছবি আপলোড (যদি দেয়)
         if file and file.filename != '':
-            img_url, err = smart_imgbb_upload(file) # আপনার আগের ফাংশন ব্যবহার করা হলো
+            img_url, err = smart_imgbb_upload(file)
             if img_url:
                 update_data['profile_pic'] = img_url
             else:
                 flash(f"Image upload failed: {err}", "error")
                 return redirect(url_for('account'))
                 
-        # ডাটাবেসে প্রোফাইল আপডেট
+        # ৬. ডাটাবেস আপডেট
         supabase.table('profiles').update(update_data).eq('id', session['user_id']).execute()
         flash("✅ আপনার প্রোফাইল সফলভাবে আপডেট হয়েছে!", "success")
         
@@ -560,7 +581,7 @@ def update_profile():
         
     return redirect(url_for('account'))
     
-# ==========================================
+    # ========================================
 # 🎟️ SCRATCH CARD SYSTEM (Daily 3)
 # ==========================================
 @app.route('/skatch', methods=['GET', 'POST'])
