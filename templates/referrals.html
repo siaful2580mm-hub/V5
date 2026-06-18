@@ -2,214 +2,181 @@
 {% block content %}
 
 <style>
-    /* Premium Entry Animations */
-    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Custom Scrollbar for Team List */
-    .team-scroll::-webkit-scrollbar { width: 4px; }
-    .team-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-    
-    /* Animated Progress Bar */
-    .progress-glow {
+    /* Custom Cards */
+    .dark-panel {
+        background: #0A0A0A;
+        border: 1px solid #1C1C1E;
+        border-radius: 24px;
+        padding: 24px;
         position: relative;
         overflow: hidden;
     }
-    .progress-glow::after {
+    
+    /* Progress Bar */
+    .progress-bg { background: #1C1C1E; height: 6px; border-radius: 10px; overflow: hidden; width: 100%; margin-top: 8px; }
+    .progress-fill { background: #ffffff; height: 100%; border-radius: 10px; transition: width 0.5s ease; position: relative; }
+    
+    /* Shimmer inside progress */
+    .progress-fill::after {
         content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        animation: progressShine 2s infinite;
+        background: linear-gradient(90deg, transparent, rgba(0,0,0,0.2), transparent);
+        animation: progressShine 1.5s infinite;
     }
     @keyframes progressShine { 100% { left: 200%; } }
 
-    /* Premium Banner Gradient */
-    .bounty-card {
-        background: linear-gradient(135deg, #E11D48 0%, #9F1239 100%);
-        box-shadow: 0 15px 35px -5px rgba(225, 29, 72, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Custom Scrollbar for Team List */
+    .team-scroll::-webkit-scrollbar { width: 4px; }
+    .team-scroll::-webkit-scrollbar-thumb { background: #333333; border-radius: 10px; }
+
+    /* Input Field */
+    .link-input {
+        background: #111111; border: 1px solid #222222; color: #ffffff;
+        outline: none; transition: border 0.3s ease;
     }
+    .link-input:focus { border-color: #555555; }
 </style>
 
-<div class="max-w-4xl mx-auto space-y-6 fade-in-up pb-8 px-1">
+<div class="max-w-3xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- ==========================================
-         1. PAGE HEADER
-    ========================================== -->
-    <div class="flex items-center gap-3 mb-6 pt-2">
-        <a href="/dashboard" class="h-10 w-10 bg-white rounded-[14px] flex items-center justify-center text-slate-500 shadow-sm border border-slate-200 hover:text-red-600 hover:bg-red-50 transition-all active:scale-95">
-            <i class="fa-solid fa-arrow-left"></i>
-        </a>
-        <div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Affiliate Network</h2>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Build Your Team</p>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         2. SPECIAL BOUNTY BANNER (Target: 100 Refs)
-    ========================================== -->
-    <div class="bounty-card rounded-[32px] p-6 sm:p-8 text-white relative overflow-hidden">
-        
-        <!-- Abstract Orbs -->
-        <div class="absolute top-0 right-0 w-48 h-48 bg-white opacity-10 rounded-bl-full pointer-events-none"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-32 h-32 bg-amber-400 opacity-20 rounded-full blur-[40px] pointer-events-none"></div>
-        <i class="fa-solid fa-gift absolute right-4 top-1/2 transform -translate-y-1/2 text-9xl opacity-[0.05] pointer-events-none -rotate-12"></i>
-
-        <div class="relative z-10 max-w-lg">
-            <div class="inline-flex items-center gap-1.5 bg-white/20 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/30 mb-4 shadow-sm backdrop-blur-md">
-                <i class="fa-solid fa-bolt text-amber-300"></i> Mega Bounty
-            </div>
-            
-            <h2 class="text-3xl sm:text-4xl font-black mb-2 tracking-tight">Unlock <span class="text-amber-300">৳2,500</span> Bonus</h2>
-            <p class="text-xs sm:text-sm text-red-100 font-medium mb-6 leading-relaxed">
-                আপনার রেফার লিংক ব্যবহার করে <b>১০০ জন এক্টিভ (Verified)</b> মেম্বার যুক্ত করলেই পেয়ে যাবেন বিশাল ৳২,৫০০ ক্যাশ বোনাস!
-            </p>
-
-            <!-- Progress Bar Tracker -->
-            <div class="bg-black/20 p-4 rounded-[20px] backdrop-blur-sm border border-white/10">
-                <div class="flex justify-between text-[10px] font-black text-white uppercase tracking-widest mb-2">
-                    <span class="text-emerald-400 flex items-center gap-1.5"><i class="fa-solid fa-users"></i> {{ active_count }} Active</span>
-                    <span>Target: 100</span>
-                </div>
-                <div class="w-full bg-slate-900/50 rounded-full h-3 mb-1 border border-white/5 overflow-hidden shadow-inner">
-                    <div class="bg-gradient-to-r from-emerald-400 to-teal-400 h-full rounded-full transition-all duration-1000 ease-out progress-glow"
-                         style="width: {{ (active_count / 100) * 100 if active_count < 100 else 100 }}%">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Button -->
-            <div class="mt-6">
-                {% if active_count >= 100 %}
-                    <a href="https://t.me/earndailysite" target="_blank" class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 px-8 py-3.5 rounded-xl text-sm font-black shadow-lg hover:from-amber-500 hover:to-amber-600 inline-flex items-center gap-2 transition active:scale-95">
-                        <i class="fa-solid fa-trophy"></i> Claim Reward
-                    </a>
-                {% else %}
-                    <button disabled class="bg-white/10 text-white/60 border border-white/10 px-6 py-3 rounded-xl text-[10px] font-black cursor-not-allowed uppercase tracking-widest backdrop-blur-sm shadow-sm">
-                        <i class="fa-solid fa-lock mr-1"></i> Need {{ 100 - active_count }} More Verified Users
-                    </button>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         3. COPY LINK SECTION (Minimalist UI)
-    ========================================== -->
-    <div class="bg-white p-6 sm:p-8 rounded-[28px] shadow-sm border border-slate-100 relative overflow-hidden group">
-        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-600"></div>
-        
-        <div class="flex items-start gap-4 mb-5">
-            <div class="h-12 w-12 bg-red-50 text-red-600 rounded-[14px] flex items-center justify-center text-xl shadow-sm border border-red-100 flex-shrink-0">
-                <i class="fa-solid fa-link"></i>
-            </div>
+    <!-- 1. HEADER -->
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+            <a href="/dashboard" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </a>
             <div>
-                <h3 class="font-bold text-slate-800 text-base leading-tight">Your Affiliate Link</h3>
-                <p class="text-[11px] text-slate-500 font-medium mt-1">প্রতি রিয়েল এক্টিভ রেফারে পাবেন <b class="text-emerald-600">১০ টাকা</b> বোনাস।</p>
+                <h2 class="text-lg font-bold text-white tracking-wide">আমার টিম</h2>
+                <p class="text-[10px] text-[#666666] font-bold uppercase tracking-widest mt-0.5">রেফারেল নেটওয়ার্ক</p>
             </div>
         </div>
+        <div class="bg-[#111111] border border-[#222222] px-3 py-1.5 rounded-xl flex items-center gap-2">
+            <i class="fa-solid fa-users text-[#888888] text-xs"></i>
+            <span class="text-white font-bold text-xs">{{ total_count }}</span>
+        </div>
+    </div>
+
+    <!-- 2. BOUNTY REWARDS (Milestones) -->
+    <div class="dark-panel">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="font-bold text-white text-sm flex items-center gap-2 uppercase tracking-widest">
+                <i class="fa-solid fa-gift text-[#888888]"></i> মেগা বোনাস প্রোগ্রাম
+            </h3>
+            <span class="bg-[#111111] text-[#888888] px-2 py-1 rounded text-[9px] font-bold uppercase tracking-widest border border-[#222222]">
+                Active: {{ active_count }}
+            </span>
+        </div>
+
+        <div class="space-y-5">
+            <!-- Target 1: 50 Referrals -->
+            <div class="bg-[#111111] border border-[#1C1C1E] p-4 rounded-[16px] relative overflow-hidden">
+                <div class="flex justify-between items-end mb-1">
+                    <div>
+                        <p class="text-[10px] text-[#666666] font-bold uppercase tracking-widest mb-1">লেভেল ১ বোনাস</p>
+                        <h4 class="text-sm font-bold text-white">৫০ জন এক্টিভ রেফার = <span class="font-mono">৳১,০০০</span></h4>
+                    </div>
+                    {% if active_count >= 50 %}
+                        <span class="text-[10px] bg-white text-black px-2 py-1 rounded font-bold uppercase"><i class="fa-solid fa-check"></i> সম্পন্ন</span>
+                    {% else %}
+                        <span class="text-[10px] text-[#666666] font-mono">{{ active_count }} / 50</span>
+                    {% endif %}
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" style="width: {{ (active_count / 50) * 100 if active_count < 50 else 100 }}%"></div>
+                </div>
+            </div>
+
+            <!-- Target 2: 1000 Referrals -->
+            <div class="bg-[#111111] border border-[#1C1C1E] p-4 rounded-[16px] relative overflow-hidden">
+                <div class="flex justify-between items-end mb-1">
+                    <div>
+                        <p class="text-[10px] text-[#666666] font-bold uppercase tracking-widest mb-1">লেভেল ২ বোনাস</p>
+                        <h4 class="text-sm font-bold text-white">১০০০ জন এক্টিভ রেফার = <span class="font-mono">৳২,০০০</span></h4>
+                    </div>
+                    {% if active_count >= 1000 %}
+                        <span class="text-[10px] bg-white text-black px-2 py-1 rounded font-bold uppercase"><i class="fa-solid fa-check"></i> সম্পন্ন</span>
+                    {% else %}
+                        <span class="text-[10px] text-[#666666] font-mono">{{ active_count }} / 1000</span>
+                    {% endif %}
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" style="width: {{ (active_count / 1000) * 100 if active_count < 1000 else 100 }}%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. COPY LINK SECTION -->
+    <div class="dark-panel !p-5">
+        <h3 class="font-bold text-white text-sm leading-tight mb-1">আপনার রেফারেল লিংক</h3>
+        <p class="text-[10px] text-[#888888] font-medium mb-4">লিংক শেয়ার করে বন্ধুদের ইনভাইট করুন।</p>
         
         <div class="flex flex-col sm:flex-row items-center gap-3">
             <div class="relative w-full">
-                <input type="text" id="refLink" value="..." class="bg-slate-50 border border-slate-200 text-sm font-bold text-slate-700 w-full pl-4 pr-12 py-4 rounded-[16px] outline-none font-mono focus:border-red-500 focus:bg-white transition" readonly>
-                <i class="fa-solid fa-share-nodes absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="refLink" value="..." class="link-input w-full pl-4 pr-10 py-3.5 rounded-xl font-mono text-xs" readonly>
+                <i class="fa-solid fa-link absolute right-4 top-1/2 transform -translate-y-1/2 text-[#444444]"></i>
             </div>
-            
-            <button onclick="copyRef(this)" class="w-full sm:w-auto bg-slate-900 text-white px-8 py-4 rounded-[16px] text-xs font-black uppercase tracking-widest shadow-lg hover:bg-red-600 transition flex items-center justify-center gap-2 flex-shrink-0 active:scale-95">
-                <i class="fa-regular fa-copy"></i> Copy
+            <button onclick="copyRef(this)" class="w-full sm:w-auto bg-white text-black px-8 py-3.5 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-[#E5E5E5] transition flex items-center justify-center gap-2 flex-shrink-0 active:scale-95">
+                <i class="fa-regular fa-copy"></i> কপি করুন
             </button>
         </div>
     </div>
 
-    <!-- ==========================================
-         4. LEADERBOARD & MY TEAM
-    ========================================== -->
-    <div class="grid md:grid-cols-2 gap-6">
-        
-        <!-- LEADERBOARD -->
-        <div class="bg-white p-6 rounded-[28px] shadow-sm border border-slate-100 flex flex-col">
-            <div class="flex items-center justify-between mb-5 border-b border-slate-50 pb-3">
-                <h3 class="font-black text-slate-800 text-sm flex items-center gap-2 uppercase tracking-widest">
-                    <i class="fa-solid fa-trophy text-amber-500"></i> Top Networkers
-                </h3>
-                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded border border-slate-200 shadow-sm">Global</span>
-            </div>
-            
-            <div class="space-y-3 flex-grow">
-                {% for top in leaderboard %}
-                <div class="flex items-center justify-between p-3 rounded-[16px] transition border border-transparent hover:border-red-100 hover:bg-red-50/50 group">
-                    <div class="flex items-center gap-3">
-                        <div class="h-10 w-10 rounded-[12px] flex items-center justify-center font-black text-sm shadow-sm border
-                            {% if loop.index == 1 %} bg-gradient-to-br from-amber-400 to-amber-500 text-white border-amber-500
-                            {% elif loop.index == 2 %} bg-slate-200 text-slate-600 border-slate-300
-                            {% elif loop.index == 3 %} bg-orange-200 text-orange-700 border-orange-300
-                            {% else %} bg-slate-50 text-slate-400 border-slate-100 {% endif %}">
-                            {{ loop.index }}
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-800 font-mono">{{ top.email.split('@')[0][:3] }}***{{ top.email.split('@')[0][-2:] }}</p>
-                            <p class="text-[9px] text-slate-400 font-medium mt-0.5">Affiliate Partner</p>
-                        </div>
-                    </div>
-                    <span class="text-[10px] font-black text-red-600 bg-white border border-red-100 px-3 py-1.5 rounded-lg shadow-sm flex items-center gap-1.5 group-hover:bg-red-600 group-hover:text-white transition">
-                        <i class="fa-solid fa-users text-[9px]"></i> {{ top.count }}
-                    </span>
-                </div>
-                {% endfor %}
-            </div>
+    <!-- 4. MY TEAM LIST (Full Width) -->
+    <div class="dark-panel flex flex-col h-full !p-0">
+        <div class="p-5 border-b border-[#1C1C1E] flex items-center justify-between">
+            <h3 class="font-bold text-white text-sm uppercase tracking-widest">
+                <i class="fa-solid fa-network-wired text-[#666666] mr-2"></i> মেম্বার লিস্ট
+            </h3>
         </div>
 
-        <!-- MY TEAM -->
-        <div class="bg-white p-6 rounded-[28px] shadow-sm border border-slate-100 flex flex-col h-full">
-            <div class="flex justify-between items-center mb-5 border-b border-slate-50 pb-3">
-                <h3 class="font-black text-slate-800 text-sm flex items-center gap-2 uppercase tracking-widest">
-                    <i class="fa-solid fa-network-wired text-blue-600"></i> My Direct Team
-                </h3>
-                <span class="text-[10px] bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg font-black uppercase tracking-widest border border-blue-100 shadow-sm">
-                    Total: {{ total_count }}
-                </span>
-            </div>
-
-            <!-- Scrollable Team List -->
-            <div class="space-y-3 overflow-y-auto pr-1 flex-grow team-scroll" style="max-height: 380px;">
-                {% for ref in referrals %}
-                <div class="flex items-center justify-between p-3.5 rounded-[16px] border border-slate-100 hover:border-blue-200 hover:shadow-sm transition bg-slate-50/50 group">
-                    
-                    <div class="flex items-center gap-3">
-                        <div class="h-10 w-10 rounded-[12px] flex items-center justify-center text-lg shadow-sm border transition-colors
-                            {{ 'bg-emerald-50 text-emerald-600 border-emerald-100 group-hover:bg-emerald-500 group-hover:text-white' if ref.is_active else 'bg-white text-slate-400 border-slate-200 group-hover:bg-slate-200' }}">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-800 truncate w-24 sm:w-32">{{ ref.email.split('@')[0] }}</p>
-                            <p class="text-[9px] text-slate-400 font-mono mt-0.5"><i class="fa-regular fa-calendar mr-0.5"></i> {{ ref.created_at[:10] }}</p>
-                        </div>
+        <!-- Scrollable Team List -->
+        <div class="overflow-y-auto team-scroll" style="max-height: 500px;">
+            {% for ref in referrals %}
+            <div class="flex items-center justify-between p-4 border-b border-[#161616] hover:bg-[#111111] transition group">
+                
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-full flex items-center justify-center text-sm shadow-sm border transition-colors
+                        {{ 'bg-white text-black border-white' if ref.is_active else 'bg-[#141414] text-[#666666] border-[#222222]' }}">
+                        <i class="fa-solid fa-user"></i>
                     </div>
-                    
-                    <div class="text-right">
-                        {% if ref.is_active %}
-                            <span class="text-[8px] font-black bg-emerald-500 text-white border border-emerald-600 px-2 py-0.5 rounded uppercase tracking-widest shadow-sm">
-                                Verified
-                            </span>
-                            <p class="text-[10px] text-emerald-600 font-bold mt-1.5 font-mono">+৳10.00</p>
-                        {% else %}
-                            <span class="text-[8px] font-black bg-slate-200 text-slate-500 border border-slate-300 px-2 py-0.5 rounded uppercase tracking-widest">
-                                Unpaid
-                            </span>
-                            <p class="text-[10px] text-slate-400 font-bold mt-1.5 font-mono">৳0.00</p>
-                        {% endif %}
+                    <div>
+                        <p class="text-sm font-bold text-white truncate w-32 sm:w-48">{{ ref.email.split('@')[0] }}</p>
+                        <p class="text-[9px] text-[#666666] font-mono mt-0.5">{{ ref.created_at[:10] }}</p>
                     </div>
                 </div>
-                {% else %}
-                <div class="text-center py-16 bg-white border border-dashed border-slate-200 rounded-[20px]">
-                    <div class="h-16 w-16 bg-slate-50 rounded-[16px] flex items-center justify-center mx-auto mb-3 text-2xl text-slate-300 border border-slate-100 shadow-sm">
-                        <i class="fa-solid fa-user-plus"></i>
-                    </div>
-                    <p class="text-sm font-bold text-slate-700">টিম মেম্বার নেই</p>
-                    <p class="text-[10px] text-slate-400 mt-1">লিংক কপি করে বন্ধুদের ইনভাইট করুন।</p>
+                
+                <div class="text-right flex flex-col items-end">
+                    {% if ref.is_active %}
+                        <span class="text-[9px] font-black bg-white/10 text-white border border-white/20 px-2 py-0.5 rounded uppercase tracking-widest">
+                            Verified
+                        </span>
+                        <p class="text-[11px] text-white font-bold mt-1 font-mono">+৳10.00</p>
+                    {% else %}
+                        <!-- Removed Unpaid, using a neutral status -->
+                        <span class="text-[9px] font-bold text-[#444444] uppercase tracking-widest">
+                            Pending
+                        </span>
+                        <p class="text-[11px] text-[#333333] font-bold mt-1 font-mono">-</p>
+                    {% endif %}
                 </div>
-                {% endfor %}
             </div>
+            {% else %}
+            <div class="text-center py-16">
+                <div class="h-14 w-14 bg-[#111111] rounded-full flex items-center justify-center mx-auto mb-3 text-xl text-[#333333] border border-[#1C1C1E]">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <p class="text-sm font-bold text-[#888888]">টিম মেম্বার নেই</p>
+                <p class="text-[10px] text-[#555555] mt-1">লিংক শেয়ার করে বন্ধুদের ইনভাইট করুন।</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -229,7 +196,7 @@
         }
     });
 
-    // Copy Link Logic with Premium UI Feedback
+    // Copy Link Logic
     function copyRef(btnElement) {
         const copyText = document.getElementById("refLink");
         copyText.select();
@@ -237,14 +204,12 @@
         navigator.clipboard.writeText(copyText.value);
         
         const originalHTML = btnElement.innerHTML;
-        btnElement.innerHTML = '<i class="fa-solid fa-check text-white"></i> Copied!';
-        btnElement.classList.replace("bg-slate-900", "bg-emerald-500");
-        btnElement.classList.replace("hover:bg-red-600", "hover:bg-emerald-600");
+        btnElement.innerHTML = '<i class="fa-solid fa-check text-black"></i> কপিড!';
+        btnElement.classList.add("opacity-80");
         
         setTimeout(() => {
             btnElement.innerHTML = originalHTML;
-            btnElement.classList.replace("bg-emerald-500", "bg-slate-900");
-            btnElement.classList.replace("hover:bg-emerald-600", "hover:bg-red-600");
+            btnElement.classList.remove("opacity-80");
         }, 2000);
     }
 </script>
