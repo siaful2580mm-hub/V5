@@ -2,168 +2,225 @@
 {% block content %}
 
 <style>
-    /* FULL DARK THEME OVERRIDES */
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
     body { background-color: #000000 !important; color: #ffffff !important; }
-    .top-navbar, .glass-bottom-nav { background: rgba(10, 10, 10, 0.8) !important; border-color: #1A1A1A !important; }
-    .top-navbar .text-slate-900, .top-navbar .text-slate-600 { color: #ffffff !important; }
-    .tab-item { color: #666666 !important; }
-    .tab-item.active { color: #ffffff !important; }
+    
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Dark Cards */
-    .premium-card {
-        background-color: #0A0A0A;
-        border: 1px solid #1C1C1E;
+    /* ==========================================
+       DRIBBBLE STYLE UI COMPONENTS
+    ========================================== */
+    
+    /* Profile Header Card */
+    .profile-card {
+        background-color: #111111;
         border-radius: 24px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
     }
-    .premium-card:active { transform: scale(0.98); }
-    
-    .action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    
-    .icon-box {
-        width: 44px; height: 44px; border-radius: 14px;
-        background: #141414; border: 1px solid #222222; color: #E5E5E5;
+    .profile-card:hover {
+        background-color: #161616;
+        border-color: #222222;
+    }
+    .profile-avatar {
+        width: 56px; height: 56px; border-radius: 50%;
+        background-color: #1C1C1E; color: #ffffff;
         display: flex; align-items: center; justify-content: center;
-        margin-bottom: 12px; font-size: 1.2rem;
+        font-size: 20px; font-weight: bold; object-fit: cover;
     }
 
-    /* Modal Styles (Dark Theme) */
+    /* Menu Groups */
+    .menu-group {
+        background-color: #0A0A0A; /* Slightly lighter than pure black */
+        border: 1px solid #161616;
+        border-radius: 28px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    /* Menu Items */
+    .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 18px 20px;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+    }
+    .menu-item:hover { background-color: #111111; }
+    .menu-item:active { background-color: #1A1A1A; }
+    
+    /* Border between items */
+    .menu-item:not(:last-child) {
+        border-bottom: 1px solid #161616;
+    }
+
+    /* Menu Typography & Icons */
+    .menu-icon {
+        width: 24px; font-size: 16px; color: #E5E5E5; 
+        margin-right: 16px; text-align: center; opacity: 0.8;
+    }
+    .menu-text {
+        flex-grow: 1; font-size: 14px; font-weight: 500; color: #E5E5E5;
+    }
+    .menu-chevron {
+        color: #444444; font-size: 12px;
+    }
+
+    /* Specific Danger Item (Logout) */
+    .menu-item-danger .menu-icon, .menu-item-danger .menu-text { color: #FF453A; opacity: 1; }
+
+    /* ==========================================
+       MODAL STYLES (Edit Profile)
+    ========================================== */
     .modal-backdrop {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
+        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
         display: flex; align-items: center; justify-content: center;
         z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
     .modal-backdrop.show { opacity: 1; pointer-events: auto; }
     
     .modal-content {
-        background: #111111; border: 1px solid #222222; border-radius: 24px;
-        width: 90%; max-w: 380px; padding: 24px;
-        transform: scale(0.9); transition: transform 0.3s ease; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        background: #111111; border: 1px solid #222222; border-radius: 28px;
+        width: 90%; max-w: 360px; padding: 24px;
+        transform: scale(0.95); transition: transform 0.3s ease;
     }
     .modal-backdrop.show .modal-content { transform: scale(1); }
 
     .dark-input {
-        width: 100%; background: #0A0A0A; border: 1px solid #222222; color: #fff;
-        padding: 12px 16px; border-radius: 12px; outline: none; font-size: 14px; transition: border 0.3s;
+        width: 100%; background: #000000; border: 1px solid #222222; color: #ffffff;
+        padding: 16px; border-radius: 16px; outline: none; font-size: 14px; transition: border 0.3s;
     }
-    .dark-input:focus { border-color: #555555; }
-
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .dark-input:focus { border-color: #444444; }
 </style>
 
-<div class="max-w-md mx-auto px-4 pt-4 pb-20 space-y-5">
+<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- 1. PROFILE CARD (With Edit Button) -->
-    <div class="premium-card p-6 relative overflow-hidden animate-up">
-        
-        <div class="flex items-center justify-between relative z-10">
-            <div class="flex items-center gap-4">
-                <!-- Profile Picture -->
-                <div class="h-16 w-16 rounded-full bg-[#1C1C1E] border-2 border-[#333333] flex items-center justify-center overflow-hidden">
-                    {% if user.profile_pic %}
-                        <img src="{{ user.profile_pic }}" class="w-full h-full object-cover">
-                    {% else %}
-                        <span class="text-2xl font-bold text-white">{{ user.email[0] | upper }}</span>
-                    {% endif %}
-                </div>
-                
-                <div>
-                    <h2 class="text-white font-bold text-lg leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h2>
-                    <p class="text-[#888888] text-[10px] font-mono mt-0.5">{{ user.email }}</p>
-                    <div class="mt-1.5">
-                        <span class="bg-[#141414] text-white px-2 py-0.5 rounded text-[9px] font-bold border border-[#2A2A2A]">Lvl {{ user.current_level or '1' }}</span>
-                    </div>
-                </div>
-            </div>
+    <!-- 1. TOP HEADER (Back Button & Title) -->
+    <div class="flex items-center justify-between mb-6">
+        <a href="/dashboard" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+        </a>
+        <h2 class="text-lg font-bold text-white tracking-wide">Account</h2>
+        <div class="w-10"></div> <!-- Spacer for centering -->
+    </div>
 
-            <!-- Edit Button -->
-            <button onclick="openEditModal()" class="h-10 w-10 rounded-full bg-[#141414] border border-[#222222] text-[#888888] flex items-center justify-center hover:bg-white hover:text-black transition">
-                <i class="fa-solid fa-pen text-sm"></i>
-            </button>
-        </div>
-
-        <div class="mt-6 flex items-center justify-between bg-[#141414] rounded-2xl p-3 border border-[#222222]">
+    <!-- 2. PROFILE CARD (Click to Edit) -->
+    <div class="profile-card" onclick="openEditModal()">
+        <div class="flex items-center gap-4">
+            <!-- Avatar -->
+            {% if user.profile_pic %}
+                <img src="{{ user.profile_pic }}" class="profile-avatar">
+            {% else %}
+                <div class="profile-avatar">{{ user.email[0] | upper }}</div>
+            {% endif %}
+            
+            <!-- User Info -->
             <div>
-                <p class="text-[9px] text-[#666666] uppercase font-bold tracking-widest">রেফারেল কোড (ID)</p>
-                <p class="text-white font-mono font-bold text-sm">{{ user.referral_code }}</p>
+                <h3 class="text-white font-bold text-base leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h3>
+                <p class="text-[#888888] text-xs mt-1">{{ user.email }}</p>
             </div>
-            <button onclick="copyText('{{ user.referral_code }}')" class="h-9 w-9 rounded-xl bg-white text-black flex items-center justify-center active:scale-90 transition">
-                <i class="fa-regular fa-copy"></i>
-            </button>
         </div>
+        <!-- Edit Icon -->
+        <i class="fa-solid fa-pen text-[#444444] text-sm"></i>
     </div>
 
-    <!-- 2. QUICK ACTIONS (BENTO GRID) -->
-    <div class="space-y-3 animate-up" style="animation-delay: 0.1s">
-        <h3 class="text-[10px] font-black text-[#666666] uppercase tracking-[2px] ml-2">Wallet & Assets</h3>
-        <div class="action-grid">
-            <a href="/income" class="premium-card p-5 flex flex-col items-start hover:border-[#333333]">
-                <div class="icon-bw h-10 w-10 rounded-xl bg-[#141414] text-white border border-[#2A2A2A] flex items-center justify-center mb-3"><i class="fa-solid fa-chart-line"></i></div>
-                <span class="font-bold text-white text-sm">আয় ও হিসাব</span>
-                <span class="text-[9px] text-[#666666]">অ্যানালিটিক্স দেখুন</span>
-            </a>
-            <a href="/withdraw" class="premium-card p-5 flex flex-col items-start hover:border-[#333333]">
-                <div class="icon-bw h-10 w-10 rounded-xl bg-[#141414] text-white border border-[#2A2A2A] flex items-center justify-center mb-3"><i class="fa-solid fa-wallet"></i></div>
-                <span class="font-bold text-white text-sm">উত্তোলন করুন</span>
-                <span class="text-[9px] text-[#666666]">টাকা পকেটে নিন</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 3. NETWORK SECTION -->
-    <div class="space-y-3 animate-up" style="animation-delay: 0.2s">
-        <h3 class="text-[10px] font-black text-[#666666] uppercase tracking-[2px] ml-2">Growth Network</h3>
-        <div class="premium-card overflow-hidden !p-0">
-            <a href="/referrals" class="flex items-center justify-between p-4 border-b border-[#1C1C1E] hover:bg-[#111111] transition">
-                <div class="flex items-center gap-4">
-                    <div class="h-10 w-10 rounded-full bg-[#141414] border border-[#2A2A2A] text-white flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
-                    <div>
-                        <p class="font-bold text-white text-sm">আমার টিম</p>
-                        <p class="text-[10px] text-[#666666]">রেফারেল ম্যানেজ করুন</p>
-                    </div>
-                </div>
-                <i class="fa-solid fa-chevron-right text-[#444444] text-xs"></i>
-            </a>
-            <a href="/vip" class="flex items-center justify-between p-4 hover:bg-[#111111] transition">
-                <div class="flex items-center gap-4">
-                    <div class="h-10 w-10 rounded-full bg-[#141414] border border-[#2A2A2A] text-white flex items-center justify-center"><i class="fa-solid fa-crown"></i></div>
-                    <div>
-                        <p class="font-bold text-white text-sm">এলিট মেম্বারশিপ</p>
-                        <p class="text-[10px] text-[#666666]">প্রিমিয়াম সুবিধা পান</p>
-                    </div>
-                </div>
-                <span class="bg-white text-black text-[9px] px-2.5 py-1 rounded-md font-bold">UPGRADE</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- 4. SYSTEM & GUIDES -->
-    <div class="grid grid-cols-2 gap-3 animate-up" style="animation-delay: 0.3s">
-        <a href="/notice" class="premium-card p-4 flex items-center gap-3 hover:border-[#333333]">
-            <div class="h-8 w-8 rounded-lg bg-[#141414] border border-[#2A2A2A] text-white flex items-center justify-center text-xs"><i class="fa-solid fa-bell"></i></div>
-            <span class="font-bold text-white text-xs">নোটিশ বোর্ড</span>
+    <!-- 3. MENU GROUPS -->
+    
+    <!-- Group 1: Financials -->
+    <div class="menu-group">
+        <a href="/income" class="menu-item">
+            <i class="fa-solid fa-chart-pie menu-icon"></i>
+            <span class="menu-text">আয় ও হিসাব (Analytics)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
         </a>
-        <a href="/tutorial" class="premium-card p-4 flex items-center gap-3 hover:border-[#333333]">
-            <div class="h-8 w-8 rounded-lg bg-[#141414] border border-[#2A2A2A] text-white flex items-center justify-center text-xs"><i class="fa-solid fa-play"></i></div>
-            <span class="font-bold text-white text-xs">কাজের গাইড</span>
+        <a href="/withdraw" class="menu-item">
+            <i class="fa-solid fa-wallet menu-icon"></i>
+            <span class="menu-text">উত্তোলন করুন (Withdraw)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
+        </a>
+        <a href="/adm" class="menu-item">
+            <i class="fa-solid fa-building-columns menu-icon"></i>
+            <span class="menu-text">পেমেন্ট মেথড (Payment Setup)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
         </a>
     </div>
 
-    <!-- 5. LOGOUT -->
-    <div class="pt-4 animate-up" style="animation-delay: 0.4s">
-        <a href="/logout" class="w-full py-4 rounded-[20px] border border-[#222222] bg-[#0A0A0A] flex items-center justify-center gap-2 text-[#888888] hover:text-white hover:border-[#555555] transition">
-            <i class="fa-solid fa-power-off"></i>
-            <span class="font-bold text-xs uppercase tracking-widest">লগআউট করুন</span>
+    <!-- Group 2: Network & Premium -->
+    <div class="menu-group">
+        <!-- Copy Referral ID Action -->
+        <button onclick="copyText('{{ user.referral_code }}')" class="menu-item w-full text-left bg-transparent border-none outline-none cursor-pointer">
+            <i class="fa-solid fa-fingerprint menu-icon"></i>
+            <span class="menu-text flex justify-between items-center pr-2">
+                রেফারেল কোড (Copy UID)
+                <span class="text-[#666666] text-xs font-mono font-bold">{{ user.referral_code }}</span>
+            </span>
+            <i class="fa-regular fa-copy menu-chevron"></i>
+        </button>
+
+        <a href="/referrals" class="menu-item">
+            <i class="fa-solid fa-users menu-icon"></i>
+            <span class="menu-text">আমার টিম (Team)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
+        </a>
+        <a href="/vip" class="menu-item">
+            <i class="fa-solid fa-crown menu-icon text-amber-500 opacity-100"></i>
+            <span class="menu-text">এলিট মেম্বারশিপ (VIP)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
+        </a>
+        <a href="/hire-us" class="menu-item">
+            <i class="fa-solid fa-bullhorn menu-icon"></i>
+            <span class="menu-text">প্রোমোশন সার্ভিস (B2B)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
+        </a>
+        <a href="/apply-leader" class="menu-item">
+            <i class="fa-solid fa-star menu-icon"></i>
+            <span class="menu-text">লিডারশিপ প্রোগ্রাম</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
         </a>
     </div>
 
-    <!-- FOOTER -->
-    <div class="text-center space-y-1 mt-6">
-        <p class="text-[9px] font-black uppercase tracking-[3px] text-[#444444]">Paylix Network</p>
-        <p class="text-[8px] font-mono text-[#333333]">Version 3.5 • Encrypted</p>
+    <!-- Group 3: App Settings & Info -->
+    <div class="menu-group">
+        <a href="/notice" class="menu-item">
+            <i class="fa-regular fa-bell menu-icon"></i>
+            <span class="menu-text">নোটিশ বোর্ড (Notices)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
+        </a>
+        <a href="/tutorial" class="menu-item">
+            <i class="fa-regular fa-circle-play menu-icon"></i>
+            <span class="menu-text">কাজের গাইড (Tutorial)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
+        </a>
+        <a href="https://t.me/grow_earn" target="_blank" class="menu-item">
+            <i class="fa-brands fa-telegram menu-icon"></i>
+            <span class="menu-text">লাইভ সাপোর্ট (Live Support)</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
+        </a>
+        
+        <!-- Admin Panel visible only to Admin -->
+        {% if user.role == 'admin' %}
+        <a href="/admin" class="menu-item">
+            <i class="fa-solid fa-shield-halved menu-icon text-blue-500 opacity-100"></i>
+            <span class="menu-text">অ্যাডমিন প্যানেল</span>
+            <i class="fa-solid fa-chevron-right menu-chevron"></i>
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Group 4: Logout -->
+    <div class="menu-group">
+        <a href="/logout" class="menu-item menu-item-danger">
+            <i class="fa-solid fa-arrow-right-from-bracket menu-icon"></i>
+            <span class="menu-text">লগআউট (Logout)</span>
+        </a>
     </div>
 
 </div>
@@ -173,52 +230,54 @@
 ========================================== -->
 <div id="editProfileModal" class="modal-backdrop">
     <div class="modal-content relative">
-        <button onclick="closeEditModal()" class="absolute right-4 top-4 h-8 w-8 bg-[#1A1A1A] rounded-full text-[#888888] hover:text-white transition flex items-center justify-center">
+        <!-- Close Button -->
+        <button onclick="closeEditModal()" class="absolute right-5 top-5 h-8 w-8 bg-[#1A1A1A] rounded-full text-[#888888] hover:text-white transition flex items-center justify-center">
             <i class="fa-solid fa-xmark"></i>
         </button>
         
-        <h3 class="text-lg font-black text-white mb-1">প্রোফাইল এডিট করুন</h3>
-        <p class="text-[10px] text-[#666666] mb-6">আপনার নাম এবং প্রোফাইল ছবি পরিবর্তন করুন</p>
+        <h3 class="text-xl font-bold text-white mb-2">প্রোফাইল এডিট</h3>
+        <p class="text-[11px] text-[#666666] mb-8 font-medium">আপনার নাম এবং প্রোফাইল ছবি আপডেট করুন</p>
         
-        <!-- Note: Form action points to /update-profile. You will need to add this route in app.py -->
-        <form method="POST" action="/update-profile" enctype="multipart/form-data" class="space-y-4">
+        <!-- Form Action: Points to /update-profile in app.py -->
+        <form method="POST" action="/update-profile" enctype="multipart/form-data" class="space-y-6">
             
-            <!-- Image Upload Preview -->
-            <div class="flex flex-col items-center mb-4">
+            <!-- Avatar Upload UI -->
+            <div class="flex flex-col items-center">
                 <label class="cursor-pointer group relative">
-                    <div class="h-20 w-20 rounded-full bg-[#1A1A1A] border border-[#333333] flex items-center justify-center overflow-hidden">
+                    <div class="h-24 w-24 rounded-full bg-[#1A1A1A] border-2 border-[#333333] flex items-center justify-center overflow-hidden transition group-hover:border-[#555555]">
                         <img id="profilePreview" src="{{ user.profile_pic or '' }}" class="w-full h-full object-cover {{ 'hidden' if not user.profile_pic }}">
-                        <i id="uploadIcon" class="fa-solid fa-camera text-xl text-[#666666] group-hover:text-white transition {{ '' if not user.profile_pic else 'hidden' }}"></i>
+                        <i id="uploadIcon" class="fa-solid fa-camera text-2xl text-[#666666] group-hover:text-white transition {{ '' if not user.profile_pic else 'hidden' }}"></i>
                     </div>
-                    <div class="absolute bottom-0 right-0 h-6 w-6 bg-white rounded-full flex items-center justify-center text-black shadow-md border border-white">
-                        <i class="fa-solid fa-plus text-[10px]"></i>
+                    <!-- Small Plus Icon -->
+                    <div class="absolute bottom-0 right-0 h-7 w-7 bg-white rounded-full flex items-center justify-center text-black shadow-md border-2 border-[#111111]">
+                        <i class="fa-solid fa-plus text-[10px] font-bold"></i>
                     </div>
                     <input type="file" name="profile_image" accept="image/*" class="hidden" onchange="previewProfilePic(this)">
                 </label>
-                <p class="text-[9px] text-[#555555] mt-2 uppercase tracking-widest">Tap to change photo</p>
             </div>
 
             <!-- Name Input -->
             <div>
-                <label class="block text-[10px] font-bold text-[#888888] uppercase tracking-widest mb-1.5 ml-1">আপনার নাম</label>
-                <input type="text" name="full_name" value="{{ user.full_name }}" placeholder="আপনার পুরো নাম লিখুন" class="dark-input" required>
+                <label class="block text-[11px] font-bold text-[#888888] mb-2 ml-1">আপনার নাম</label>
+                <input type="text" name="full_name" value="{{ user.full_name }}" placeholder="Your Full Name" class="dark-input" required>
             </div>
 
-            <button type="submit" class="w-full bg-white text-black py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-md active:scale-95 transition mt-2">
-                সেভ করুন
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-white text-black py-4 rounded-2xl font-bold text-sm shadow-md active:scale-95 transition mt-2">
+                Save Changes
             </button>
         </form>
     </div>
 </div>
 
 <script>
-    // Copy ID Logic
+    // 1. Copy ID Logic
     function copyText(text) {
         navigator.clipboard.writeText(text);
-        alert("কপি করা হয়েছে: " + text);
+        alert("আইডি কপি করা হয়েছে: " + text);
     }
 
-    // Modal Controls
+    // 2. Edit Modal Controls
     function openEditModal() {
         document.getElementById('editProfileModal').classList.add('show');
     }
@@ -226,7 +285,7 @@
         document.getElementById('editProfileModal').classList.remove('show');
     }
 
-    // Profile Image Preview Logic
+    // 3. Profile Image Preview Logic
     function previewProfilePic(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
