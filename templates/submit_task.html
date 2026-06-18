@@ -2,74 +2,98 @@
 {% block content %}
 
 <style>
-    /* Premium Entry Animation */
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    
     .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Modern Dropzone (Red Theme) */
-    .upload-area { 
-        border: 2px dashed #CBD5E1; background: #F8FAFC; 
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
-        border-radius: 20px;
+    /* Dark Cards */
+    .dark-card {
+        background: #0A0A0A;
+        border: 1px solid #1C1C1E;
+        border-radius: 24px;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
     }
-    .upload-area:hover { border-color: #E11D48; background: #FFF1F2; }
-    .upload-area.has-file { 
-        border-style: solid; border-color: #10B981; background: #ECFDF5; 
-        box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2); 
-    }
-
+    
     /* Step Badge */
     .step-badge {
         display: inline-flex; align-items: center; justify-content: center;
         height: 28px; width: 28px; border-radius: 10px;
-        background: #FFF1F2; color: #E11D48; font-weight: 900; font-size: 14px;
-        box-shadow: 0 2px 8px rgba(225, 29, 72, 0.1);
+        background: #111111; color: #ffffff; font-weight: 900; font-size: 12px;
+        border: 1px solid #222222;
     }
+
+    /* Modern Dropzone (Dark Theme) */
+    .upload-area { 
+        border: 2px dashed #2A2A2A; background: #050505; 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+        border-radius: 20px; min-height: 160px;
+        display: flex; flex-direction: column; items-center: center; justify-content: center;
+    }
+    .upload-area:hover { border-color: #555555; background: #0A0A0A; }
+    .upload-area.has-file { 
+        border-style: solid; border-color: #ffffff; background: #111111; 
+        box-shadow: 0 10px 30px -10px rgba(255, 255, 255, 0.1); 
+    }
+
+    /* White Action Button */
+    .btn-white {
+        background: #ffffff; color: #000000; width: 100%; padding: 18px;
+        border-radius: 16px; font-weight: 800; font-size: 13px;
+        text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    .btn-white:disabled { background: #222222; color: #666666; cursor: not-allowed; transform: none; }
+
+    /* Progress Bar */
+    .progress-bar-bg { background: #1C1C1E; height: 6px; border-radius: 12px; overflow: hidden; margin-top: 16px; width: 100%; border: 1px solid #2A2A2A; }
+    .progress-fill { background: #ffffff; height: 100%; width: 0%; transition: width 0.3s ease; position: relative; }
 </style>
 
-<div class="max-w-2xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
     <!-- ==========================================
          1. PAGE HEADER
     ========================================== -->
-    <div class="flex items-center gap-4 mb-4 px-2">
-        <a href="/work" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-500 shadow-[0_2px_10px_rgba(0,0,0,0.04)] border border-slate-100 hover:text-red-600 hover:bg-red-50 transition-all active:scale-95">
-            <i class="fa-solid fa-arrow-left"></i>
-        </a>
-        <div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">কাজ জমা দিন</h2>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Proof Submission</p>
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+            <a href="/tasks" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </a>
+            <div>
+                <h2 class="text-lg font-bold text-white tracking-wide">কাজ জমা দিন</h2>
+                <p class="text-[10px] text-[#666666] font-bold uppercase tracking-widest mt-0.5">Proof Submission</p>
+            </div>
         </div>
     </div>
 
     <!-- ==========================================
-         2. TASK DETAILS CARD (Premium Info Box)
+         2. TASK DETAILS CARD
     ========================================== -->
-    <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[28px] p-6 text-white shadow-xl relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-32 h-32 bg-red-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -ml-10 -mb-10 pointer-events-none"></div>
-        
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+    <div class="dark-card">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
             <div class="flex items-start gap-4">
-                <div class="h-14 w-14 bg-white/10 backdrop-blur-md rounded-[16px] flex items-center justify-center text-2xl shadow-inner border border-white/20 flex-shrink-0
-                    {% if 'YouTube' in task.category %} text-red-400
-                    {% elif 'Facebook' in task.category %} text-blue-400
-                    {% elif 'TikTok' in task.category %} text-slate-200
-                    {% else %} text-emerald-400 {% endif %}">
+                <div class="h-14 w-14 bg-[#111111] rounded-[16px] flex items-center justify-center text-2xl border border-[#222222] flex-shrink-0 text-[#E5E5E5]">
                     {% if 'YouTube' in task.category %} <i class="fa-brands fa-youtube"></i>
                     {% elif 'Facebook' in task.category %} <i class="fa-brands fa-facebook"></i>
                     {% elif 'TikTok' in task.category %} <i class="fa-brands fa-tiktok"></i>
                     {% else %} <i class="fa-solid fa-globe"></i> {% endif %}
                 </div>
                 <div>
-                    <span id="taskCategory" class="text-[9px] font-black uppercase tracking-widest text-red-400 mb-1.5 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/20 inline-block">{{ task.category }}</span>
-                    <h3 class="font-bold text-white text-lg leading-tight mb-1.5">{{ task.title }}</h3>
-                    <p class="text-[11px] text-slate-300 font-medium leading-relaxed max-w-sm">{{ task.description }}</p>
+                    <span id="taskCategory" class="text-[9px] font-black uppercase tracking-widest text-[#AAAAAA] mb-1.5 bg-[#1C1C1E] px-2 py-0.5 rounded border border-[#2A2A2A] inline-block">{{ task.category }}</span>
+                    <h3 class="font-bold text-white text-base leading-tight mb-1.5">{{ task.title }}</h3>
+                    <p class="text-[11px] text-[#888888] font-medium leading-relaxed">{{ task.description }}</p>
                 </div>
             </div>
             
-            <div class="bg-emerald-500/20 text-emerald-300 px-5 py-3 rounded-[16px] border border-emerald-500/30 flex flex-col items-center justify-center flex-shrink-0 backdrop-blur-sm self-start md:self-center">
-                <span class="text-[9px] uppercase font-bold tracking-widest opacity-80 mb-0.5">Reward</span>
+            <div class="bg-[#111111] text-white px-5 py-3 rounded-[16px] border border-[#222222] flex flex-col items-center justify-center flex-shrink-0 self-start md:self-center">
+                <span class="text-[9px] uppercase font-bold tracking-widest text-[#666666] mb-0.5">Reward</span>
                 <span class="text-lg font-black font-mono tracking-tight">+৳{{ task.reward }}</span>
             </div>
         </div>
@@ -79,49 +103,42 @@
          3. FACEBOOK POST MATERIAL (Specific for fb_post)
     ========================================== -->
     {% if task.task_type == 'fb_post' %}
-    <div class="bg-white p-6 sm:p-8 rounded-[28px] shadow-sm border border-slate-100 relative overflow-hidden">
-        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-600"></div>
-
-        <div class="flex items-center gap-3 mb-6 pl-2 border-b border-slate-50 pb-4">
-            <div class="step-badge !bg-blue-50 !text-blue-600">১</div>
-            <h3 class="font-bold text-slate-800 text-base">পোস্ট ম্যাটেরিয়াল সংগ্রহ করুন</h3>
+    <div class="dark-card">
+        <div class="flex items-center gap-3 mb-6 pl-1 border-b border-[#1C1C1E] pb-4">
+            <div class="step-badge">১</div>
+            <h3 class="font-bold text-white text-sm">পোস্ট ম্যাটেরিয়াল সংগ্রহ</h3>
         </div>
 
         <!-- A. Download Image -->
         {% if task.image_url %}
-        <div class="mb-6 pl-2 sm:pl-12">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                <i class="fa-regular fa-image text-blue-500"></i> ছবি ডাউনলোড করুন
+        <div class="mb-6 pl-1 sm:pl-11">
+            <p class="text-[10px] font-black text-[#666666] uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                <i class="fa-regular fa-image text-white"></i> ছবি ডাউনলোড করুন
             </p>
-            <div class="relative rounded-[20px] overflow-hidden group border border-slate-200 shadow-sm max-w-sm">
+            <div class="relative rounded-[20px] overflow-hidden group border border-[#2A2A2A] max-w-sm">
                 <img src="{{ task.image_url }}" alt="Task Material" class="w-full h-48 object-cover">
                 <!-- Overlay with Download Button -->
-                <div class="absolute inset-0 bg-slate-900/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 backdrop-blur-sm">
-                    <a href="{{ task.image_url }}" download="GrowEarn_Post.jpg" class="bg-white text-slate-900 px-6 py-3 rounded-xl font-bold text-xs shadow-xl flex items-center gap-2 hover:scale-105 transition active:scale-95">
+                <div class="absolute inset-0 bg-black/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 backdrop-blur-sm">
+                    <a href="{{ task.image_url }}" download="GrowEarn_Post.jpg" class="bg-white text-black px-6 py-3 rounded-xl font-bold text-xs flex items-center gap-2 hover:scale-105 transition active:scale-95">
                         <i class="fa-solid fa-download"></i> সেভ করুন
                     </a>
                 </div>
             </div>
-            <p class="text-[9px] text-slate-400 mt-2 font-medium">↑ ছবির ওপর ট্যাপ করে ডাউনলোড করুন ↑</p>
         </div>
         {% endif %}
 
         <!-- B. Copy Caption -->
         {% if task.caption %}
-        <div class="pl-2 sm:pl-12">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                <i class="fa-solid fa-pen text-blue-500"></i> লেখা কপি করুন
+        <div class="pl-1 sm:pl-11">
+            <p class="text-[10px] font-black text-[#666666] uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                <i class="fa-solid fa-pen text-white"></i> লেখা কপি করুন
             </p>
-            <div class="bg-slate-50 p-5 rounded-[20px] border border-slate-200 relative group shadow-inner">
-                <p id="captionText" class="text-xs text-slate-700 whitespace-pre-line font-medium leading-relaxed pr-10">{{ task.caption }}</p>
-                <!-- Copy Button -->
-                <button onclick="copyCaption(this)" class="absolute top-4 right-4 h-9 w-9 bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-300 rounded-xl flex items-center justify-center transition shadow-sm active:scale-90">
+            <div class="bg-[#111111] p-5 rounded-[20px] border border-[#222222] relative group">
+                <p id="captionText" class="text-xs text-[#E5E5E5] whitespace-pre-line font-medium leading-relaxed pr-10">{{ task.caption }}</p>
+                <button onclick="copyCaption(this)" class="absolute top-4 right-4 h-9 w-9 bg-[#1C1C1E] border border-[#333333] text-[#888888] hover:text-white rounded-xl flex items-center justify-center transition active:scale-90">
                     <i class="fa-regular fa-copy"></i>
                 </button>
             </div>
-            <p class="text-[10px] text-red-500 mt-3 font-bold bg-red-50 p-2 rounded-lg border border-red-100 flex items-center gap-1.5">
-                <i class="fa-solid fa-triangle-exclamation"></i> উপরের ছবি এবং লেখাটি কপি করে আপনার ফেসবুকে পোস্ট করুন। এরপর সেই পোস্টের স্ক্রিনশট নিচে জমা দিন।
-            </p>
         </div>
         {% endif %}
     </div>
@@ -131,32 +148,30 @@
          4. SMART TIMER & ACTION STEP (Link Task)
     ========================================== -->
     {% if task.task_type == 'screenshot' and task.link %}
-    <div class="bg-white p-6 sm:p-8 rounded-[28px] shadow-sm border border-slate-100 relative overflow-hidden" id="taskActionBox">
-        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-600"></div>
-
-        <div class="flex items-center justify-between mb-5 pl-2">
+    <div class="dark-card" id="taskActionBox">
+        <div class="flex items-center justify-between mb-5 pl-1">
             <div class="flex items-center gap-3">
                 <div class="step-badge">১</div>
-                <h3 class="font-bold text-slate-800 text-base">কাজ সম্পন্ন করুন</h3>
+                <h3 class="font-bold text-white text-sm">কাজ সম্পন্ন করুন</h3>
             </div>
             <!-- Dynamic Required Time Indicator -->
-            <span id="requiredTimeBadge" class="bg-red-50 text-red-600 px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest border border-red-100 hidden shadow-sm">
+            <span id="requiredTimeBadge" class="bg-[#111111] text-[#E5E5E5] px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest border border-[#222222] hidden">
                 <i class="fa-regular fa-clock"></i> <span id="timeText">-- Sec Req</span>
             </span>
         </div>
         
-        <p class="text-xs text-slate-500 mb-6 pl-2 sm:pl-12 font-medium leading-relaxed">নিচের লিংকে ক্লিক করুন এবং নির্ধারিত সময় পার না হওয়া পর্যন্ত ওই পেজে অপেক্ষা করুন। এরপর ফিরে এসে স্ক্রিনশট জমা দিন।</p>
+        <p class="text-xs text-[#888888] mb-6 pl-1 sm:pl-11 font-medium leading-relaxed">নিচের লিংকে ক্লিক করুন এবং নির্ধারিত সময় পার না হওয়া পর্যন্ত ওই পেজে অপেক্ষা করুন। এরপর ফিরে এসে স্ক্রিনশট জমা দিন।</p>
         
-        <div class="pl-2 sm:pl-12">
-            <button id="startLinkBtn" onclick="startTaskTimer('{{ task.link }}')" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-slate-900 text-white px-8 py-4 rounded-[16px] font-black text-xs uppercase tracking-widest shadow-lg hover:bg-red-600 active:scale-95 transition-all">
+        <div class="pl-1 sm:pl-11">
+            <button id="startLinkBtn" onclick="startTaskTimer('{{ task.link }}')" class="btn-white sm:w-auto px-8 inline-flex">
                 <i class="fa-solid fa-play" id="linkIcon"></i> <span id="linkBtnText">লিংকে প্রবেশ করুন</span>
             </button>
 
             <!-- Hidden Progress Bar -->
-            <div class="progress-bar-bg w-full max-w-sm" id="progressContainer">
+            <div class="progress-bar-bg max-w-sm hidden" id="progressContainer">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
-            <p id="timerMessage" class="text-[11px] font-bold text-red-600 mt-3 hidden animate-pulse"></p>
+            <p id="timerMessage" class="text-[10px] font-bold text-[#AAAAAA] mt-3 hidden"></p>
         </div>
     </div>
     {% endif %}
@@ -164,64 +179,63 @@
     <!-- ==========================================
          5. UPLOAD PROOF FORM
     ========================================== -->
-    <form method="POST" enctype="multipart/form-data" onsubmit="return submitFinalProof()" class="bg-white p-6 sm:p-8 rounded-[28px] shadow-[0_4px_25px_rgba(0,0,0,0.03)] border border-slate-100 relative overflow-hidden">
+    <form method="POST" enctype="multipart/form-data" onsubmit="return submitFinalProof()" class="dark-card">
         
-        <!-- Lock Overlay for Timer (Only for Link tasks, not FB Post) -->
+        <!-- Lock Overlay for Timer -->
         {% if task.task_type == 'screenshot' and task.link %}
-        <div id="uploadLockOverlay" class="absolute inset-0 bg-white/90 backdrop-blur-[4px] z-30 flex flex-col items-center justify-center transition-opacity duration-300">
-            <div class="h-16 w-16 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center text-3xl mb-4 border border-slate-200 shadow-sm"><i class="fa-solid fa-lock"></i></div>
-            <p class="text-xs font-bold text-slate-600 bg-white px-5 py-2.5 rounded-xl border border-slate-200 shadow-sm">উপরের কাজ শেষ হলে এটি আনলক হবে</p>
+        <div id="uploadLockOverlay" class="absolute inset-0 bg-black/80 backdrop-blur-md z-30 flex flex-col items-center justify-center transition-opacity duration-300">
+            <div class="h-16 w-16 bg-[#111111] text-[#555555] rounded-2xl flex items-center justify-center text-3xl mb-4 border border-[#222222]"><i class="fa-solid fa-lock"></i></div>
+            <p class="text-xs font-bold text-[#888888] bg-[#1A1A1A] px-5 py-2.5 rounded-xl border border-[#2A2A2A]">উপরের কাজ শেষ হলে এটি আনলক হবে</p>
         </div>
         {% endif %}
 
-        <div class="flex items-center gap-3 mb-5 border-b border-slate-50 pb-4 relative z-10">
+        <div class="flex items-center gap-3 mb-5 border-b border-[#1C1C1E] pb-4 relative z-10 pl-1">
             <div class="step-badge">{% if task.task_type == 'fb_post' or task.link %}২{% else %}১{% endif %}</div>
-            <h3 class="font-bold text-slate-800 text-base">প্রুফ জমা দিন</h3>
+            <h3 class="font-bold text-white text-sm">প্রুফ জমা দিন</h3>
         </div>
 
-        <p class="text-xs text-slate-500 mb-5 pl-0 sm:pl-11 relative z-10 font-medium">কাজটি সফলভাবে সম্পন্ন করার পর একটি ক্লিয়ার স্ক্রিনশট নিচে আপলোড করুন।</p>
+        <p class="text-xs text-[#888888] mb-5 pl-1 sm:pl-11 relative z-10 font-medium">কাজটি সফলভাবে সম্পন্ন করার পর একটি ক্লিয়ার স্ক্রিনশট নিচে আপলোড করুন।</p>
 
-        <!-- Modern Dropzone Area -->
-        <div class="pl-0 sm:pl-11 mb-8 relative z-10">
+        <!-- Dropzone Area -->
+        <div class="pl-1 sm:pl-11 mb-8 relative z-10 text-center">
             <div class="relative w-full cursor-pointer group">
                 <input type="file" name="screenshot" id="fileInput" accept="image/*" required 
                        class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
                        onchange="handleFileUpload(this)">
                 
-                <div id="uploadBox" class="upload-area p-8 text-center flex flex-col items-center justify-center min-h-[160px]">
-                    <div id="uploadIcon" class="h-14 w-14 bg-white text-slate-400 border border-slate-200 rounded-[16px] flex items-center justify-center text-2xl mb-4 shadow-sm transition-all group-hover:scale-110 group-hover:text-red-500 group-hover:border-red-200">
+                <div id="uploadBox" class="upload-area">
+                    <div id="uploadIcon" class="h-14 w-14 bg-[#111111] text-[#666666] border border-[#222222] rounded-[16px] flex items-center justify-center text-2xl mb-3 mx-auto transition-all group-hover:scale-110 group-hover:text-white">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
                     </div>
-                    <p id="uploadText" class="text-sm font-bold text-slate-600 group-hover:text-red-600 transition-colors">
+                    <p id="uploadText" class="text-xs font-bold text-[#888888] group-hover:text-white transition-colors">
                         স্ক্রিনশট আপলোড করতে ট্যাপ করুন
                     </p>
-                    <p id="uploadSubText" class="text-[10px] text-slate-400 font-mono mt-2 uppercase tracking-widest hidden">Max Size: 5MB</p>
+                    <p id="uploadSubText" class="text-[10px] text-[#555555] font-mono mt-1 uppercase tracking-widest hidden">Max Size: 5MB</p>
                 </div>
             </div>
         </div>
 
-        <button type="submit" id="submitBtn" class="w-full bg-red-600 text-white py-4.5 py-4 rounded-[16px] font-black text-sm uppercase tracking-widest shadow-[0_8px_20px_rgba(225,29,72,0.25)] hover:bg-red-700 active:scale-[0.98] transition-all flex items-center justify-center gap-2 relative z-10 border border-red-700">
-            <span>কাজ জমা দিন</span>
-            <i class="fa-solid fa-paper-plane"></i>
+        <button type="submit" id="submitBtn" class="btn-white relative z-10">
+            <span>কাজ জমা দিন</span> <i class="fa-solid fa-paper-plane"></i>
         </button>
     </form>
 
 </div>
 
-<!-- 🚀 SCRIPTS FOR COPY & TIMER -->
+<!-- 🚀 SCRIPTS FOR COPY & TIMER (Dark Theme Adjusted) -->
 <script>
     // Copy FB Caption Logic
     function copyCaption(btn) {
         const text = document.getElementById("captionText").innerText;
         navigator.clipboard.writeText(text).then(() => {
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-            btn.classList.add('border-green-200', 'bg-green-50', 'text-green-600');
-            btn.classList.remove('bg-white', 'text-slate-400');
+            btn.innerHTML = '<i class="fa-solid fa-check text-black"></i>';
+            btn.classList.add('bg-white');
+            btn.classList.remove('bg-[#1C1C1E]', 'text-[#888888]');
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
-                btn.classList.remove('border-green-200', 'bg-green-50', 'text-green-600');
-                btn.classList.add('bg-white', 'text-slate-400');
+                btn.classList.remove('bg-white');
+                btn.classList.add('bg-[#1C1C1E]', 'text-[#888888]');
             }, 2000);
         });
     }
@@ -253,14 +267,15 @@
         const progContainer = document.getElementById('progressContainer');
         const msg = document.getElementById('timerMessage');
 
-        btn.className = "inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-slate-200 text-slate-500 px-6 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest pointer-events-none transition-all";
+        // Change button to disabled style (Dark Theme)
+        btn.className = "btn-white sm:w-auto px-8 inline-flex !bg-[#111111] !text-[#666666] !pointer-events-none !border !border-[#222222]";
         btnText.innerText = "Monitoring View...";
         icon.className = "fa-solid fa-eye";
 
         progContainer.style.display = 'block';
         msg.style.display = 'block';
         msg.innerText = "কাজ সম্পন্ন করতে লিংকে গিয়ে অপেক্ষা করুন...";
-        msg.className = "text-[10px] font-bold text-blue-600 mt-2 animate-pulse";
+        msg.className = "text-[10px] font-bold text-[#AAAAAA] mt-3 animate-pulse";
 
         isTracking = true;
         window.open(url, '_blank');
@@ -291,13 +306,13 @@
                     timeLeft = 0;
 
                     progressBar.style.width = "100%";
-                    progressBar.classList.add('bg-green-500');
                     
                     msg.innerText = "✅ সময় সম্পূর্ণ হয়েছে! এখন প্রুফ জমা দিন।";
-                    msg.className = "text-[10px] font-bold text-green-600 mt-2";
+                    msg.className = "text-[10px] font-bold text-white mt-3";
                     
-                    btn.className = "inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-green-100 text-green-700 px-6 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest pointer-events-none transition-all";
-                    btnText.innerText = "Task Time Completed";
+                    // Button Success State
+                    btn.className = "btn-white sm:w-auto px-8 inline-flex !pointer-events-none";
+                    btnText.innerText = "Task Completed";
                     icon.className = "fa-solid fa-check-double";
 
                     if(lockOverlay) {
@@ -307,9 +322,10 @@
                 } else {
                     progressBar.style.width = ((requiredTime - timeLeft) / requiredTime * 100) + "%";
                     msg.innerText = `আপনি খুব তাড়াতাড়ি ফিরে এসেছেন! আরও ${timeLeft} সেকেন্ড বাকি। "Resume" এ ক্লিক করুন।`;
-                    msg.className = "text-[10px] font-bold text-red-500 mt-2";
+                    msg.className = "text-[10px] font-bold text-[#FF453A] mt-3";
                     
-                    btn.className = "inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-red-600 text-white px-6 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg hover:bg-red-700 active:scale-95 transition-all";
+                    // Button Resume State
+                    btn.className = "btn-white sm:w-auto px-8 inline-flex";
                     btnText.innerText = "Resume Task";
                     icon.className = "fa-solid fa-play";
                 }
@@ -326,13 +342,13 @@
 
         if (input.files && input.files[0]) {
             uploadBox.classList.add('has-file');
-            uploadIcon.className = "h-14 w-14 bg-green-500 text-white rounded-[16px] flex items-center justify-center text-2xl mx-auto mb-3 shadow-md border-2 border-white transform scale-110";
+            uploadIcon.className = "h-14 w-14 bg-white text-black rounded-[16px] flex items-center justify-center text-2xl mx-auto mb-3 shadow-md transform scale-110 transition-all";
             uploadIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
             uploadText.textContent = "Image Attached Successfully";
-            uploadText.className = "text-sm font-bold text-green-700 truncate w-full px-4 block";
+            uploadText.className = "text-sm font-bold text-white truncate w-full px-4 block";
             subText.classList.remove('hidden');
             subText.textContent = input.files[0].name;
-            subText.className = "text-[10px] text-green-600/70 font-mono mt-1 block truncate w-full px-4";
+            subText.className = "text-[10px] text-[#888888] font-mono mt-1 block truncate w-full px-4";
         }
     }
 
@@ -346,8 +362,9 @@
 
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="tracking-widest">Encrypting...</span>';
-        btn.classList.add('opacity-90', 'cursor-not-allowed');
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i>';
+        btn.style.background = "#222222";
+        btn.style.color = "#666666";
         return true;
     }
 </script>
