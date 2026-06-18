@@ -2,221 +2,215 @@
 {% block content %}
 
 <style>
-    /* Premium Entry Animation */
-    .fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Tab Switch Animation */
+    /* ==========================================
+       MODERN BANKING TAB SWITCHER
+    ========================================== */
+    .tab-container {
+        display: flex; gap: 8px;
+        background: #0A0A0A; padding: 6px; border-radius: 16px;
+        border: 1px solid #1C1C1E; margin-bottom: 24px;
+    }
+    .tab-btn {
+        flex: 1; text-align: center; padding: 12px 0;
+        font-size: 13px; font-weight: 600; color: #666666;
+        border-radius: 12px; transition: all 0.3s ease;
+    }
+    .tab-btn.active { background: #1C1C1E; color: #ffffff; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+    /* ==========================================
+       FLAT TRANSACTION LIST UI
+    ========================================== */
+    .txn-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px 0; transition: background 0.2s ease;
+        border-bottom: 1px solid #161616;
+    }
+    .txn-row:active { opacity: 0.7; }
+    .txn-row:last-child { border-bottom: none; }
+
+    .txn-icon {
+        width: 44px; height: 44px; border-radius: 50%;
+        background: #111111; color: #E5E5E5; border: 1px solid #222222;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .status-success { background: rgba(50, 215, 75, 0.1); color: #32D74B; }
+    .status-pending { background: rgba(255, 214, 10, 0.1); color: #FFD60A; }
+    .status-failed { background: rgba(255, 69, 58, 0.1); color: #FF453A; }
+
+    /* Tab Panes */
     .tab-pane { display: none; opacity: 0; }
     .tab-pane.active { display: block; animation: tabFadeIn 0.4s ease forwards; }
-    @keyframes tabFadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Active Tab Button Style (Red Theme) */
-    .tab-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .tab-btn.active {
-        background-color: #ffffff;
-        color: #E11D48; /* Crimson Red */
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    /* Staggered animation for list items */
-    .stagger-item { opacity: 0; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .stagger-item:nth-child(1) { animation-delay: 0.1s; }
-    .stagger-item:nth-child(2) { animation-delay: 0.15s; }
-    .stagger-item:nth-child(3) { animation-delay: 0.2s; }
-    .stagger-item:nth-child(4) { animation-delay: 0.25s; }
-    .stagger-item:nth-child(5) { animation-delay: 0.3s; }
+    @keyframes tabFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
-<div class="max-w-2xl mx-auto space-y-6 fade-up pb-8 px-1">
+<div class="max-w-md mx-auto fade-in-up pb-10 px-2 mt-4">
+
+    <!-- 1. TOP HEADER -->
+    <div class="flex items-center justify-between mb-6">
+        <a href="/dashboard" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+        </a>
+        <h2 class="text-lg font-bold text-white tracking-wide">হিস্টোরি</h2>
+        <div class="w-10"></div> <!-- Spacer -->
+    </div>
+
+    <!-- 2. TOTAL OVERVIEW (Minimal) -->
+    <div class="mb-6">
+        <p class="text-[#666666] text-xs font-medium mb-1">মোট এভেইলেবল ব্যালেন্স</p>
+        <h1 class="text-[32px] font-bold text-white font-mono leading-none tracking-tight">৳{{ user.balance }}</h1>
+    </div>
+
+    <!-- 3. TAB CONTROLLER -->
+    <div class="tab-container">
+        <button onclick="switchTab('withdrawals')" id="btn-withdrawals" class="tab-btn active">
+            উত্তোলন (Cashout)
+        </button>
+        <button onclick="switchTab('tasks')" id="btn-tasks" class="tab-btn">
+            টাস্ক (Tasks)
+        </button>
+    </div>
 
     <!-- ==========================================
-         1. PREMIUM HEADER SECTION (With Current Balance)
+         4. WITHDRAWALS PANE
     ========================================== -->
-    <div class="bg-gradient-to-br from-red-700 to-rose-600 p-6 sm:p-8 rounded-[28px] shadow-lg shadow-red-600/20 relative overflow-hidden">
+    <div id="pane-withdrawals" class="tab-pane active">
         
-        <!-- Background Accent -->
-        <div class="absolute right-0 top-0 w-32 h-32 bg-white/10 rounded-bl-full pointer-events-none"></div>
-        <i class="fa-solid fa-file-invoice-dollar absolute right-4 top-1/2 transform -translate-y-1/2 text-8xl text-white opacity-5 pointer-events-none -rotate-12"></i>
-
-        <div class="relative z-10 flex flex-col gap-5">
-            <!-- Top Row: Back Button & Title -->
-            <div class="flex items-center gap-4">
-                <a href="/dashboard" class="h-10 w-10 bg-white/10 rounded-xl flex items-center justify-center text-white hover:bg-white/20 transition backdrop-blur-sm border border-white/20 shadow-sm active:scale-95">
-                    <i class="fa-solid fa-arrow-left text-sm"></i>
-                </a>
-                <div>
-                    <h2 class="text-xl font-black text-white tracking-tight leading-none">ট্রানজেকশন হিস্টোরি</h2>
-                    <p class="text-[10px] text-red-200 font-bold mt-1 uppercase tracking-widest">Financial Records</p>
-                </div>
-            </div>
-
-            <!-- Bottom Row: Current Balance Display -->
-            <div class="bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-[20px] flex items-center justify-between">
-                <div>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-red-200 mb-0.5">Current Balance</p>
-                    <h3 class="text-2xl font-black text-white font-mono leading-none">৳{{ user.balance }}</h3>
-                </div>
-                <div class="h-10 w-10 bg-white text-red-600 rounded-[12px] flex items-center justify-center text-lg shadow-inner">
-                    <i class="fa-solid fa-wallet"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         2. iOS STYLE TAB CONTROLLER
-    ========================================== -->
-    <div class="bg-slate-100 p-1.5 rounded-[16px] flex items-center gap-1 relative shadow-inner border border-slate-200">
-        <button onclick="switchTab('withdrawals')" id="btn-withdrawals" class="tab-btn active flex-1 py-3.5 text-xs font-bold rounded-[12px] text-slate-500 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-money-bill-transfer"></i> উইথড্র লগস
-        </button>
-        <button onclick="switchTab('tasks')" id="btn-tasks" class="tab-btn flex-1 py-3.5 text-xs font-bold rounded-[12px] text-slate-500 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-bolt"></i> কাজের হিস্টোরি
-        </button>
-    </div>
-
-    <!-- ==========================================
-         3. TAB PANES CONTENT
-    ========================================== -->
-    <div class="relative min-h-[300px]">
-
-        <!-- ================= WITHDRAWALS PANE ================= -->
-        <div id="pane-withdrawals" class="tab-pane active space-y-3">
-            
-            <div class="flex items-center justify-between px-2 mb-3">
-                <h3 class="font-bold text-slate-800 text-xs flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-red-500"></i> আপনার পেমেন্ট রিকোয়েস্ট</h3>
-                <span class="text-[9px] bg-red-50 text-red-600 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest border border-red-100">Total: {{ withdrawals|length }}</span>
-            </div>
-
+        <p class="text-[#888888] text-[10px] font-bold uppercase tracking-widest mb-2 px-2">Cashout Logs</p>
+        
+        <div class="bg-[#0A0A0A] rounded-[24px] border border-[#1C1C1E] px-4 py-2">
             {% if withdrawals %}
                 {% for item in withdrawals %}
-                <div class="stagger-item bg-white p-4 rounded-[20px] shadow-sm border border-slate-100 flex items-center justify-between group hover:border-red-200 transition-colors">
-                    
+                <div class="txn-row">
                     <div class="flex items-center gap-4">
-                        <!-- Dynamic Icon -->
-                        <div class="h-11 w-11 rounded-[14px] flex items-center justify-center text-lg shadow-sm border flex-shrink-0
-                            {% if item.method == 'bKash' %} bg-pink-50 text-pink-500 border-pink-100
-                            {% elif item.method == 'Nagad' %} bg-orange-50 text-orange-500 border-orange-100
-                            {% else %} bg-purple-50 text-purple-500 border-purple-100 {% endif %}">
-                            <i class="fa-solid fa-wallet"></i>
+                        <!-- Icon -->
+                        <div class="txn-icon">
+                            {% if item.method == 'bKash' %} <i class="fa-solid fa-bolt text-[#E2136E]"></i>
+                            {% elif item.method == 'Nagad' %} <i class="fa-solid fa-fire-flame-curved text-[#F59E0B]"></i>
+                            {% else %} <i class="fa-solid fa-wallet text-[#8B5CF6]"></i> {% endif %}
                         </div>
-                        
+                        <!-- Details -->
                         <div>
-                            <h4 class="font-bold text-slate-800 text-sm">{{ item.method }} <span class="font-medium text-slate-500 text-[11px]">(Transfer)</span></h4>
-                            <div class="flex items-center gap-1.5 text-[9px] text-slate-400 mt-1 font-medium font-mono">
-                                <span><i class="fa-regular fa-clock mr-0.5"></i> {{ item.created_at[:10] }}</span>
-                                <span class="text-slate-300">•</span>
-                                <span class="font-bold text-slate-500">{{ item.number }}</span>
-                            </div>
+                            <h4 class="font-bold text-white text-sm">{{ item.method }} Transfer</h4>
+                            <p class="text-[#666666] text-[11px] font-mono mt-0.5">{{ item.created_at[:10] }} • {{ item.number[-4:] }}</p>
                         </div>
                     </div>
-
-                    <div class="text-right flex-shrink-0">
-                        <p class="font-black text-slate-800 text-base font-mono">-৳{{ item.amount }}</p>
-                        <!-- Dynamic Status -->
+                    
+                    <!-- Amount & Status -->
+                    <div class="text-right flex flex-col items-end gap-1">
+                        <span class="font-bold text-white text-base font-mono">-৳{{ item.amount }}</span>
+                        
                         {% if item.status == 'approved' %}
-                            <span class="inline-flex items-center gap-1 text-[8px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded mt-1 border border-emerald-100 uppercase tracking-widest"><i class="fa-solid fa-check"></i> সম্পন্ন</span>
+                            <span class="status-badge status-success">Success</span>
                         {% elif item.status == 'rejected' %}
-                            <span class="inline-flex items-center gap-1 text-[8px] font-black text-red-600 bg-red-50 px-2 py-0.5 rounded mt-1 border border-red-100 uppercase tracking-widest"><i class="fa-solid fa-xmark"></i> বাতিল</span>
+                            <span class="status-badge status-failed">Failed</span>
                         {% else %}
-                            <span class="inline-flex items-center gap-1 text-[8px] font-black text-amber-600 bg-amber-50 px-2 py-0.5 rounded mt-1 border border-amber-100 uppercase tracking-widest animate-pulse"><i class="fa-solid fa-circle-notch fa-spin"></i> পেন্ডিং</span>
+                            <span class="status-badge status-pending">Processing</span>
                         {% endif %}
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="bg-white rounded-[24px] text-center py-16 border border-slate-100 shadow-sm mt-4">
-                    <div class="h-16 w-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-300 text-2xl border border-slate-100">
-                        <i class="fa-solid fa-money-bill-wave"></i>
+                <div class="py-16 text-center">
+                    <div class="h-16 w-16 bg-[#111111] rounded-full flex items-center justify-center mx-auto mb-4 text-[#333333] text-2xl border border-[#222222]">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
                     </div>
-                    <p class="text-sm font-bold text-slate-700">কোনো উইথড্র হিস্টোরি নেই</p>
-                    <p class="text-[10px] text-slate-400 mt-1">আপনার উইথড্র রিকোয়েস্টগুলো এখানে দেখাবে।</p>
+                    <p class="text-sm font-bold text-white">কোনো রেকর্ড নেই</p>
+                    <p class="text-[10px] text-[#666666] mt-1">আপনার ক্যাশআউট হিস্টোরি এখানে দেখাবে।</p>
                 </div>
             {% endif %}
         </div>
+    </div>
 
-        <!-- ================= TASKS PANE ================= -->
-        <div id="pane-tasks" class="tab-pane space-y-3">
-            
-            <div class="flex items-center justify-between px-2 mb-3">
-                <h3 class="font-bold text-slate-800 text-xs flex items-center gap-1.5"><i class="fa-solid fa-clipboard-check text-red-500"></i> আপনার কাজের লিস্ট</h3>
-                <span class="text-[9px] bg-red-50 text-red-600 px-2.5 py-1 rounded-md font-bold uppercase tracking-widest border border-red-100">Total: {{ tasks|length }}</span>
-            </div>
-
+    <!-- ==========================================
+         5. TASKS PANE
+    ========================================== -->
+    <div id="pane-tasks" class="tab-pane">
+        
+        <p class="text-[#888888] text-[10px] font-bold uppercase tracking-widest mb-2 px-2">Earning Logs</p>
+        
+        <div class="bg-[#0A0A0A] rounded-[24px] border border-[#1C1C1E] px-4 py-2">
             {% if tasks %}
                 {% for task in tasks %}
-                <div class="stagger-item bg-white p-4 rounded-[20px] shadow-sm border border-slate-100 flex items-center justify-between group hover:border-red-200 transition-colors">
-                    
+                <div class="txn-row">
                     <div class="flex items-center gap-4 w-full overflow-hidden">
-                        <!-- Task Icon -->
-                        <div class="h-11 w-11 rounded-[14px] flex items-center justify-center text-lg shadow-sm border flex-shrink-0
-                            {% if task.type == 'Special' %} bg-amber-50 text-amber-500 border-amber-100
-                            {% else %} bg-red-50 text-red-600 border-red-100 {% endif %}">
-                            <i class="fa-solid {{ 'fa-star' if task.type == 'Special' else 'fa-bolt' }}"></i>
+                        <!-- Icon -->
+                        <div class="txn-icon">
+                            {% if task.type == 'Special' %} <i class="fa-solid fa-star text-[#F59E0B]"></i>
+                            {% else %} <i class="fa-solid fa-check text-[#32D74B]"></i> {% endif %}
                         </div>
-                        
+                        <!-- Details -->
                         <div class="flex-grow pr-2 min-w-0">
-                            <h4 class="font-bold text-slate-800 text-sm truncate">{{ task.title }}</h4>
-                            <div class="flex items-center gap-1.5 mt-1 text-[9px] font-mono text-slate-400 font-medium">
-                                <i class="fa-regular fa-calendar"></i> {{ task.created_at[:10] }}
-                            </div>
+                            <h4 class="font-bold text-white text-sm truncate">{{ task.title }}</h4>
+                            <p class="text-[#666666] text-[11px] font-mono mt-0.5">{{ task.created_at[:10] }}</p>
                         </div>
                     </div>
 
-                    <div class="text-right flex-shrink-0">
-                        <p class="font-black text-emerald-500 text-base font-mono">+৳{{ task.reward }}</p>
+                    <!-- Amount & Status -->
+                    <div class="text-right flex flex-col items-end gap-1 flex-shrink-0">
+                        <span class="font-bold text-[#32D74B] text-base font-mono">+৳{{ task.reward }}</span>
+                        
                         {% if task.status == 'approved' %}
-                            <span class="text-[8px] font-black text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded mt-1 inline-block uppercase tracking-widest">পেইড</span>
+                            <span class="status-badge status-success">Paid</span>
                         {% elif task.status == 'rejected' %}
-                            <span class="text-[8px] font-black text-red-600 bg-red-50 border border-red-100 px-2 py-0.5 rounded mt-1 inline-block uppercase tracking-widest">বাতিল</span>
+                            <span class="status-badge status-failed">Rejected</span>
                         {% else %}
-                            <span class="text-[8px] font-black text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded mt-1 inline-block uppercase tracking-widest">রিভিউতে আছে</span>
+                            <span class="status-badge status-pending">Reviewing</span>
                         {% endif %}
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
-                <div class="bg-white rounded-[24px] text-center py-16 border border-slate-100 shadow-sm mt-4">
-                    <div class="h-16 w-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-300 text-2xl border border-slate-100">
-                        <i class="fa-solid fa-clipboard-question"></i>
+                <div class="py-16 text-center">
+                    <div class="h-16 w-16 bg-[#111111] rounded-full flex items-center justify-center mx-auto mb-4 text-[#333333] text-2xl border border-[#222222]">
+                        <i class="fa-solid fa-briefcase"></i>
                     </div>
-                    <p class="text-sm font-bold text-slate-700">আপনি কোনো কাজ করেননি</p>
-                    <a href="/work" class="text-[10px] font-bold text-red-600 mt-2 bg-red-50 px-5 py-2.5 rounded-xl border border-red-100 inline-flex items-center gap-1.5 hover:bg-red-100 transition shadow-sm uppercase tracking-widest">
-                        কাজ শুরু করুন <i class="fa-solid fa-arrow-right"></i>
-                    </a>
+                    <p class="text-sm font-bold text-white">কোনো কাজ করেননি</p>
+                    <p class="text-[10px] text-[#666666] mt-1">আজই কাজ করে আয় শুরু করুন।</p>
                 </div>
             {% endif %}
         </div>
-
     </div>
+
 </div>
 
-<!-- ==========================================
-     TAB LOGIC (JavaScript)
-========================================== -->
+<!-- JavaScript for Tab Switching -->
 <script>
     function switchTab(tabName) {
+        // Buttons
         const btnWithdrawals = document.getElementById('btn-withdrawals');
         const btnTasks = document.getElementById('btn-tasks');
+        
+        // Panes
         const paneWithdrawals = document.getElementById('pane-withdrawals');
         const paneTasks = document.getElementById('pane-tasks');
 
-        // Reset all buttons (Red Theme)
-        btnWithdrawals.classList.remove('active', 'text-rose-600');
-        btnTasks.classList.remove('active', 'text-rose-600');
-        
+        // Reset
+        btnWithdrawals.classList.remove('active');
+        btnTasks.classList.remove('active');
         paneWithdrawals.classList.remove('active');
         paneTasks.classList.remove('active');
 
+        // Activate selected
         if(tabName === 'withdrawals') {
-            btnWithdrawals.classList.add('active', 'text-rose-600');
+            btnWithdrawals.classList.add('active');
             paneWithdrawals.classList.add('active');
         } else {
-            btnTasks.classList.add('active', 'text-rose-600');
+            btnTasks.classList.add('active');
             paneTasks.classList.add('active');
         }
     }
