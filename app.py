@@ -1931,7 +1931,7 @@ def withdraw():
                 if ref_count < 3:
                     flash("❌ ফ্রি ইউজারদের ৩টি রেফার প্রয়োজন।", "error")
                     return redirect(url_for('withdraw'))
-                if account_days < 0:
+                if account_days < 1:
                     flash("❌ আপনার একাউন্টের বয়স ১ দিন হতে হবে।", "error")
                     return redirect(url_for('withdraw'))
                 if amount < 280:
@@ -1939,7 +1939,7 @@ def withdraw():
                     return redirect(url_for('withdraw'))
             # 🟢 VIP ইউজারদের জন্য সহজ শর্ত (মেইন ব্যালেন্স)
             else:
-                if amount < 50:
+                if amount < 20:
                     flash("❌ VIP ইউজারদের মেইন ব্যালেন্স থেকে সর্বনিম্ন উইথড্রয়াল ৫০ টাকা।", "error")
                     return redirect(url_for('withdraw'))
             
@@ -1955,7 +1955,7 @@ def withdraw():
         elif wallet_type == 'vip':
             # 🟡 ভিআইপি ব্যালেন্স থেকে উইথড্র (কোনো রেফার বা বয়সের শর্ত নেই)
             if amount < 50:
-                flash("❌ ভিআইপি ব্যালেন্স থেকে মিনিমাম ৫০ টাকা তুলতে হবে।", "error")
+                flash("❌ ভিআইপি ব্যালেন্স থেকে মিনিমাম 2০ টাকা তুলতে হবে।", "error")
                 return redirect(url_for('withdraw'))
             if amount > vip_balance:
                 flash("❌ ভিআইপি ব্যালেন্সে পর্যাপ্ত টাকা নেই।", "error")
