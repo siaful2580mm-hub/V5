@@ -2,86 +2,95 @@
 {% block content %}
 
 <style>
-    :root {
-        --primary-gradient: linear-gradient(135deg, #FF1F40 0%, #941125 100%);
-        --glass-bg: rgba(255, 255, 255, 0.8);
-        --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-    }
+    /* FULL DARK THEME OVERRIDES */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    .top-navbar, .glass-bottom-nav { background: rgba(10, 10, 10, 0.8) !important; border-color: #1A1A1A !important; }
+    .top-navbar .text-slate-900, .top-navbar .text-slate-600 { color: #ffffff !important; }
+    .tab-item { color: #666666 !important; }
+    .tab-item.active { color: #ffffff !important; }
 
+    /* Dark Cards */
     .premium-card {
-        background: var(--glass-bg);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 28px;
-        box-shadow: var(--card-shadow);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background-color: #0A0A0A;
+        border: 1px solid #1C1C1E;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        transition: transform 0.2s ease, border-color 0.2s ease;
     }
-
-    .premium-card:active {
-        transform: scale(0.98);
-    }
-
-    .action-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    .stat-badge {
-        background: rgba(255, 255, 255, 0.15);
-        padding: 4px 10px;
-        border-radius: 10px;
-        font-size: 0.65rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 700;
-    }
-
+    .premium-card:active { transform: scale(0.98); }
+    
+    .action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    
     .icon-box {
-        width: 44px;
-        height: 44px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 12px;
-        font-size: 1.2rem;
+        width: 44px; height: 44px; border-radius: 14px;
+        background: #141414; border: 1px solid #222222; color: #E5E5E5;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 12px; font-size: 1.2rem;
     }
 
-    @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    /* Modal Styles (Dark Theme) */
+    .modal-backdrop {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
+    .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+    
+    .modal-content {
+        background: #111111; border: 1px solid #222222; border-radius: 24px;
+        width: 90%; max-w: 380px; padding: 24px;
+        transform: scale(0.9); transition: transform 0.3s ease; box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+    .modal-backdrop.show .modal-content { transform: scale(1); }
+
+    .dark-input {
+        width: 100%; background: #0A0A0A; border: 1px solid #222222; color: #fff;
+        padding: 12px 16px; border-radius: 12px; outline: none; font-size: 14px; transition: border 0.3s;
+    }
+    .dark-input:focus { border-color: #555555; }
+
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .animate-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
 </style>
 
-<div class="max-w-md mx-auto px-4 pt-4 pb-20 space-y-6">
+<div class="max-w-md mx-auto px-4 pt-4 pb-20 space-y-5">
 
-    <!-- 1. ELITE PROFILE CARD -->
-    <div class="premium-card bg-gradient-to-br from-slate-900 to-slate-800 p-6 relative overflow-hidden animate-up">
-        <div class="absolute -right-6 -top-6 w-32 h-32 bg-red-600/20 rounded-full blur-3xl"></div>
+    <!-- 1. PROFILE CARD (With Edit Button) -->
+    <div class="premium-card p-6 relative overflow-hidden animate-up">
         
-        <div class="flex items-center gap-4 relative z-10">
-            <div class="h-14 w-14 rounded-2xl bg-gradient-to-tr from-red-500 to-rose-400 p-[2px]">
-                <div class="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center text-xl font-bold text-white">
-                    {{ user.email[0] | upper }}
+        <div class="flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-4">
+                <!-- Profile Picture -->
+                <div class="h-16 w-16 rounded-full bg-[#1C1C1E] border-2 border-[#333333] flex items-center justify-center overflow-hidden">
+                    {% if user.profile_pic %}
+                        <img src="{{ user.profile_pic }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <span class="text-2xl font-bold text-white">{{ user.email[0] | upper }}</span>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <h2 class="text-white font-bold text-lg leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h2>
+                    <p class="text-[#888888] text-[10px] font-mono mt-0.5">{{ user.email }}</p>
+                    <div class="mt-1.5">
+                        <span class="bg-[#141414] text-white px-2 py-0.5 rounded text-[9px] font-bold border border-[#2A2A2A]">Lvl {{ user.current_level or '1' }}</span>
+                    </div>
                 </div>
             </div>
-            <div>
-                <h2 class="text-white font-bold text-lg leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h2>
-                <div class="flex items-center gap-2 mt-1">
-                    <span class="stat-badge text-red-400 border border-red-500/30">Lvl {{ user.current_level or '1' }}</span>
-                    <span class="text-slate-400 text-[10px] font-mono tracking-tighter">{{ user.email }}</span>
-                </div>
-            </div>
+
+            <!-- Edit Button -->
+            <button onclick="openEditModal()" class="h-10 w-10 rounded-full bg-[#141414] border border-[#222222] text-[#888888] flex items-center justify-center hover:bg-white hover:text-black transition">
+                <i class="fa-solid fa-pen text-sm"></i>
+            </button>
         </div>
 
-        <div class="mt-6 flex items-center justify-between bg-white/5 rounded-2xl p-3 border border-white/5">
+        <div class="mt-6 flex items-center justify-between bg-[#141414] rounded-2xl p-3 border border-[#222222]">
             <div>
-                <p class="text-[10px] text-slate-400 uppercase font-bold">Referral Code</p>
-                <p class="text-white font-mono font-bold">{{ user.referral_code }}</p>
+                <p class="text-[9px] text-[#666666] uppercase font-bold tracking-widest">রেফারেল কোড (ID)</p>
+                <p class="text-white font-mono font-bold text-sm">{{ user.referral_code }}</p>
             </div>
-            <button onclick="copyText('{{ user.referral_code }}')" class="h-10 w-10 rounded-xl bg-red-600 text-white flex items-center justify-center active:scale-90 transition">
+            <button onclick="copyText('{{ user.referral_code }}')" class="h-9 w-9 rounded-xl bg-white text-black flex items-center justify-center active:scale-90 transition">
                 <i class="fa-regular fa-copy"></i>
             </button>
         </div>
@@ -89,81 +98,147 @@
 
     <!-- 2. QUICK ACTIONS (BENTO GRID) -->
     <div class="space-y-3 animate-up" style="animation-delay: 0.1s">
-        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[2px] ml-2">Wallet & Assets</h3>
+        <h3 class="text-[10px] font-black text-[#666666] uppercase tracking-[2px] ml-2">Wallet & Assets</h3>
         <div class="action-grid">
-            <a href="/income" class="premium-card p-5 flex flex-col items-start">
-                <div class="icon-box bg-emerald-100 text-emerald-600"><i class="fa-solid fa-chart-line"></i></div>
-                <span class="font-bold text-slate-800 text-sm">Earnings</span>
-                <span class="text-[10px] text-slate-500">View Analytics</span>
+            <a href="/income" class="premium-card p-5 flex flex-col items-start hover:border-[#333333]">
+                <div class="icon-bw h-10 w-10 rounded-xl bg-[#141414] text-white border border-[#2A2A2A] flex items-center justify-center mb-3"><i class="fa-solid fa-chart-line"></i></div>
+                <span class="font-bold text-white text-sm">আয় ও হিসাব</span>
+                <span class="text-[9px] text-[#666666]">অ্যানালিটিক্স দেখুন</span>
             </a>
-            <a href="/withdraw" class="premium-card p-5 flex flex-col items-start">
-                <div class="icon-box bg-rose-100 text-rose-600"><i class="fa-solid fa-wallet"></i></div>
-                <span class="font-bold text-slate-800 text-sm">Withdraw</span>
-                <span class="text-[10px] text-slate-500">Cash Out Now</span>
+            <a href="/withdraw" class="premium-card p-5 flex flex-col items-start hover:border-[#333333]">
+                <div class="icon-bw h-10 w-10 rounded-xl bg-[#141414] text-white border border-[#2A2A2A] flex items-center justify-center mb-3"><i class="fa-solid fa-wallet"></i></div>
+                <span class="font-bold text-white text-sm">উত্তোলন করুন</span>
+                <span class="text-[9px] text-[#666666]">টাকা পকেটে নিন</span>
             </a>
         </div>
     </div>
 
     <!-- 3. NETWORK SECTION -->
     <div class="space-y-3 animate-up" style="animation-delay: 0.2s">
-        <h3 class="text-xs font-black text-slate-400 uppercase tracking-[2px] ml-2">Growth Network</h3>
-        <div class="premium-card overflow-hidden">
-            <a href="/referrals" class="flex items-center justify-between p-4 border-bottom border-slate-50 hover:bg-slate-50 transition">
+        <h3 class="text-[10px] font-black text-[#666666] uppercase tracking-[2px] ml-2">Growth Network</h3>
+        <div class="premium-card overflow-hidden !p-0">
+            <a href="/referrals" class="flex items-center justify-between p-4 border-b border-[#1C1C1E] hover:bg-[#111111] transition">
                 <div class="flex items-center gap-4">
-                    <div class="h-10 w-10 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center"><i class="fa-solid fa-users-viewfinder"></i></div>
+                    <div class="h-10 w-10 rounded-full bg-[#141414] border border-[#2A2A2A] text-white flex items-center justify-center"><i class="fa-solid fa-users"></i></div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm">My Network</p>
-                        <p class="text-[10px] text-slate-500">Manage your referrals</p>
+                        <p class="font-bold text-white text-sm">আমার টিম</p>
+                        <p class="text-[10px] text-[#666666]">রেফারেল ম্যানেজ করুন</p>
                     </div>
                 </div>
-                <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                <i class="fa-solid fa-chevron-right text-[#444444] text-xs"></i>
             </a>
-            <a href="/vip" class="flex items-center justify-between p-4 border-t border-slate-100 hover:bg-slate-50 transition">
+            <a href="/vip" class="flex items-center justify-between p-4 hover:bg-[#111111] transition">
                 <div class="flex items-center gap-4">
-                    <div class="h-10 w-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-crown"></i></div>
+                    <div class="h-10 w-10 rounded-full bg-[#141414] border border-[#2A2A2A] text-white flex items-center justify-center"><i class="fa-solid fa-crown"></i></div>
                     <div>
-                        <p class="font-bold text-slate-800 text-sm">VIP Membership</p>
-                        <p class="text-[10px] text-slate-500">Unlock premium perks</p>
+                        <p class="font-bold text-white text-sm">এলিট মেম্বারশিপ</p>
+                        <p class="text-[10px] text-[#666666]">প্রিমিয়াম সুবিধা পান</p>
                     </div>
                 </div>
-                <span class="bg-amber-100 text-amber-700 text-[9px] px-2 py-0.5 rounded-md font-bold">UPGRADE</span>
+                <span class="bg-white text-black text-[9px] px-2.5 py-1 rounded-md font-bold">UPGRADE</span>
             </a>
         </div>
     </div>
 
     <!-- 4. SYSTEM & GUIDES -->
     <div class="grid grid-cols-2 gap-3 animate-up" style="animation-delay: 0.3s">
-        <a href="/notice" class="premium-card p-4 flex items-center gap-3">
-            <div class="h-8 w-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xs"><i class="fa-solid fa-bell"></i></div>
-            <span class="font-bold text-slate-700 text-xs">News</span>
+        <a href="/notice" class="premium-card p-4 flex items-center gap-3 hover:border-[#333333]">
+            <div class="h-8 w-8 rounded-lg bg-[#141414] border border-[#2A2A2A] text-white flex items-center justify-center text-xs"><i class="fa-solid fa-bell"></i></div>
+            <span class="font-bold text-white text-xs">নোটিশ বোর্ড</span>
         </a>
-        <a href="/tutorial" class="premium-card p-4 flex items-center gap-3">
-            <div class="h-8 w-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xs"><i class="fa-solid fa-play"></i></div>
-            <span class="font-bold text-slate-700 text-xs">Guides</span>
+        <a href="/tutorial" class="premium-card p-4 flex items-center gap-3 hover:border-[#333333]">
+            <div class="h-8 w-8 rounded-lg bg-[#141414] border border-[#2A2A2A] text-white flex items-center justify-center text-xs"><i class="fa-solid fa-play"></i></div>
+            <span class="font-bold text-white text-xs">কাজের গাইড</span>
         </a>
     </div>
 
     <!-- 5. LOGOUT -->
     <div class="pt-4 animate-up" style="animation-delay: 0.4s">
-        <a href="/logout" class="w-full py-4 rounded-3xl border-2 border-dashed border-slate-200 flex items-center justify-center gap-2 text-slate-400 hover:text-red-500 hover:border-red-200 transition group">
-            <i class="fa-solid fa-power-off group-hover:rotate-90 transition-transform"></i>
-            <span class="font-bold text-sm uppercase tracking-widest">Sign Out Securely</span>
+        <a href="/logout" class="w-full py-4 rounded-[20px] border border-[#222222] bg-[#0A0A0A] flex items-center justify-center gap-2 text-[#888888] hover:text-white hover:border-[#555555] transition">
+            <i class="fa-solid fa-power-off"></i>
+            <span class="font-bold text-xs uppercase tracking-widest">লগআউট করুন</span>
         </a>
     </div>
 
     <!-- FOOTER -->
-    <div class="text-center space-y-1 opacity-40">
-        <p class="text-[9px] font-black uppercase tracking-[3px]">GrowEarn Elite</p>
-        <p class="text-[8px] font-mono">Build v3.5 • Encrypted Session</p>
+    <div class="text-center space-y-1 mt-6">
+        <p class="text-[9px] font-black uppercase tracking-[3px] text-[#444444]">Paylix Network</p>
+        <p class="text-[8px] font-mono text-[#333333]">Version 3.5 • Encrypted</p>
     </div>
 
 </div>
 
+<!-- ==========================================
+     EDIT PROFILE MODAL
+========================================== -->
+<div id="editProfileModal" class="modal-backdrop">
+    <div class="modal-content relative">
+        <button onclick="closeEditModal()" class="absolute right-4 top-4 h-8 w-8 bg-[#1A1A1A] rounded-full text-[#888888] hover:text-white transition flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        
+        <h3 class="text-lg font-black text-white mb-1">প্রোফাইল এডিট করুন</h3>
+        <p class="text-[10px] text-[#666666] mb-6">আপনার নাম এবং প্রোফাইল ছবি পরিবর্তন করুন</p>
+        
+        <!-- Note: Form action points to /update-profile. You will need to add this route in app.py -->
+        <form method="POST" action="/update-profile" enctype="multipart/form-data" class="space-y-4">
+            
+            <!-- Image Upload Preview -->
+            <div class="flex flex-col items-center mb-4">
+                <label class="cursor-pointer group relative">
+                    <div class="h-20 w-20 rounded-full bg-[#1A1A1A] border border-[#333333] flex items-center justify-center overflow-hidden">
+                        <img id="profilePreview" src="{{ user.profile_pic or '' }}" class="w-full h-full object-cover {{ 'hidden' if not user.profile_pic }}">
+                        <i id="uploadIcon" class="fa-solid fa-camera text-xl text-[#666666] group-hover:text-white transition {{ '' if not user.profile_pic else 'hidden' }}"></i>
+                    </div>
+                    <div class="absolute bottom-0 right-0 h-6 w-6 bg-white rounded-full flex items-center justify-center text-black shadow-md border border-white">
+                        <i class="fa-solid fa-plus text-[10px]"></i>
+                    </div>
+                    <input type="file" name="profile_image" accept="image/*" class="hidden" onchange="previewProfilePic(this)">
+                </label>
+                <p class="text-[9px] text-[#555555] mt-2 uppercase tracking-widest">Tap to change photo</p>
+            </div>
+
+            <!-- Name Input -->
+            <div>
+                <label class="block text-[10px] font-bold text-[#888888] uppercase tracking-widest mb-1.5 ml-1">আপনার নাম</label>
+                <input type="text" name="full_name" value="{{ user.full_name }}" placeholder="আপনার পুরো নাম লিখুন" class="dark-input" required>
+            </div>
+
+            <button type="submit" class="w-full bg-white text-black py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-md active:scale-95 transition mt-2">
+                সেভ করুন
+            </button>
+        </form>
+    </div>
+</div>
+
 <script>
+    // Copy ID Logic
     function copyText(text) {
         navigator.clipboard.writeText(text);
-        // Simple elegant toast can be added here
-        alert("Copied to clipboard!");
+        alert("কপি করা হয়েছে: " + text);
+    }
+
+    // Modal Controls
+    function openEditModal() {
+        document.getElementById('editProfileModal').classList.add('show');
+    }
+    function closeEditModal() {
+        document.getElementById('editProfileModal').classList.remove('show');
+    }
+
+    // Profile Image Preview Logic
+    function previewProfilePic(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('profilePreview');
+                const icon = document.getElementById('uploadIcon');
+                img.src = e.target.result;
+                img.classList.remove('hidden');
+                icon.classList.add('hidden');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 </script>
 
