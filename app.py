@@ -1876,11 +1876,10 @@ def claim_ad():
 def special_video_page():
     # লগিন ছাড়াও দেখা যাবে, তবে লগিন থাকলে মেনু ঠিক থাকবে
     return render_template('st.html', user=g.user if 'user' in g else None)
-# --- WITHDRAW ROUTE (VIP MAIN BALANCE BYPASS) ---
+# --- WITHDRAW ROUTE (UPDATED LOGIC) ---
 @app.route('/withdraw', methods=['GET', 'POST'])
 @login_required
 def withdraw():
-    
     # ১. এক্টিভেশন সিকিউরিটি চেক
     if g.settings.get('activation_required'):
         if not g.user.get('is_active') and g.user.get('role') != 'admin':
@@ -1899,8 +1898,8 @@ def withdraw():
     except Exception as e:
         ref_count = 0
 
-    # ৪. একাউন্টের বয়স বের করা
-    account_days = 0
+    # ৪. একাউন্টের বয়স বের করা (Hours)
+    account_hours = 0
     try:
         from datetime import datetime, timezone
         join_str = g.user.get('created_at')
@@ -1908,7 +1907,7 @@ def withdraw():
             join_date = datetime.fromisoformat(join_str.replace('Z', '+00:00'))
             current_time = datetime.now(timezone.utc)
             delta = current_time - join_date
-            account_days = delta.days
+            account_hours = delta.total_seconds() / 3600
     except: pass
 
     # ৫. ব্যালেন্স এবং লেভেল লোড
@@ -1918,32 +1917,32 @@ def withdraw():
 
     # ৬. উইথড্র প্রসেস (POST Request)
     if request.method == 'POST':
-        wallet_type = request.form.get('wallet_type') # main or vip
+        wallet_type = request.form.get('wallet_type')
         try:
             amount = float(request.form.get('amount'))
         except:
             amount = 0
 
-        # --- লজিক আলাদা করা ---
+        # --- নতুন লজিক ---
         if wallet_type == 'main':
-            # 🔴 ফ্রি ইউজারদের জন্য কঠিন শর্ত
             if user_level == 0:
-                if ref_count < 3:
-                    flash("❌ ফ্রি ইউজারদের ৩টি রেফার প্রয়োজন।", "error")
+                # 🔴 ফ্রি ইউজারদের শর্ত
+                if ref_count < 2:
+                    flash("❌ ফ্রি ইউজারদের ২টি রেফার প্রয়োজন।", "error")
                     return redirect(url_for('withdraw'))
-                if account_days < 1:
-                    flash("❌ আপনার একাউন্টের বয়স ১ দিন হতে হবে।", "error")
+                if account_hours < 24:
+                    flash("❌ একাউন্ট খোলার পর ২৪ ঘণ্টা অপেক্ষা করতে হবে।", "error")
                     return redirect(url_for('withdraw'))
-                if amount < 280:
-                    flash("❌ ফ্রি ইউজারদের মেইন ব্যালেন্স থেকে সর্বনিম্ন উইথড্রয়াল ৩০০ টাকা।", "error")
+                if amount < 270:
+                    flash("❌ ফ্রি ইউজারদের সর্বনিম্ন উইথড্র ২৭০ টাকা।", "error")
                     return redirect(url_for('withdraw'))
-            # 🟢 VIP ইউজারদের জন্য সহজ শর্ত (মেইন ব্যালেন্স)
             else:
+                # 🟢 VIP ইউজারদের শর্ত (শুধু ২০ টাকা)
                 if amount < 20:
-                    flash("❌ VIP ইউজারদের মেইন ব্যালেন্স থেকে সর্বনিম্ন উইথড্রয়াল ৫০ টাকা।", "error")
+                    flash("❌ VIP ইউজারদের সর্বনিম্ন উইথড্র ২০ টাকা।", "error")
                     return redirect(url_for('withdraw'))
             
-            # ব্যালেন্স চেক (সবার জন্য)
+            # ব্যালেন্স চেক
             if amount > main_balance:
                 flash("❌ মেইন ব্যালেন্সে পর্যাপ্ত টাকা নেই।", "error")
                 return redirect(url_for('withdraw'))
@@ -1953,15 +1952,13 @@ def withdraw():
             supabase.table('profiles').update({'balance': new_bal}).eq('id', session['user_id']).execute()
 
         elif wallet_type == 'vip':
-            # 🟡 ভিআইপি ব্যালেন্স থেকে উইথড্র (কোনো রেফার বা বয়সের শর্ত নেই)
-            if amount < 50:
-                flash("❌ ভিআইপি ব্যালেন্স থেকে মিনিমাম 2০ টাকা তুলতে হবে।", "error")
+            if amount < 20:
+                flash("❌ ভিআইপি ব্যালেন্স থেকে মিনিমাম ২০ টাকা তুলতে হবে।", "error")
                 return redirect(url_for('withdraw'))
             if amount > vip_balance:
                 flash("❌ ভিআইপি ব্যালেন্সে পর্যাপ্ত টাকা নেই।", "error")
                 return redirect(url_for('withdraw'))
             
-            # টাকা কাটা (VIP)
             new_bal = vip_balance - amount
             supabase.table('profiles').update({'vip_balance': new_bal}).eq('id', session['user_id']).execute()
             
@@ -1969,7 +1966,7 @@ def withdraw():
             flash("ভুল ওয়ালেট টাইপ!", "error")
             return redirect(url_for('withdraw'))
 
-        # --- রিকোয়েস্ট ডাটাবেসে সেভ ---
+        # --- রিকোয়েস্ট সেভ ---
         try:
             supabase.table('withdrawals').insert({
                 'user_id': session['user_id'],
@@ -1980,18 +1977,18 @@ def withdraw():
                 'status': 'pending'
             }).execute()
 
-            flash(f"✅ {wallet_type.upper()} ব্যালেন্স থেকে উইথড্র সফল!", "success")
+            flash(f"✅ উইথড্র রিকোয়েস্ট সফলভাবে জমা হয়েছে!", "success")
             return redirect(url_for('history'))
-
         except Exception as e:
             flash(f"System Error: {str(e)}", "error")
 
-    # ৭. পেজ রেন্ডার
+    # ৭. পেজ রেন্ডার (account_hours পাঠানো হচ্ছে)
     return render_template('withdraw.html', 
                            user=g.user, 
                            ref_count=ref_count, 
-                           account_days=account_days,
+                           account_hours=account_hours,
                            settings=g.settings)
+    
 # --- 2. SUB-ADMIN PANEL (/aw/result) ---
 @app.route('/aw/result')
 @login_required
