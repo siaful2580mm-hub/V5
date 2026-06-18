@@ -11,25 +11,28 @@
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
     /* ==========================================
-       DRIBBBLE STYLE UI COMPONENTS
+       PROFILE CARD STYLES (NORMAL & VIP)
     ========================================== */
-    
-    /* Profile Header Card */
     .profile-card {
         background-color: #111111;
         border-radius: 24px;
         padding: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 1px solid transparent;
+        display: flex; align-items: center; justify-content: space-between;
+        cursor: pointer; transition: all 0.3s ease;
+        border: 1px solid #1C1C1E;
     }
-    .profile-card:hover {
-        background-color: #161616;
-        border-color: #222222;
+    .profile-card:hover { background-color: #161616; border-color: #2A2A2A; }
+
+    /* VIP Card Theme */
+    .vip-card {
+        background: linear-gradient(135deg, #1C1304 0%, #0A0A0A 100%);
+        border-color: #D4AF37 !important;
+        box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
     }
+    .vip-card:hover {
+        box-shadow: 0 10px 40px rgba(212, 175, 55, 0.2);
+    }
+
     .profile-avatar {
         width: 56px; height: 56px; border-radius: 50%;
         background-color: #1C1C1E; color: #ffffff;
@@ -37,63 +40,43 @@
         font-size: 20px; font-weight: bold; object-fit: cover;
     }
 
+    .vip-badge {
+        background: linear-gradient(to right, #D4AF37, #FFDF73);
+        color: #000000; font-size: 9px; font-weight: 900;
+        padding: 2px 6px; border-radius: 4px;
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+
     /* Menu Groups */
     .menu-group {
-        background-color: #0A0A0A; /* Slightly lighter than pure black */
-        border: 1px solid #161616;
-        border-radius: 28px;
-        overflow: hidden;
-        margin-bottom: 20px;
+        background-color: #0A0A0A; border: 1px solid #161616;
+        border-radius: 28px; overflow: hidden; margin-bottom: 20px;
     }
-
-    /* Menu Items */
     .menu-item {
-        display: flex;
-        align-items: center;
-        padding: 18px 20px;
-        text-decoration: none;
-        transition: background-color 0.2s ease;
+        display: flex; align-items: center; padding: 18px 20px;
+        text-decoration: none; transition: background-color 0.2s ease;
     }
     .menu-item:hover { background-color: #111111; }
-    .menu-item:active { background-color: #1A1A1A; }
-    
-    /* Border between items */
-    .menu-item:not(:last-child) {
-        border-bottom: 1px solid #161616;
-    }
+    .menu-item:not(:last-child) { border-bottom: 1px solid #161616; }
 
-    /* Menu Typography & Icons */
-    .menu-icon {
-        width: 24px; font-size: 16px; color: #E5E5E5; 
-        margin-right: 16px; text-align: center; opacity: 0.8;
-    }
-    .menu-text {
-        flex-grow: 1; font-size: 14px; font-weight: 500; color: #E5E5E5;
-    }
-    .menu-chevron {
-        color: #444444; font-size: 12px;
-    }
-
-    /* Specific Danger Item (Logout) */
+    .menu-icon { width: 24px; font-size: 16px; color: #E5E5E5; margin-right: 16px; text-align: center; opacity: 0.8; }
+    .menu-text { flex-grow: 1; font-size: 14px; font-weight: 500; color: #E5E5E5; }
+    .menu-chevron { color: #444444; font-size: 12px; }
     .menu-item-danger .menu-icon, .menu-item-danger .menu-text { color: #FF453A; opacity: 1; }
 
-    /* ==========================================
-       MODAL STYLES (Edit Profile)
-    ========================================== */
+    /* Modal Styles */
     .modal-backdrop {
         position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px);
         display: flex; align-items: center; justify-content: center;
         z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
     .modal-backdrop.show { opacity: 1; pointer-events: auto; }
-    
     .modal-content {
         background: #111111; border: 1px solid #222222; border-radius: 28px;
         width: 90%; max-w: 360px; padding: 24px;
         transform: scale(0.95); transition: transform 0.3s ease;
     }
     .modal-backdrop.show .modal-content { transform: scale(1); }
-
     .dark-input {
         width: 100%; background: #000000; border: 1px solid #222222; color: #ffffff;
         padding: 16px; border-radius: 16px; outline: none; font-size: 14px; transition: border 0.3s;
@@ -103,38 +86,49 @@
 
 <div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- 1. TOP HEADER (Back Button & Title) -->
+    <!-- TOP HEADER -->
     <div class="flex items-center justify-between mb-6">
         <a href="/dashboard" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
             <i class="fa-solid fa-chevron-left text-sm"></i>
         </a>
         <h2 class="text-lg font-bold text-white tracking-wide">Account</h2>
-        <div class="w-10"></div> <!-- Spacer for centering -->
+        <div class="w-10"></div> 
     </div>
 
-    <!-- 2. PROFILE CARD (Click to Edit) -->
-    <div class="profile-card" onclick="openEditModal()">
+    <!-- ==========================================
+         PROFILE CARD (Dynamic VIP & Edit Access)
+    ========================================== -->
+    <div class="profile-card {% if user.current_level > 0 %}vip-card{% endif %}" onclick="openEditModal()">
         <div class="flex items-center gap-4">
+            
             <!-- Avatar -->
             {% if user.profile_pic %}
-                <img src="{{ user.profile_pic }}" class="profile-avatar">
+                <img src="{{ user.profile_pic }}" class="profile-avatar {% if user.current_level > 0 %}border-2 border-[#D4AF37]{% endif %}">
             {% else %}
-                <div class="profile-avatar">{{ user.email[0] | upper }}</div>
+                <div class="profile-avatar {% if user.current_level > 0 %}border-2 border-[#D4AF37] text-[#D4AF37]{% endif %}">
+                    {{ user.email[0] | upper }}
+                </div>
             {% endif %}
             
             <!-- User Info -->
             <div>
-                <h3 class="text-white font-bold text-base leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h3>
-                <p class="text-[#888888] text-xs mt-1">{{ user.email }}</p>
+                <div class="flex items-center gap-2 mb-0.5">
+                    <h3 class="text-white font-bold text-base leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h3>
+                    {% if user.current_level > 0 %}
+                        <!-- VIP Gold Badge -->
+                        <span class="vip-badge"><i class="fa-solid fa-crown"></i> VIP {{ user.current_level }}</span>
+                    {% endif %}
+                </div>
+                <p class="text-[#888888] text-xs font-mono">{{ user.email }}</p>
             </div>
         </div>
+        
         <!-- Edit Icon -->
         <i class="fa-solid fa-pen text-[#444444] text-sm"></i>
     </div>
 
-    <!-- 3. MENU GROUPS -->
+    <!-- MENU GROUPS (Exactly like Dribbble UI) -->
     
-    <!-- Group 1: Financials -->
     <div class="menu-group">
         <a href="/income" class="menu-item">
             <i class="fa-solid fa-chart-pie menu-icon"></i>
@@ -153,13 +147,11 @@
         </a>
     </div>
 
-    <!-- Group 2: Network & Premium -->
     <div class="menu-group">
-        <!-- Copy Referral ID Action -->
         <button onclick="copyText('{{ user.referral_code }}')" class="menu-item w-full text-left bg-transparent border-none outline-none cursor-pointer">
             <i class="fa-solid fa-fingerprint menu-icon"></i>
             <span class="menu-text flex justify-between items-center pr-2">
-                রেফারেল কোড (Copy UID)
+                রেফারেল কোড (UID)
                 <span class="text-[#666666] text-xs font-mono font-bold">{{ user.referral_code }}</span>
             </span>
             <i class="fa-regular fa-copy menu-chevron"></i>
@@ -175,28 +167,12 @@
             <span class="menu-text">এলিট মেম্বারশিপ (VIP)</span>
             <i class="fa-solid fa-chevron-right menu-chevron"></i>
         </a>
-        <a href="/hire-us" class="menu-item">
-            <i class="fa-solid fa-bullhorn menu-icon"></i>
-            <span class="menu-text">প্রোমোশন সার্ভিস (B2B)</span>
-            <i class="fa-solid fa-chevron-right menu-chevron"></i>
-        </a>
-        <a href="/apply-leader" class="menu-item">
-            <i class="fa-solid fa-star menu-icon"></i>
-            <span class="menu-text">লিডারশিপ প্রোগ্রাম</span>
-            <i class="fa-solid fa-chevron-right menu-chevron"></i>
-        </a>
     </div>
 
-    <!-- Group 3: App Settings & Info -->
     <div class="menu-group">
         <a href="/notice" class="menu-item">
             <i class="fa-regular fa-bell menu-icon"></i>
             <span class="menu-text">নোটিশ বোর্ড (Notices)</span>
-            <i class="fa-solid fa-chevron-right menu-chevron"></i>
-        </a>
-        <a href="/tutorial" class="menu-item">
-            <i class="fa-regular fa-circle-play menu-icon"></i>
-            <span class="menu-text">কাজের গাইড (Tutorial)</span>
             <i class="fa-solid fa-chevron-right menu-chevron"></i>
         </a>
         <a href="https://t.me/grow_earn" target="_blank" class="menu-item">
@@ -205,7 +181,6 @@
             <i class="fa-solid fa-chevron-right menu-chevron"></i>
         </a>
         
-        <!-- Admin Panel visible only to Admin -->
         {% if user.role == 'admin' %}
         <a href="/admin" class="menu-item">
             <i class="fa-solid fa-shield-halved menu-icon text-blue-500 opacity-100"></i>
@@ -215,7 +190,6 @@
         {% endif %}
     </div>
 
-    <!-- Group 4: Logout -->
     <div class="menu-group">
         <a href="/logout" class="menu-item menu-item-danger">
             <i class="fa-solid fa-arrow-right-from-bracket menu-icon"></i>
@@ -226,29 +200,29 @@
 </div>
 
 <!-- ==========================================
-     EDIT PROFILE MODAL
+     EDIT PROFILE MODAL (With 24h Timer Logic)
 ========================================== -->
 <div id="editProfileModal" class="modal-backdrop">
     <div class="modal-content relative">
-        <!-- Close Button -->
         <button onclick="closeEditModal()" class="absolute right-5 top-5 h-8 w-8 bg-[#1A1A1A] rounded-full text-[#888888] hover:text-white transition flex items-center justify-center">
             <i class="fa-solid fa-xmark"></i>
         </button>
         
         <h3 class="text-xl font-bold text-white mb-2">প্রোফাইল এডিট</h3>
-        <p class="text-[11px] text-[#666666] mb-8 font-medium">আপনার নাম এবং প্রোফাইল ছবি আপডেট করুন</p>
+        <p class="text-[11px] text-[#666666] mb-4 font-medium">২৪ ঘণ্টা পর পর প্রোফাইল আপডেট করা যাবে।</p>
         
-        <!-- Form Action: Points to /update-profile in app.py -->
+        <!-- Timer Warning Box (Hidden by default) -->
+        <div id="timeWarning" class="hidden bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] font-bold p-3 rounded-xl mb-4">
+        </div>
+
         <form method="POST" action="/update-profile" enctype="multipart/form-data" class="space-y-6">
             
-            <!-- Avatar Upload UI -->
             <div class="flex flex-col items-center">
                 <label class="cursor-pointer group relative">
                     <div class="h-24 w-24 rounded-full bg-[#1A1A1A] border-2 border-[#333333] flex items-center justify-center overflow-hidden transition group-hover:border-[#555555]">
                         <img id="profilePreview" src="{{ user.profile_pic or '' }}" class="w-full h-full object-cover {{ 'hidden' if not user.profile_pic }}">
                         <i id="uploadIcon" class="fa-solid fa-camera text-2xl text-[#666666] group-hover:text-white transition {{ '' if not user.profile_pic else 'hidden' }}"></i>
                     </div>
-                    <!-- Small Plus Icon -->
                     <div class="absolute bottom-0 right-0 h-7 w-7 bg-white rounded-full flex items-center justify-center text-black shadow-md border-2 border-[#111111]">
                         <i class="fa-solid fa-plus text-[10px] font-bold"></i>
                     </div>
@@ -256,14 +230,12 @@
                 </label>
             </div>
 
-            <!-- Name Input -->
             <div>
                 <label class="block text-[11px] font-bold text-[#888888] mb-2 ml-1">আপনার নাম</label>
                 <input type="text" name="full_name" value="{{ user.full_name }}" placeholder="Your Full Name" class="dark-input" required>
             </div>
 
-            <!-- Submit Button -->
-            <button type="submit" class="w-full bg-white text-black py-4 rounded-2xl font-bold text-sm shadow-md active:scale-95 transition mt-2">
+            <button type="submit" id="saveProfileBtn" class="w-full bg-white text-black py-4 rounded-2xl font-bold text-sm shadow-md transition mt-2">
                 Save Changes
             </button>
         </form>
@@ -271,21 +243,45 @@
 </div>
 
 <script>
-    // 1. Copy ID Logic
     function copyText(text) {
         navigator.clipboard.writeText(text);
         alert("আইডি কপি করা হয়েছে: " + text);
     }
 
-    // 2. Edit Modal Controls
+    // Modal & 24 Hour Logic Check
     function openEditModal() {
-        document.getElementById('editProfileModal').classList.add('show');
+        const modal = document.getElementById('editProfileModal');
+        const submitBtn = document.getElementById('saveProfileBtn');
+        const timeWarning = document.getElementById('timeWarning');
+        
+        // Fetch last update time from Jinja variable
+        const lastUpdateStr = "{{ user.last_profile_update or '' }}";
+        
+        if (lastUpdateStr) {
+            // Parse UTC time safely
+            const lastUpdateDate = new Date(lastUpdateStr.endsWith('Z') ? lastUpdateStr : lastUpdateStr + 'Z');
+            const now = new Date();
+            const diffHours = Math.abs(now - lastUpdateDate) / 36e5; // Convert ms to hours
+            
+            // If less than 24 hours have passed
+            if (diffHours < 24) {
+                const remainingHours = Math.ceil(24 - diffHours);
+                
+                // Disable Button and Show Error
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                timeWarning.classList.remove('hidden');
+                timeWarning.innerHTML = `<i class="fa-solid fa-clock"></i> আপনি আরও ${remainingHours} ঘণ্টা পর প্রোফাইল আপডেট করতে পারবেন।`;
+            }
+        }
+        
+        modal.classList.add('show');
     }
+
     function closeEditModal() {
         document.getElementById('editProfileModal').classList.remove('show');
     }
 
-    // 3. Profile Image Preview Logic
     function previewProfilePic(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
