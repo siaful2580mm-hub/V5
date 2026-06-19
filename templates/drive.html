@@ -2,156 +2,234 @@
 {% block content %}
 
 <style>
-    /* Premium Entry Animations */
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
     .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Hide Scrollbar for category tabs */
-    .hide-scroll::-webkit-scrollbar { display: none; }
-    .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
-    /* Telecom Offer Card (Red Theme) */
-    .offer-card {
-        background: #ffffff;
-        border: 1px solid #E2E8F0;
-        border-radius: 24px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Custom Payment Select Cards */
+    .payment-card {
+        border: 1px solid #222222;
+        background: #111111;
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
         position: relative;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
     }
-    .offer-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 15px 30px -5px rgba(225, 29, 72, 0.1);
-        border-color: #FECDD3; /* Red-200 */
+    .payment-card:hover {
+        border-color: #444444; 
+        background: #1A1A1A;
+    }
+    
+    /* Checked State */
+    input[type="radio"]:checked + .payment-card { 
+        border-color: #ffffff; background: #ffffff; color: #000000; 
+    }
+    input[type="radio"]:checked + .payment-card span { color: #000000; }
+    
+    input[type="radio"]:checked + .payment-card::before {
+        content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+        position: absolute; top: 8px; right: 8px; font-size: 12px; color: #000000;
     }
 
-    /* Shimmer Effect for Hero Banner */
-    .shimmer-bg { position: relative; overflow: hidden; }
-    .shimmer-bg::after {
-        content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-        background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent);
-        transform: skewX(-20deg); animation: shimmerFast 3s infinite; pointer-events: none;
+    /* Dark Input */
+    .input-group { position: relative; }
+    .dark-input {
+        width: 100%; background: #111111; border: 1px solid #222222; color: #ffffff;
+        padding: 16px 16px 16px 46px; border-radius: 16px; outline: none; font-size: 13px; transition: border 0.3s;
     }
-    @keyframes shimmerFast { 100% { left: 200%; } }
+    .dark-input:focus { border-color: #ffffff; background: #000000; }
+    .dark-input::placeholder { color: #555555; }
+    
+    .input-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #666666; font-size: 14px; transition: color 0.3s ease; }
+    .dark-input:focus ~ .input-icon { color: #ffffff; }
+
+    /* Button */
+    .btn-white {
+        background: #ffffff; color: #000000; width: 100%; padding: 18px;
+        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
+        letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    .btn-white:disabled { background: #333333; color: #888888; cursor: not-allowed; }
 </style>
 
-<div class="max-w-5xl mx-auto space-y-6 fade-in-up pb-8 px-1">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- ==========================================
-         1. HERO HEADER (Corporate E-commerce Style)
-    ========================================== -->
-    <div class="bg-gradient-to-r from-red-700 to-rose-600 rounded-[32px] p-6 sm:p-8 text-white relative overflow-hidden shadow-[0_10px_30px_rgba(225,29,72,0.25)] shimmer-bg">
-        <!-- Abstract Decors -->
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-bl-full pointer-events-none"></div>
-        <div class="absolute bottom-[-20%] left-[-10%] w-48 h-48 bg-amber-400 opacity-20 rounded-full blur-[40px] pointer-events-none"></div>
-        <i class="fa-solid fa-wifi absolute right-6 top-1/2 transform -translate-y-1/2 text-8xl opacity-[0.05] pointer-events-none -rotate-12"></i>
+    <!-- 1. HEADER -->
+    <div class="flex items-center gap-4 mb-6">
+        <a href="/vip" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+        </a>
+        <div>
+            <h2 class="text-xl font-bold text-white tracking-wide leading-none">Checkout</h2>
+            <p class="text-[10px] font-bold uppercase tracking-widest text-[#666] mt-1">Secure Gateway</p>
+        </div>
+    </div>
+
+    <!-- 2. ORDER SUMMARY CARD -->
+    <div class="bg-[#0A0A0A] rounded-[28px] p-6 text-white relative overflow-hidden border border-[#1C1C1E]">
+        <i class="fa-solid fa-gem absolute right-6 top-1/2 transform -translate-y-1/2 text-7xl opacity-[0.03] pointer-events-none rotate-12"></i>
         
-        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div class="relative z-10">
+            <p class="text-[9px] font-black text-[#666666] uppercase tracking-[0.2em] mb-4">Order Summary</p>
+            
+            <div class="flex items-center gap-4 mb-5">
+                <div class="h-14 w-14 rounded-[16px] bg-white flex flex-col items-center justify-center text-black flex-shrink-0">
+                    <span class="text-[8px] font-black uppercase tracking-widest leading-none text-[#666]">LVL</span>
+                    <span class="text-xl font-black leading-none">{{ plan.name[-1] if plan.name[-1].isdigit() else 'V' }}</span>
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-white leading-tight">{{ plan.name }} Pass</h3>
+                    <p class="text-[11px] text-[#AAAAAA] font-mono mt-0.5">+৳{{ plan.daily_profit }}/Day ({{ plan.days }} Days)</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-[#222222] pt-4 mt-2 flex justify-between items-end">
+                <p class="text-[10px] font-bold text-[#888888] uppercase tracking-widest">Total Payable</p>
+                <div class="text-right">
+                    <span class="text-3xl font-black text-white font-mono tracking-tight leading-none">৳{{ plan.price }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CHECKOUT FORM WITH DYNAMIC INFO -->
+    <form id="vipBuyForm" method="POST" class="bg-[#0A0A0A] p-6 sm:p-8 rounded-[28px] border border-[#1C1C1E] space-y-6" onsubmit="return preventDoubleSubmit()">
+        
+        <h3 class="font-bold text-white text-sm mb-4 uppercase tracking-widest">Payment Details</h3>
+
+        <!-- Instruction Steps -->
+        <div class="space-y-4 mb-5 border-b border-[#222222] pb-5">
+            <div class="flex items-start gap-3">
+                <div class="h-6 w-6 rounded-full bg-[#111] border border-[#333] text-white flex items-center justify-center text-xs font-black flex-shrink-0">1</div>
+                <p class="text-[11px] text-[#AAAAAA] font-medium leading-relaxed pt-0.5">নিচ থেকে আপনার পছন্দের মেথড (bKash/Nagad) সিলেক্ট করুন।</p>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="h-6 w-6 rounded-full bg-[#111] border border-[#333] text-white flex items-center justify-center text-xs font-black flex-shrink-0">2</div>
+                <p class="text-[11px] text-[#AAAAAA] font-medium leading-relaxed pt-0.5">বক্সে দেওয়া নম্বরে <b>৳{{ plan.price }}</b> টাকা <b>Send Money</b> করে তথ্য পূরণ করুন।</p>
+            </div>
+        </div>
+
+        <!-- Field 1: Gateway Selection -->
+        <div>
+            <label class="block text-[10px] font-bold text-[#666666] uppercase tracking-widest mb-3 ml-1">1. Select Method</label>
+            <div class="grid grid-cols-2 gap-4">
+                <label class="cursor-pointer relative">
+                    <input type="radio" name="method" value="bKash" class="peer sr-only" required onchange="changeNumberInfo('bKash')">
+                    <div class="payment-card py-4 text-center">
+                        <span class="block text-xs font-black text-[#888888] tracking-wide uppercase transition-colors">bKash</span>
+                    </div>
+                </label>
+                <label class="cursor-pointer relative">
+                    <input type="radio" name="method" value="Nagad" class="peer sr-only" required onchange="changeNumberInfo('Nagad')">
+                    <div class="payment-card py-4 text-center">
+                        <span class="block text-xs font-black text-[#888888] tracking-wide uppercase transition-colors">Nagad</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Dynamic Official Number Box -->
+        <div id="numberInfoBox" class="hidden bg-[#111111] border border-[#222222] p-4 rounded-2xl flex items-center justify-between transition-all">
             <div>
-                <div class="inline-flex items-center gap-1.5 bg-white/10 text-white px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.15em] border border-white/20 mb-4 backdrop-blur-sm shadow-sm">
-                    <i class="fa-solid fa-bolt text-amber-400"></i> Mega Sale Active
-                </div>
-                <h2 class="text-3xl sm:text-4xl font-black tracking-tight leading-tight mb-2">Telecom Offers</h2>
-                <p class="text-xs sm:text-sm text-red-100 font-medium max-w-sm leading-relaxed">সকল অপারেটরের ইন্টারনেট, মিনিট ও কম্বো প্যাকে ৩০% পর্যন্ত স্পেশাল ডিসকাউন্ট!</p>
+                <p class="text-[9px] text-[#666666] font-bold uppercase tracking-[0.1em] mb-1">
+                    Send Money To <span id="methodLabel" class="text-white"></span>
+                </p>
+                <p class="text-lg sm:text-xl font-black text-white font-mono tracking-widest select-all" id="payNumber"></p>
             </div>
-            
-            <a href="/drive/history" class="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-6 py-3.5 rounded-[16px] text-xs font-bold transition flex items-center justify-center gap-2 w-full sm:w-auto shadow-sm active:scale-95">
-                <i class="fa-solid fa-clock-rotate-left"></i> My Orders
-            </a>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         2. CATEGORY TABS (Scrollable on mobile)
-    ========================================== -->
-    <div class="flex gap-2.5 overflow-x-auto pb-2 hide-scroll px-1 mt-2">
-        <button class="px-6 py-2.5 bg-red-600 text-white rounded-[14px] text-xs font-bold shadow-lg shadow-red-600/30 whitespace-nowrap flex-shrink-0">All Offers</button>
-        <button class="px-6 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-[14px] text-xs font-bold hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition shadow-sm whitespace-nowrap flex-shrink-0">Internet</button>
-        <button class="px-6 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-[14px] text-xs font-bold hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition shadow-sm whitespace-nowrap flex-shrink-0">Minutes</button>
-        <button class="px-6 py-2.5 bg-white border border-slate-200 text-slate-600 rounded-[14px] text-xs font-bold hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition shadow-sm whitespace-nowrap flex-shrink-0">Combo</button>
-    </div>
-
-    <!-- ==========================================
-         3. OFFERS GRID
-    ========================================== -->
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mt-2">
-        {% for pack in packs %}
-        <div class="offer-card group h-full">
-            
-            <!-- Discount Badge (Absolute Top Right) -->
-            <div class="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-black px-4 py-1.5 rounded-bl-[16px] shadow-md uppercase tracking-widest z-10">
-                Save {{ pack.commission }}
-            </div>
-
-            <!-- Content Area -->
-            <div class="p-5 sm:p-6 flex flex-col flex-grow">
-                
-                <!-- Operator Info -->
-                <div class="flex items-start gap-4 mb-5">
-                    <!-- Operator Icon with dynamic color -->
-                    <div class="h-12 w-12 rounded-[14px] flex items-center justify-center text-white font-black text-sm shadow-md flex-shrink-0 group-hover:scale-110 transition-transform
-                        {% if pack.operator == 'Grameenphone' %} bg-blue-600
-                        {% elif pack.operator == 'Robi' %} bg-red-600
-                        {% elif pack.operator == 'Airtel' %} bg-rose-500
-                        {% elif pack.operator == 'Banglalink' %} bg-orange-500
-                        {% else %} bg-emerald-500 {% endif %}">
-                        {{ pack.operator[:2] | upper }}
-                    </div>
-                    
-                    <div class="pr-10">
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-0.5">{{ pack.operator }}</p>
-                        <h3 class="font-black text-slate-800 text-base leading-tight">{{ pack.title }}</h3>
-                    </div>
-                </div>
-
-                <!-- Tags Row -->
-                <div class="flex items-center gap-2 mb-6">
-                    <span class="bg-slate-50 text-slate-600 border border-slate-200 px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-sm">
-                        <i class="fa-regular fa-clock text-slate-400"></i> {{ pack.validity }}
-                    </span>
-                    <span class="bg-red-50 text-red-600 border border-red-100 px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider shadow-sm">
-                        {{ pack.category }}
-                    </span>
-                </div>
-
-                <!-- Spacer to push price to bottom -->
-                <div class="flex-grow"></div>
-
-                <!-- Price & Action Row -->
-                <div class="border-t border-slate-100 pt-4 mt-2 flex items-center justify-between">
-                    <div>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.1em] mb-0.5">Offer Price</p>
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-2xl font-black text-red-600 font-mono tracking-tight leading-none">৳{{ pack.offer_price }}</span>
-                            <span class="text-xs text-slate-400 line-through font-mono font-bold leading-none">৳{{ pack.regular_price }}</span>
-                        </div>
-                    </div>
-
-                    <a href="/drive/buy/{{ pack.id }}" class="h-10 w-10 bg-slate-900 text-white rounded-[12px] flex items-center justify-center shadow-lg hover:bg-red-600 transition-colors group-hover:scale-105 active:scale-95 duration-200 flex-shrink-0">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-        {% else %}
-        <!-- Empty State -->
-        <div class="col-span-full text-center py-20 bg-white rounded-[32px] border border-slate-100 shadow-sm mt-4">
-            <div class="h-20 w-20 bg-slate-50 rounded-[20px] flex items-center justify-center mx-auto mb-4 text-4xl text-slate-300 border border-slate-100 shadow-sm">
-                <i class="fa-solid fa-box-open"></i>
-            </div>
-            <h3 class="text-base font-bold text-slate-800">No Offers Available</h3>
-            <p class="text-[11px] text-slate-500 mt-1 font-medium max-w-sm mx-auto leading-relaxed">অ্যাডমিন শীঘ্রই নতুন ধামাকা অফার যুক্ত করবেন। অনুগ্রহ করে কিছুক্ষণ পর আবার চেক করুন।</p>
-            <button onclick="location.reload()" class="mt-6 text-xs font-bold text-red-600 bg-red-50 px-6 py-3 rounded-xl border border-red-100 hover:bg-red-100 transition shadow-sm flex items-center gap-2 mx-auto active:scale-95">
-                <i class="fa-solid fa-rotate-right"></i> Refresh Store
+            <button type="button" onclick="copyAdminNumber(this)" class="h-10 w-10 bg-[#1C1C1E] border border-[#333333] rounded-xl text-[#888888] hover:text-white transition active:scale-95 flex items-center justify-center flex-shrink-0">
+                <i class="fa-regular fa-copy text-sm"></i>
             </button>
         </div>
-        {% endfor %}
+        
+        <div class="grid sm:grid-cols-2 gap-5 mt-6">
+            <!-- Field 2: Sender Number -->
+            <div class="input-group">
+                <input type="tel" name="sender" required pattern="01[3-9][0-9]{8}" class="dark-input font-mono tracking-widest" placeholder="Sender No">
+                <i class="fa-solid fa-phone input-icon"></i>
+            </div>
+            
+            <!-- Field 3: Transaction ID -->
+            <div class="input-group">
+                <input type="text" name="trx_id" required class="dark-input font-mono uppercase tracking-widest" placeholder="TrxID (Ex: 8X7H9F)">
+                <i class="fa-solid fa-hashtag input-icon"></i>
+            </div>
+        </div>
+        
+        <!-- Warning Notice -->
+        <div class="p-4 rounded-2xl bg-[#111111] border border-[#222222] flex items-start gap-2.5 mt-4">
+            <i class="fa-solid fa-triangle-exclamation text-[#666] text-[10px] mt-0.5"></i>
+            <p class="text-[9px] text-[#888] font-bold uppercase tracking-wider leading-relaxed">সতর্কতা: ভুয়া ট্রানজেকশন আইডি দিলে একাউন্ট ব্যান করা হবে।</p>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="submitBtn" class="btn-white mt-4">
+            <span>Confirm Order</span> <i class="fa-solid fa-check"></i>
+        </button>
+
+    </form>
+
+    <!-- Security Footer -->
+    <div class="text-center pb-4 pt-2">
+        <p class="text-[9px] font-mono font-bold text-[#444] tracking-widest uppercase flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-lock text-[8px]"></i> End-to-End Encrypted Gateway
+        </p>
     </div>
 
 </div>
+
+<!-- Scripts -->
+<script>
+    // Smart Method Switcher Logic
+    function changeNumberInfo(method) {
+        const infoBox = document.getElementById("numberInfoBox");
+        const methodLabel = document.getElementById("methodLabel");
+        const payNumber = document.getElementById("payNumber");
+
+        if (method === 'bKash') {
+            methodLabel.innerText = '(bKash)';
+            payNumber.innerText = '+880 1624-175616';
+        } else if (method === 'Nagad') {
+            methodLabel.innerText = '(Nagad)';
+            payNumber.innerText = '01912107604';
+        }
+
+        infoBox.classList.remove("hidden");
+    }
+
+    // Copy Admin Number
+    function copyAdminNumber(btn) {
+        const num = document.getElementById("payNumber").innerText;
+        navigator.clipboard.writeText(num).then(() => {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check text-black"></i>';
+            btn.classList.add('bg-white', 'text-black');
+            btn.classList.remove('bg-[#1C1C1E]', 'text-[#888888]');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.remove('bg-white', 'text-black');
+                btn.classList.add('bg-[#1C1C1E]', 'text-[#888888]');
+            }, 2000);
+        });
+    }
+
+    // Submit Loader
+    function preventDoubleSubmit() {
+        const form = document.getElementById('vipBuyForm');
+        if(form.checkValidity()) {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i>';
+            btn.style.background = "#222222"; btn.style.color = "#ffffff";
+            return true;
+        }
+        return false;
+    }
+</script>
 
 {% endblock %}
