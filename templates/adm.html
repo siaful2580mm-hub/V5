@@ -2,170 +2,135 @@
 {% block content %}
 
 <style>
-    /* Global Background Accent */
-    body { background-color: #f1f5f9; }
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Premium Entry Animations */
-    .fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    @keyframes fadeInUp { 
-        from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
-        to { opacity: 1; transform: translateY(0); filter: blur(0); }
-    }
-    
-    /* Glowing Method Cards */
+    /* Method Cards (Dark Theme) */
     .method-card {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        background: #ffffff;
-        border: 2px solid #f1f5f9;
-        border-radius: 24px;
-        position: relative;
-        z-index: 1;
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 20px;
+        transition: all 0.3s ease; position: relative; cursor: pointer;
+    }
+    .method-card:hover { border-color: #333333; background: #0F0F0F; }
+
+    /* Checked State */
+    input[type="radio"]:checked + .method-card {
+        border-color: #ffffff; background: #111111;
+    }
+    input[type="radio"]:checked + .method-card .icon-circle {
+        background: #ffffff; color: #000000; border-color: #ffffff;
     }
     
-    /* Unique Glowing Effects for Methods */
-    /* bKash Glow */
-    input[value="bKash"]:checked + .method-card {
-        border-color: #E2136E;
-        box-shadow: 0 10px 25px -5px rgba(226, 19, 110, 0.3), 0 0 15px rgba(226, 19, 110, 0.1);
-        transform: scale(1.05);
-    }
-    /* Nagad Glow */
-    input[value="Nagad"]:checked + .method-card {
-        border-color: #F59E0B;
-        box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.3), 0 0 15px rgba(245, 158, 11, 0.1);
-        transform: scale(1.05);
-    }
-    /* Rocket Glow */
-    input[value="Rocket"]:checked + .method-card {
-        border-color: #9333EA;
-        box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.3), 0 0 15px rgba(147, 51, 234, 0.1);
-        transform: scale(1.05);
+    .icon-circle {
+        height: 40px; width: 40px; border-radius: 12px;
+        background: #111111; border: 1px solid #222222; color: #E5E5E5;
+        display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.3s;
     }
 
-    /* Input Field Glow */
-    .premium-input:focus {
-        border-color: #E11D48;
-        background: #fff;
-        box-shadow: 0 0 20px rgba(225, 29, 72, 0.15);
-    }
-
-    /* Glassmorphism Details */
-    .glass-status {
-        background: rgba(15, 23, 42, 0.9);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    /* Gradient Button Glow */
-    .btn-glow {
-        background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
-        box-shadow: 0 10px 20px -5px rgba(225, 29, 72, 0.4);
-        transition: all 0.3s ease;
-    }
-    .btn-glow:hover {
-        box-shadow: 0 15px 30px -5px rgba(225, 29, 72, 0.6);
-        transform: translateY(-2px);
-    }
-    .btn-glow:active { transform: scale(0.97); }
-
-    /* Animated Radio Circles */
+    /* Check Indicator */
     .check-indicator {
-        position: absolute; top: 12px; right: 12px;
-        height: 20px; width: 20px; border-radius: 50%;
-        border: 2px solid #e2e8f0;
-        display: flex; align-items: center; justify-content: center;
-        transition: all 0.3s ease;
+        position: absolute; top: 8px; right: 8px;
+        height: 16px; width: 16px; border-radius: 50%; border: 1px solid #333333;
+        display: flex; align-items: center; justify-content: center; transition: all 0.3s;
     }
     input:checked + .method-card .check-indicator {
-        background: currentColor;
-        border-color: transparent;
+        background: #ffffff; border-color: #ffffff;
     }
+    input:checked + .method-card .check-indicator::after {
+        content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900;
+        font-size: 8px; color: #000000;
+    }
+
+    /* Input Field */
+    .dark-input-large {
+        width: 100%; background: #000000; border: 1px solid #222222; color: #ffffff;
+        padding: 20px 20px 20px 60px; border-radius: 20px; outline: none; 
+        font-size: 18px; font-weight: bold; letter-spacing: 2px; transition: border 0.3s;
+    }
+    .dark-input-large:focus { border-color: #ffffff; }
+
+    /* Button */
+    .btn-white {
+        background: #ffffff; color: #000000; width: 100%; padding: 20px;
+        border-radius: 20px; font-weight: 900; font-size: 13px; text-transform: uppercase;
+        letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    .btn-white:disabled { background: #222222; color: #666666; cursor: not-allowed; transform: none; }
 </style>
 
-<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-4 mt-6">
+<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- Header Section -->
+    <!-- 1. HEADER -->
     <div class="flex items-center justify-between mb-8">
         <div class="flex items-center gap-4">
-            <a href="/menu" class="h-12 w-12 bg-white rounded-2xl flex items-center justify-center text-slate-600 shadow-sm border border-slate-100 hover:text-red-600 transition-all">
-                <i class="fa-solid fa-chevron-left"></i>
+            <a href="/account" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
             </a>
             <div>
-                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Payout Settings</h2>
-                <p class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Withdrawal Gateway</p>
+                <h2 class="text-xl font-bold text-white tracking-wide leading-none">পেমেন্ট সেটিংস</h2>
+                <p class="text-[9px] font-bold uppercase tracking-widest text-[#666] mt-1">Withdrawal Gateway</p>
             </div>
         </div>
-        <div class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
     </div>
 
-    <!-- Active Wallet Card (Financial App Style) -->
+    <!-- 2. ACTIVE WALLET DISPLAY (If Set) -->
     {% if user.wallet_number and user.wallet_method %}
-    <div class="glass-status rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl">
-        <div class="absolute -right-6 -top-6 w-32 h-32 bg-red-500/10 rounded-full blur-3xl"></div>
-        <div class="absolute -left-6 -bottom-6 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
-        
-        <div class="relative z-10 space-y-4">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Active Receiver</p>
-                    <h3 class="text-2xl font-mono font-bold tracking-[0.2em] mt-1">{{ user.wallet_number }}</h3>
-                </div>
-                <div class="bg-white/10 px-3 py-1 rounded-full text-[9px] font-black tracking-tighter border border-white/10">
-                    {{ user.wallet_method }}
-                </div>
+    <div class="bg-[#050505] border border-[#1C1C1E] rounded-[24px] p-6 text-white relative overflow-hidden mb-6 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+        <div class="flex justify-between items-start mb-4 relative z-10">
+            <div>
+                <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#666]">Active Receiver</p>
+                <h3 class="text-xl font-mono font-bold tracking-[0.1em] mt-1">{{ user.wallet_number }}</h3>
             </div>
-            <div class="flex items-center gap-2 text-green-400 text-[10px] font-bold uppercase">
-                <i class="fa-solid fa-shield-check"></i> Verified Destination
+            <div class="bg-white text-black px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">
+                {{ user.wallet_method }}
             </div>
+        </div>
+        <div class="flex items-center gap-1.5 text-white text-[9px] font-bold uppercase tracking-widest border-t border-[#1C1C1E] pt-3 relative z-10">
+            <i class="fa-solid fa-shield-check"></i> Verified Destination
         </div>
     </div>
     {% endif %}
 
-    <!-- Form Container -->
-    <div class="bg-white/70 backdrop-blur-md p-6 rounded-[35px] border border-white shadow-sm">
+    <!-- 3. FORM CONTAINER -->
+    <div class="bg-[#0A0A0A] p-6 rounded-[28px] border border-[#1C1C1E]">
         <form method="POST" action="/adm" class="space-y-8" onsubmit="return showLoading()">
             
             <!-- Step 1: Select Method -->
             <div class="space-y-4">
-                <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 px-1">
-                    <span class="h-5 w-5 rounded-lg bg-slate-800 text-white flex items-center justify-center text-[10px]">01</span>
-                    Payment Method
-                </label>
+                <label class="text-[10px] font-bold text-[#888888] uppercase tracking-widest ml-1">১. পেমেন্ট মেথড নির্বাচন করুন</label>
                 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-3 gap-3">
                     <!-- bKash -->
-                    <label class="relative group">
+                    <label class="relative">
                         <input type="radio" name="method" value="bKash" class="sr-only" {{ 'checked' if user.wallet_method == 'bKash' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2 cursor-pointer text-[#E2136E]">
-                            <div class="check-indicator"><i class="fa-solid fa-check text-[10px] text-white"></i></div>
-                            <div class="h-12 w-12 rounded-2xl bg-pink-50 flex items-center justify-center text-2xl shadow-inner">
-                                <i class="fa-solid fa-bolt-lightning"></i>
-                            </div>
-                            <span class="text-[11px] font-black uppercase tracking-tighter">bKash</span>
+                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
+                            <div class="check-indicator"></div>
+                            <div class="icon-circle"><i class="fa-solid fa-bolt-lightning"></i></div>
+                            <span class="text-[10px] font-bold uppercase text-[#888]">bKash</span>
                         </div>
                     </label>
 
                     <!-- Nagad -->
-                    <label class="relative group">
+                    <label class="relative">
                         <input type="radio" name="method" value="Nagad" class="sr-only" {{ 'checked' if user.wallet_method == 'Nagad' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2 cursor-pointer text-[#F59E0B]">
-                            <div class="check-indicator"><i class="fa-solid fa-check text-[10px] text-white"></i></div>
-                            <div class="h-12 w-12 rounded-2xl bg-orange-50 flex items-center justify-center text-2xl shadow-inner">
-                                <i class="fa-solid fa-fire-flame-curved"></i>
-                            </div>
-                            <span class="text-[11px] font-black uppercase tracking-tighter">Nagad</span>
+                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
+                            <div class="check-indicator"></div>
+                            <div class="icon-circle"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                            <span class="text-[10px] font-bold uppercase text-[#888]">Nagad</span>
                         </div>
                     </label>
 
                     <!-- Rocket -->
-                    <label class="relative group">
+                    <label class="relative">
                         <input type="radio" name="method" value="Rocket" class="sr-only" {{ 'checked' if user.wallet_method == 'Rocket' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2 cursor-pointer text-[#9333EA]">
-                            <div class="check-indicator"><i class="fa-solid fa-check text-[10px] text-white"></i></div>
-                            <div class="h-12 w-12 rounded-2xl bg-purple-50 flex items-center justify-center text-2xl shadow-inner">
-                                <i class="fa-solid fa-shuttle-space"></i>
-                            </div>
-                            <span class="text-[11px] font-black uppercase tracking-tighter">Rocket</span>
+                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
+                            <div class="check-indicator"></div>
+                            <div class="icon-circle"><i class="fa-solid fa-shuttle-space"></i></div>
+                            <span class="text-[10px] font-bold uppercase text-[#888]">Rocket</span>
                         </div>
                     </label>
                 </div>
@@ -173,32 +138,29 @@
 
             <!-- Step 2: Number Input -->
             <div class="space-y-4">
-                <label class="text-xs font-black text-slate-500 uppercase tracking-widest flex items-center gap-2 px-1">
-                    <span class="h-5 w-5 rounded-lg bg-slate-800 text-white flex items-center justify-center text-[10px]">02</span>
-                    Wallet Number
-                </label>
+                <label class="text-[10px] font-bold text-[#888888] uppercase tracking-widest ml-1">২. একাউন্ট নাম্বার দিন</label>
                 <div class="relative">
-                    <span class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 font-bold">+88</span>
-                    <input type="tel" name="number" required pattern="01[3-9][0-9]{8}" placeholder="01700000000" value="{{ user.wallet_number or '' }}"
-                           class="premium-input w-full pl-16 pr-6 py-5 rounded-[24px] text-xl font-bold tracking-[0.2em] bg-slate-50 border-none ring-1 ring-slate-200 transition-all">
+                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-[#555] font-bold font-mono">+88</span>
+                    <input type="tel" name="number" required pattern="01[3-9][0-9]{8}" placeholder="01700000000" value="{{ user.wallet_number or '' }}" class="dark-input-large font-mono">
                 </div>
             </div>
 
             <!-- Warning Box -->
-            <div class="p-4 rounded-[20px] bg-amber-50 border border-amber-100 flex gap-3">
-                <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-1"></i>
-                <p class="text-[11px] leading-relaxed text-amber-800 font-medium">
+            <div class="p-4 rounded-[16px] bg-[#111111] border border-[#222222] flex gap-3">
+                <i class="fa-solid fa-triangle-exclamation text-white mt-0.5 text-sm"></i>
+                <p class="text-[10px] leading-relaxed text-[#AAAAAA] font-medium">
                     নিশ্চিত করুন যে নাম্বারটি আপনার ব্যক্তিগত। ভুল নাম্বারের জন্য পেমেন্ট আটকে গেলে সিস্টেম দায়ী থাকবে না।
                 </p>
             </div>
 
             <!-- Submit -->
-            <button type="submit" id="submitBtn" class="btn-glow w-full py-5 rounded-[24px] text-white font-black text-sm uppercase tracking-[0.2em] flex items-center justify-center gap-3">
-                Update Wallet <i class="fa-solid fa-arrow-right-long animate-pulse"></i>
+            <button type="submit" id="submitBtn" class="btn-white">
+                আপডেট করুন <i class="fa-solid fa-arrow-right"></i>
             </button>
 
         </form>
     </div>
+
 </div>
 
 <script>
@@ -206,9 +168,10 @@
         const form = document.querySelector('form');
         if (form.checkValidity()) {
             const btn = document.getElementById('submitBtn');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
-            btn.style.opacity = '0.7';
-            btn.style.pointerEvents = 'none';
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            btn.style.background = "#222222";
+            btn.style.color = "#ffffff";
             return true;
         }
         return false;
