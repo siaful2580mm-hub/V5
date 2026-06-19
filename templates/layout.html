@@ -103,7 +103,6 @@
         }
         #sidebar.open { transform: translateX(0); }
 
-        /* Custom Scrollbar for sidebar */
         .sidebar-scroll::-webkit-scrollbar { width: 4px; }
         .sidebar-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
@@ -121,7 +120,13 @@
         /* ==========================================
            4. FLOATING SUPPORT BUTTONS (Highlighted)
         ========================================== */
+        /* pointer-events-none on container so it doesn't block background clicks */
+        #support-widget {
+            pointer-events: none;
+        }
+        /* pointer-events-auto on buttons so only they are clickable */
         .support-fab {
+            pointer-events: auto;
             height: 56px; width: 56px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 28px; cursor: pointer;
@@ -186,7 +191,7 @@
     </nav>
 
     <!-- ==========================================
-         2. SIDEBAR (Toggle Menu - Custom List)
+         2. SIDEBAR (Toggle Menu)
     ========================================== -->
     <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
     
@@ -272,23 +277,23 @@
     ========================================== -->
     <div id="support-widget" class="fixed right-4 bottom-[100px] z-40 flex flex-col gap-4">
         
-        <!-- WhatsApp -->
-        <div id="btn-wa" class="relative group" style="display: none;">
-            <div class="absolute right-16 top-2 bg-[#111] border border-[#222] text-white text-[10px] uppercase tracking-widest px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 shadow-xl font-bold whitespace-nowrap">
-                WhatsApp Support
-            </div>
-            <div onclick="openSupport('whatsapp')" class="support-fab fab-wa">
-                <i class="fa-brands fa-whatsapp"></i>
-            </div>
-        </div>
-
         <!-- Telegram -->
-        <div id="btn-tg" class="relative group" style="display: none;">
-            <div class="absolute right-16 top-2 bg-[#111] border border-[#222] text-white text-[10px] uppercase tracking-widest px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 shadow-xl font-bold whitespace-nowrap">
+        <div class="relative group">
+            <div class="absolute right-16 top-2 bg-[#111] border border-[#222] text-white text-[10px] uppercase tracking-widest px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 shadow-xl font-bold whitespace-nowrap pointer-events-none">
                 Telegram Support
             </div>
             <div onclick="openSupport('telegram')" class="support-fab fab-tg">
                 <i class="fa-brands fa-telegram"></i>
+            </div>
+        </div>
+        
+        <!-- WhatsApp -->
+        <div class="relative group">
+            <div class="absolute right-16 top-2 bg-[#111] border border-[#222] text-white text-[10px] uppercase tracking-widest px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition duration-300 shadow-xl font-bold whitespace-nowrap pointer-events-none">
+                WhatsApp Support
+            </div>
+            <div onclick="openSupport('whatsapp')" class="support-fab fab-wa">
+                <i class="fa-brands fa-whatsapp"></i>
             </div>
         </div>
 
@@ -376,45 +381,20 @@
             }
         }
 
-        // --- 2. Smart Support Logic (Only One Platform Active) ---
-        const waBtn = document.getElementById('btn-wa');
-        const tgBtn = document.getElementById('btn-tg');
-
+        // --- 2. Smart Support Logic (Always Visible, Click only on icon) ---
         // Dynamic User Info from Jinja template
         const uName = "{{ user.full_name or (user.email.split('@')[0] if user and user.email else 'Guest') }}";
         const uId = "{{ user.referral_code if user else 'N/A' }}";
         
-        // Exact Pre-filled Message Text
-        const rawMessage = `Hlw PayLix, আমি ${uName}\nআমার ID : ${uId}\nআমি আপনাকে আমার সাপোর্টার হিসেবে নিয়োগ দিলাম\n\nআমার সমস্যাগুলো দেখুন`;
+        // Exact Pre-filled Message Text (With proper line breaks and emojis)
+        const rawMessage = `Hlw PayLix, আমি ${uName} 🤗\nআমার ID : ${uId},\n\nআমার সমস্যাগুলো দেখুন!`;
         const encodedMessage = encodeURIComponent(rawMessage);
 
         // Links
         const waLink = `https://wa.me/8801624175616?text=${encodedMessage}`;
         const tgLink = `https://t.me/Pay_lix?text=${encodedMessage}`;
 
-        function initSupportWidget() {
-            const savedSupport = localStorage.getItem('paylix_support_platform');
-            
-            if (savedSupport === 'whatsapp') {
-                waBtn.style.display = 'block'; // Show WA
-                tgBtn.style.display = 'none';  // Hide TG permanently
-            } else if (savedSupport === 'telegram') {
-                tgBtn.style.display = 'block'; // Show TG
-                waBtn.style.display = 'none';  // Hide WA permanently
-            } else {
-                // First visit: Show both
-                waBtn.style.display = 'block';
-                tgBtn.style.display = 'block';
-            }
-        }
-
         function openSupport(platform) {
-            // First time click, lock the choice in localStorage
-            if (!localStorage.getItem('paylix_support_platform')) {
-                localStorage.setItem('paylix_support_platform', platform);
-                initSupportWidget(); // Update UI to hide the other
-            }
-
             // Redirect to appropriate app
             if (platform === 'whatsapp') {
                 window.open(waLink, '_blank');
@@ -422,10 +402,6 @@
                 window.open(tgLink, '_blank');
             }
         }
-
-        // Initialize Support icons on page load
-        document.addEventListener("DOMContentLoaded", initSupportWidget);
-
 
         // --- 3. Toast Auto Hide ---
         setTimeout(() => {
