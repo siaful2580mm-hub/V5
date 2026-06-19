@@ -2,126 +2,106 @@
 {% block content %}
 
 <style>
-    /* Premium Entry Animations */
-    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* 3D Scratch Card Container */
+    /* Dark Cards */
+    .dark-card {
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 32px;
+        padding: 32px 20px; position: relative; overflow: hidden; text-align: center;
+    }
+
+    /* 3D Scratch Card Container (Dark Theme) */
     .scratch-container {
         position: relative; 
-        width: 300px; height: 300px; margin: 0 auto;
+        width: 280px; height: 280px; margin: 0 auto;
         border-radius: 32px; overflow: hidden;
-        box-shadow: 0 20px 50px -10px rgba(225, 29, 72, 0.3), inset 0 0 0 6px rgba(255, 255, 255, 0.2);
-        background: #ffffff; /* Fallback */
-        transform: translateZ(0); /* Hardware acceleration for smooth scratch */
+        box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), inset 0 0 0 4px rgba(255, 255, 255, 0.05);
+        background: #000000; transform: translateZ(0); 
     }
     
-    /* The Reward Behind the Canvas (Red/Gold Theme) */
+    /* The Reward Behind the Canvas */
     .scratch-reward {
         position: absolute; inset: 0;
-        background: radial-gradient(circle at center, #FFF1F2 0%, #FECDD3 100%);
+        background: #0A0A0A;
         display: flex; flex-direction: column; justify-content: center; align-items: center;
-        z-index: 1; border: 4px solid #E11D48; border-radius: 32px;
+        z-index: 1; border: 2px solid #222222; border-radius: 32px;
     }
     
-    /* The Canvas (Silver cover to scratch off) */
+    /* The Canvas (Dark Silver cover to scratch off) */
     canvas {
         position: absolute; inset: 0; z-index: 2;
         cursor: crosshair; touch-action: none;
         border-radius: 32px;
     }
 
-    /* Shimmer Effect for the Header */
-    .shimmer-text {
-        background: linear-gradient(to right, #FCD34D, #FFFBEB, #FCD34D);
-        background-size: 200% auto;
-        color: transparent;
-        -webkit-background-clip: text;
-        animation: shine 2s linear infinite;
+    /* Button */
+    .btn-white {
+        background: #ffffff; color: #000000; width: 100%; padding: 18px;
+        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
+        letter-spacing: 1px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     }
-    @keyframes shine { to { background-position: 200% center; } }
+    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
 </style>
 
-<div class="max-w-xl mx-auto px-1 pb-8 fade-in-up mt-2">
+<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- ==========================================
-         1. PAGE HEADER (Navigation)
-    ========================================== -->
-    <div class="flex items-center gap-4 mb-6 px-2">
-        <a href="/work" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-500 shadow-sm border border-slate-100 hover:text-red-600 hover:bg-red-50 transition-all active:scale-95">
-            <i class="fa-solid fa-arrow-left"></i>
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <a href="/work" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
         </a>
+        <h2 class="text-lg font-bold text-white tracking-wide">স্ক্র্যাচ কার্ড</h2>
+        <div class="w-10"></div> 
+    </div>
+
+    <!-- Hype Banner -->
+    <div class="dark-card !text-left flex items-center justify-between">
         <div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">Scratch & Win</h2>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">Daily Lucky Reward</p>
-        </div>
-    </div>
-
-    <!-- ==========================================
-         2. HYPE BANNER (Dark Red Gradient)
-    ========================================== -->
-    <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-red-900 rounded-[32px] p-8 text-white text-center shadow-xl relative overflow-hidden mb-8 border border-slate-700">
-        
-        <!-- Ambient Decor -->
-        <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/20 rounded-bl-full blur-2xl"></div>
-        <i class="fa-solid fa-ticket absolute left-4 top-1/2 transform -translate-y-1/2 text-8xl opacity-10 -rotate-12 pointer-events-none"></i>
-        
-        <div class="relative z-10">
-            <span class="bg-gradient-to-r from-amber-400 to-amber-500 text-slate-900 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-md inline-flex items-center gap-1.5 mb-3 border border-amber-300">
-                <i class="fa-solid fa-fire"></i> Hot Offer
+            <span class="bg-[#111] text-[#888] px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-[#222] mb-2 inline-block">
+                Daily Reward
             </span>
-            
-            <h2 class="text-3xl sm:text-4xl font-black shimmer-text tracking-tight mb-2">WIN UP TO ৳100!</h2>
-            
-            <p class="text-xs text-red-100 font-medium max-w-[250px] mx-auto leading-relaxed">
-                কার্ড ঘষে আপনার ভাগ্য পরীক্ষা করুন এবং ইনস্ট্যান্ট ক্যাশ জিতে নিন।
-            </p>
-            
-            <div class="mt-5 inline-flex items-center justify-center gap-2 bg-black/30 backdrop-blur-md px-5 py-2.5 rounded-xl border border-white/10 shadow-inner">
-                <i class="fa-solid fa-gamepad text-slate-400"></i>
-                <span class="text-[10px] font-black uppercase tracking-widest text-slate-300">Today's Limit:</span>
-                <span class="text-sm font-black font-mono text-white">{{ count }}/3</span>
-            </div>
+            <h2 class="text-xl font-black text-white tracking-tight mb-1">Win Instant Cash</h2>
+            <p class="text-[10px] text-[#666] font-medium">কার্ড ঘষে আপনার ভাগ্য পরীক্ষা করুন।</p>
+        </div>
+        <div class="bg-[#111] border border-[#222] p-3 rounded-2xl text-center shadow-inner">
+            <span class="text-[8px] font-bold uppercase tracking-widest text-[#666] block mb-0.5">Today</span>
+            <span class="text-lg font-black font-mono text-white">{{ count }}<span class="text-xs text-[#555]">/3</span></span>
         </div>
     </div>
 
-    <!-- ==========================================
-         3. INTERACTIVE SCRATCH AREA
-    ========================================== -->
-    <div class="bg-white p-8 rounded-[32px] shadow-sm border border-slate-100 text-center">
-        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-600 rounded-l-[32px] hidden md:block"></div>
-
-        <h3 class="font-black text-slate-800 mb-6 uppercase tracking-widest text-sm flex items-center justify-center gap-2">
-            <i class="fa-solid fa-hand-pointer text-red-500 animate-bounce"></i> Scratch the card below
+    <!-- Interactive Scratch Area -->
+    <div class="dark-card">
+        <h3 class="font-black text-white mb-6 uppercase tracking-widest text-xs flex items-center justify-center gap-2">
+            <i class="fa-solid fa-hand-pointer text-[#888] animate-bounce"></i> Scratch Below
         </h3>
         
         <!-- The Scratch Card -->
         <div class="scratch-container" id="scratchContainer">
-            <!-- Background (Reward) -->
             <div class="scratch-reward">
-                <div class="h-16 w-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">
-                    <i class="fa-solid fa-gift text-red-500 text-3xl"></i>
+                <div class="h-14 w-14 bg-[#111] border border-[#222] rounded-full flex items-center justify-center mb-3">
+                    <i class="fa-solid fa-gift text-white text-2xl"></i>
                 </div>
-                <p class="text-[10px] font-black text-red-400 uppercase tracking-widest mb-0.5">You Won!</p>
-                <h1 id="rewardAmount" class="text-5xl font-black text-red-600 font-mono tracking-tighter drop-shadow-md">???</h1>
+                <p class="text-[10px] font-black text-[#666] uppercase tracking-widest mb-1">You Won!</p>
+                <h1 id="rewardAmount" class="text-4xl font-black text-white font-mono tracking-tighter">???</h1>
             </div>
-            
-            <!-- Foreground Canvas (Silver Coating) -->
             <canvas id="scratchCanvas"></canvas>
         </div>
         
-        <!-- Success Message (Hidden until scratched) -->
-        <div id="claimMsg" class="mt-8 text-sm font-bold text-green-700 hidden bg-green-50 p-4 rounded-2xl border border-green-200 shadow-sm flex items-center justify-center gap-2">
-            <div class="h-6 w-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div>
-            <span>৳<span id="amountText" class="font-mono text-lg"></span> ব্যালেন্সে যোগ হয়েছে!</span>
+        <!-- Success Message -->
+        <div id="claimMsg" class="mt-8 text-xs font-bold text-black hidden bg-white p-4 rounded-2xl border border-white shadow-lg flex items-center justify-center gap-2">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>৳<span id="amountText" class="font-mono text-sm"></span> ব্যালেন্সে যোগ হয়েছে!</span>
         </div>
     </div>
 
 </div>
 
-<!-- ==========================================
-     SCRATCH LOGIC (HTML5 Canvas)
-========================================== -->
+<!-- HTML5 Canvas Scratch Logic -->
 <script>
     const canvas = document.getElementById('scratchCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -129,32 +109,30 @@
     let isDrawing = false;
     let isRevealed = false;
 
-    // 1. Setup Canvas Size & Silver Coating
     function initCanvas() {
         canvas.width = container.offsetWidth;
         canvas.height = container.offsetHeight;
 
-        // Draw Silver Background
-        ctx.fillStyle = '#CBD5E1'; // Slate-300
+        // Dark Silver Background
+        ctx.fillStyle = '#1C1C1E'; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // Add "SCRATCH HERE" Text
-        ctx.fillStyle = '#64748B'; // Slate-500
-        ctx.font = '900 24px Inter, sans-serif';
+        // Text
+        ctx.fillStyle = '#555555'; 
+        ctx.font = '900 20px Inter, monospace';
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText("SCRATCH HERE", canvas.width/2, canvas.height/2);
         
-        // Add noise/pattern
-        for(let i=0; i<500; i++) {
-            ctx.fillStyle = Math.random() > 0.5 ? '#E2E8F0' : '#94A3B8';
+        // Noise pattern
+        for(let i=0; i<400; i++) {
+            ctx.fillStyle = Math.random() > 0.5 ? '#222222' : '#111111';
             ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 2, 2);
         }
     }
     
     setTimeout(initCanvas, 50);
 
-    // 2. Mouse/Touch Events
     const getPos = (e) => {
         const rect = canvas.getBoundingClientRect();
         const x = (e.clientX || e.touches[0].clientX) - rect.left;
@@ -162,25 +140,16 @@
         return { x, y };
     };
 
-    const startDraw = (e) => { 
-        if(isRevealed) return;
-        isDrawing = true; 
-        scratch(e); 
-    };
-    const endDraw = () => { 
-        isDrawing = false; 
-        checkClear(); 
-    };
+    const startDraw = (e) => { if(isRevealed) return; isDrawing = true; scratch(e); };
+    const endDraw = () => { isDrawing = false; checkClear(); };
     
     const scratch = (e) => {
         if (!isDrawing || isRevealed) return;
         e.preventDefault(); 
-        
         const { x, y } = getPos(e);
-        
         ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
-        ctx.arc(x, y, 30, 0, Math.PI * 2); // 30px brush radius
+        ctx.arc(x, y, 30, 0, Math.PI * 2);
         ctx.fill();
     };
 
@@ -193,21 +162,14 @@
     canvas.addEventListener('touchmove', scratch, {passive: false});
     canvas.addEventListener('touchend', endDraw);
 
-    // 3. Auto Reveal Logic
     function checkClear() {
         if(isRevealed) return;
-        
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         let clearPixels = 0;
-        
-        // Check alpha channel
-        for(let i = 3; i < imageData.data.length; i += 4) {
-            if(imageData.data[i] === 0) clearPixels++; 
-        }
+        for(let i = 3; i < imageData.data.length; i += 4) { if(imageData.data[i] === 0) clearPixels++; }
         
         const clearPercentage = (clearPixels / (canvas.width * canvas.height)) * 100;
-        
-        if(clearPercentage > 45) { // Reveal if 45% cleared
+        if(clearPercentage > 45) {
             isRevealed = true;
             canvas.style.transition = 'opacity 0.6s ease-out';
             canvas.style.opacity = '0';
@@ -215,7 +177,6 @@
         }
     }
 
-    // 4. Backend AJAX Call (Fetch Reward)
     function fetchReward() {
         fetch('/skatch', { method: 'POST' })
         .then(res => res.json())
@@ -223,22 +184,13 @@
             if(data.success) {
                 document.getElementById('rewardAmount').innerText = '৳' + data.reward;
                 document.getElementById('amountText').innerText = data.reward;
-                
-                const msgBox = document.getElementById('claimMsg');
-                msgBox.classList.remove('hidden');
-                msgBox.classList.add('fade-in-up');
-                
+                document.getElementById('claimMsg').classList.remove('hidden');
                 setTimeout(() => location.reload(), 3000);
             } else {
                 alert(data.message);
                 location.reload();
             }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Connection error! Please try again.");
-            location.reload();
-        });
+        }).catch(err => { location.reload(); });
     }
 </script>
 
