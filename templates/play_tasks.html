@@ -2,67 +2,91 @@
 {% block content %}
 
 <style>
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
     .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
     
+    /* Minimalist Dark Task Card */
     .play-card {
-        background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px;
-        padding: 16px; transition: all 0.3s ease; position: relative; overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
+        padding: 20px; transition: all 0.3s ease; position: relative; overflow: hidden;
     }
-    .play-card:hover { border-color: #10B981; box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.15); transform: translateY(-3px); }
+    .play-card:hover { border-color: #333333; background: #0F0F0F; transform: translateY(-2px); }
+
+    /* Action Buttons */
+    .btn-white {
+        background: #ffffff; color: #000000; padding: 12px 20px;
+        border-radius: 12px; font-weight: 800; font-size: 11px; text-transform: uppercase;
+        letter-spacing: 1px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    
+    .btn-outline {
+        background: transparent; color: #ffffff; border: 1px solid #333333; padding: 12px 20px;
+        border-radius: 12px; font-weight: 800; font-size: 11px; text-transform: uppercase;
+        letter-spacing: 1px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center;
+    }
 </style>
 
-<div class="max-w-2xl mx-auto space-y-6 fade-in-up pb-8 px-1">
+<div class="max-w-2xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
 
-    <!-- HERO BANNER -->
-    <div class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-[28px] p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
-        <i class="fa-brands fa-google-play absolute right-4 top-1/2 transform -translate-y-1/2 text-8xl opacity-10 -rotate-12"></i>
-        
-        <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-                <span class="bg-white/20 text-white px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/30 shadow-sm backdrop-blur-sm mb-3 inline-block">App Review Zone</span>
-                <h2 class="text-2xl sm:text-3xl font-black tracking-tight leading-tight">Install & Review Apps</h2>
-                <p class="text-[11px] text-emerald-100 mt-1.5 font-medium max-w-sm leading-relaxed">
-                    অ্যাপ ডাউনলোড করুন, ৫-স্টার রেটিং দিন এবং সুন্দর একটি রিভিউ লিখে স্ক্রিনশট জমা দিন।
-                </p>
-            </div>
+    <!-- 1. HEADER -->
+    <div class="flex items-center justify-between mb-6">
+        <a href="/work" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+        </a>
+        <h2 class="text-lg font-bold text-white tracking-wide">অ্যাপ রিভিউ</h2>
+        <div class="bg-[#111111] border border-[#222222] px-3 py-1.5 rounded-lg text-[10px] font-bold">
+            {{ tasks|length }} টি কাজ
         </div>
     </div>
 
-    <!-- TASK LIST -->
+    <!-- 2. INSTRUCTION BANNER -->
+    <div class="bg-[#0A0A0A] border border-[#1C1C1E] rounded-3xl p-6 relative overflow-hidden">
+        <i class="fa-brands fa-google-play absolute right-4 top-1/2 transform -translate-y-1/2 text-7xl opacity-[0.03] -rotate-12"></i>
+        <div class="relative z-10">
+            <span class="bg-white text-black px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest mb-3 inline-block">App Review Zone</span>
+            <h3 class="text-base font-bold text-white mb-1">Install & Rating</h3>
+            <p class="text-[11px] text-[#888888] font-medium leading-relaxed max-w-sm">
+                অ্যাপ ডাউনলোড করুন, ৫-স্টার রেটিং দিন এবং সুন্দর একটি রিভিউ লিখে স্ক্রিনশট জমা দিন।
+            </p>
+        </div>
+    </div>
+
+    <!-- 3. TASK LIST -->
     <div class="space-y-4">
         {% for task in tasks %}
-        <div class="play-card group {{ 'border-red-200 bg-red-50/50' if task.is_rejected else '' }}">
+        <div class="play-card {{ 'border-red-900/50 bg-red-900/10' if task.is_rejected else '' }}">
             
             {% if task.is_rejected %}
-            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-500"></div>
+            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#FF453A]"></div>
             {% endif %}
 
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="h-12 w-12 rounded-[14px] bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl shadow-sm border border-emerald-100 flex-shrink-0 group-hover:scale-110 transition">
+            <div class="flex items-start justify-between">
+                <div class="flex gap-4">
+                    <div class="h-12 w-12 rounded-2xl bg-[#111111] text-white flex items-center justify-center text-2xl border border-[#222222] flex-shrink-0">
                         <i class="fa-brands fa-google-play"></i>
                     </div>
                     <div>
-                        <h3 class="font-bold text-slate-800 text-sm leading-tight flex items-center gap-2">
+                        <h3 class="font-bold text-white text-sm leading-tight flex items-center gap-2 mb-1">
                             {{ task.title }}
-                            {% if task.is_rejected %}<i class="fa-solid fa-circle-exclamation text-red-500 text-[10px] animate-pulse" title="Rejected"></i>{% endif %}
+                            {% if task.is_rejected %}<i class="fa-solid fa-circle-exclamation text-[#FF453A] text-[10px]" title="Rejected"></i>{% endif %}
                         </h3>
-                        <p class="text-[10px] text-slate-500 mt-1 line-clamp-1 font-medium">{{ task.description }}</p>
+                        <p class="text-[10px] text-[#666666] line-clamp-2 font-medium leading-relaxed pr-2">{{ task.description }}</p>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <div class="mt-5 pt-4 border-t border-[#1C1C1E] flex items-center justify-between">
                 <div class="flex flex-col">
-                    <span class="text-[9px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Reward</span>
-                    <span class="text-lg font-black text-emerald-600 font-mono leading-none">৳{{ task.reward }}</span>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-[#888888] mb-0.5">Reward</span>
+                    <span class="text-base font-black text-white font-mono leading-none">৳{{ task.reward }}</span>
                 </div>
                 
-                <!-- Directing to existing upload system -->
-                <a href="/task/submit/{{ task.id }}" class="px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest shadow-md transition-all 
-                    {{ 'bg-red-600 text-white hover:bg-red-700' if task.is_rejected else 'bg-slate-900 text-white hover:bg-emerald-600' }}">
+                <a href="/task/submit/{{ task.id }}" class="{{ 'btn-outline border-[#FF453A] text-[#FF453A]' if task.is_rejected else 'btn-white' }}">
                     {{ 'Retry Task' if task.is_rejected else 'Start Task' }}
                 </a>
             </div>
@@ -70,12 +94,12 @@
 
         {% else %}
         <!-- Empty State -->
-        <div class="text-center py-20 bg-white rounded-[24px] border border-slate-100 shadow-sm">
-            <div class="h-16 w-16 bg-emerald-50 rounded-[16px] flex items-center justify-center mx-auto mb-3 text-3xl text-emerald-400 border border-emerald-100">
+        <div class="text-center py-20 bg-[#0A0A0A] rounded-[24px] border border-[#1C1C1E]">
+            <div class="h-14 w-14 bg-[#111] rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl text-[#444] border border-[#222]">
                 <i class="fa-solid fa-mobile-screen"></i>
             </div>
-            <h3 class="text-sm font-bold text-slate-800">No App Tasks Available</h3>
-            <p class="text-[10px] text-slate-500 mt-1">Please check back later.</p>
+            <h3 class="text-sm font-bold text-white">কোনো কাজ নেই</h3>
+            <p class="text-[10px] text-[#666] mt-1">দয়া করে কিছুক্ষণ পর চেক করুন।</p>
         </div>
         {% endfor %}
     </div>
