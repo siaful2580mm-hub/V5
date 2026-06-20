@@ -25,9 +25,13 @@
     /* Feature List Styling */
     .feature-list li {
         display: flex; align-items: start; gap: 12px; margin-bottom: 12px;
-        font-size: 13px; color: #AAAAAA; font-weight: 600; line-height: 1.5;
+        font-size: 12px; color: #AAAAAA; font-weight: 600; line-height: 1.5;
     }
-    .feature-list li i { color: #ffffff; font-size: 14px; margin-top: 2px; }
+    .feature-list li i { color: #666666; font-size: 14px; margin-top: 2px; }
+    
+    /* Highlight feature style (Pro features) */
+    .feature-list li.pro-feature i { color: #ffffff; }
+    .feature-list li.ultra-feature i { color: #D4AF37; /* Gold for top tier */ }
     
     /* Background Watermark */
     .vip-watermark {
@@ -60,13 +64,13 @@
     ========================================== -->
     <div class="text-center max-w-2xl mx-auto px-4 pt-6">
         <span class="inline-flex items-center gap-1.5 bg-[#111] text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-[#333] mb-4 shadow-sm">
-            <i class="fa-solid fa-crown"></i> এলিট নেটওয়ার্ক
+            <i class="fa-solid fa-crown text-[#D4AF37]"></i> এলিট নেটওয়ার্ক
         </span>
         <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight mb-4">
             আপনার ইনকাম <br> বহুগুণ বাড়িয়ে নিন
         </h1>
         <p class="text-sm text-[#888888] font-medium leading-relaxed">
-            কোনো রেফার বা টাস্কের ঝামেলা ছাড়াই প্রতিদিন অটোমেটিক প্রফিট ক্লেইম করুন। কাজের লিমিট আনলক করতে আজই এলিট প্ল্যানে যুক্ত হোন।
+            কোনো রেফার বা টাস্কের ঝামেলা ছাড়াই প্রতিদিন অটোমেটিক প্রফিট ক্লেইম করুন। প্রিমিয়াম ফিচারগুলো আনলক করতে আজই এলিট প্ল্যানে যুক্ত হোন।
         </p>
     </div>
 
@@ -75,6 +79,7 @@
     ========================================== -->
     {% if my_vips and my_vips|length > 0 %}
     <div class="bg-[#0A0A0A] border border-[#1C1C1E] rounded-[32px] p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-48 h-48 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
         
         <h3 class="font-black text-white text-base flex items-center gap-2 uppercase tracking-widest mb-6 relative z-10">
             <i class="fa-solid fa-layer-group text-[#666]"></i> আপনার রানিং সাবস্ক্রিপশন
@@ -151,24 +156,40 @@
 
                     <!-- Price Block -->
                     <div class="mb-6">
-                        <div class="flex items-baseline gap-1 text-white price-tag">
+                        <div class="flex items-baseline gap-1 text-white">
                             <span class="text-2xl font-bold text-[#888]">৳</span>
                             <h2 class="text-5xl font-black font-mono tracking-tight">{{ plan.price }}</h2>
                         </div>
                         <p class="text-[11px] text-[#666666] font-medium mt-2">এককালীন ইনভেস্ট ({{ plan.days }} দিনের জন্য)</p>
                     </div>
 
-                    <!-- Features List -->
+                    <!-- ==========================================
+                         FEATURES LIST (Old + New Combined)
+                    ========================================== -->
                     <ul class="feature-list mb-8 border-t border-[#1C1C1E] pt-5">
+                        
+                        <!-- Basic Features (For All) -->
                         <li><i class="fa-solid fa-circle-check"></i> <span>প্রতিদিন অটোমেটিক <b>৳{{ plan.daily_profit }}</b> প্রফিট।</span></li>
                         <li><i class="fa-solid fa-circle-check"></i> <span>টোটাল রিটার্ন: <b>৳{{ plan.daily_profit * plan.days }}</b></span></li>
-                        <li><i class="fa-solid fa-circle-check"></i> <span>টাকা তুলতে <b>কোনো রেফার লাগবে না</b>।</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i> <span>মিনিমাম উইথড্র মাত্র <b>৳৫০</b>।</span></li>
+                        <li><i class="fa-solid fa-circle-check"></i> <span>উইথড্র করতে <b>কোনো রেফার লাগবে না</b>।</span></li>
+                        <li><i class="fa-solid fa-circle-check"></i> <span>মিনিমাম উইথড্র মাত্র <b>৳২০</b>।</span></li>
                         
+                        <!-- Pro Features (Level 2 & above) -->
                         {% if id >= 2 %}
-                        <li class="pro-feature"><i class="fa-solid fa-star text-white"></i> <span class="text-white">লক করা <b>Premium Work</b> এক্সেস।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-bolt-lightning text-white"></i> <span class="text-white">উইথড্র রিকোয়েস্ট দিলে <b>১০ মিনিটে পেমেন্ট</b>।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-headset text-white"></i> <span class="text-white">অ্যাডমিনের সাথে <b>VIP Live Support</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-star"></i> <span class="text-white">লক করা <b>Premium Work</b> এক্সেস।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-bolt-lightning"></i> <span class="text-white">উইথড্র রিকোয়েস্ট দিলে <b>১০ মিনিটে পেমেন্ট</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-headset"></i> <span class="text-white">অ্যাডমিনের সাথে <b>VIP Live Support</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-gamepad"></i> <span class="text-white">Spin ও Captcha তে <b>২ গুণ ইনকাম</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-shield-halved"></i> <span class="text-white">একাউন্ট <b>সম্পূর্ণ সুরক্ষিত</b> (ব্যান হবে না)।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-wifi"></i> <span class="text-white">মোবাইল ডাটা ক্রয়ে <b>১০% এক্সট্রা ডিসকাউন্ট</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-hourglass-start"></i> <span class="text-white">নতুন কাজের <b>Early Access</b> (সবার আগে পাবেন)।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-user-shield"></i> <span class="text-white">কাজে ভুল বা লেট হলে <b>জরিমানা মওকুফ</b>।</span></li>
+                        {% endif %}
+
+                        <!-- Ultra Features (Level 3 & above) -->
+                        {% if id >= 3 %}
+                        <li class="ultra-feature"><i class="fa-solid fa-user-plus"></i> <span class="text-white">সিস্টেম থেকে <b>Auto-Referral</b> পাওয়ার সুযোগ।</span></li>
+                        <li class="ultra-feature"><i class="fa-solid fa-hand-holding-dollar"></i> <span class="text-white">মাসে একবার <b>Advance Cash / Loan</b> সুবিধা।</span></li>
                         {% endif %}
                     </ul>
                 </div>
