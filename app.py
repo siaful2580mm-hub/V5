@@ -422,6 +422,62 @@ def delete_review(review_id):
     return redirect(url_for('reviews_page'))
     
 
+    # ==========================================
+# ADMIN: PANEL STATISTICS (Filter from 19/06/2026)
+# ==========================================
+@app.route('/admin/panel-stats')
+@login_required
+@admin_required
+def panel_stats():
+    from datetime import datetime, timezone, timedelta
+    
+    bd_time = datetime.now(timezone.utc) + timedelta(hours=6)
+    today_date = bd_time.strftime('%Y-%m-%d')
+    COUNT_START_DATE = "2026-06-19T00:00:00+00:00"
+    
+    stats = {
+        'today_members': 0, 'total_members': 0, 'active_members': 0, 'vip_users': 0,
+        'today_vip_amount': 0.0, 'total_vip_amount': 0.0,
+        'today_activation': 0, 'total_activation': 0,
+        'today_recharge': 0.0, 'total_recharge': 0.0,
+        'last_vip': None, 'last_activation': None, 'last_recharge': None
+    }
+    
+    try:
+        # User, VIP, Activation, Recharge data logic stays the same...
+        profiles = supabase.table('profiles').select('id, created_at, is_active, current_level').gte('created_at', COUNT_START_DATE).execute().data
+        stats['total_members'] = len(profiles)
+        stats['active_members'] = sum(1 for p in profiles if p.get('is_active'))
+        stats['vip_users'] = sum(1 for p in profiles if p.get('current_level', 0) > 0)
+        stats['today_members'] = sum(1 for p in profiles if p.get('created_at', '').startswith(today_date))
+        
+        vips = supabase.table('vip_requests').select('user_id, amount, created_at').eq('status', 'approved').gte('created_at', COUNT_START_DATE).execute().data
+        if vips:
+            stats['total_vip_amount'] = sum(float(v['amount']) for v in vips)
+            stats['today_vip_amount'] = sum(float(v['amount']) for v in vips if v.get('created_at', '').startswith(today_date))
+            stats['last_vip'] = sorted(vips, key=lambda x: x['created_at'], reverse=True)[0]
+            
+        acts = supabase.table('activation_requests').select('user_id, created_at').eq('status', 'approved').gte('created_at', COUNT_START_DATE).execute().data
+        if acts:
+            stats['total_activation'] = len(acts)
+            stats['today_activation'] = sum(1 for a in acts if a.get('created_at', '').startswith(today_date))
+            stats['last_activation'] = sorted(acts, key=lambda x: x['created_at'], reverse=True)[0]
+            
+        recharges = supabase.table('drive_orders').select('user_id, offer_price, created_at').eq('status', 'success').gte('created_at', COUNT_START_DATE).execute().data
+        if recharges:
+            stats['total_recharge'] = sum(float(r['offer_price']) for r in recharges if r.get('offer_price'))
+            stats['today_recharge'] = sum(float(r['offer_price']) for r in recharges if r.get('offer_price') and r.get('created_at', '').startswith(today_date))
+            stats['last_recharge'] = sorted(recharges, key=lambda x: x['created_at'], reverse=True)[0]
+            
+        # 🟢 [নতুন লজিক] - নতুন টেবিল থেকে লগ আনা
+        logs = supabase.table('admin_action_logs').select('*').order('created_at', desc=True).limit(20).execute().data
+        
+    except Exception as e:
+        print(f"Panel Stats Error: {e}")
+        logs = []
+        
+    return render_template('panel_statistics.html', stats=stats, logs=logs)
+    
 # ==========================================
 # 💎 PREMIUM WORK ZONE (VIP BAIT / FAKE TASKS)
 # ==========================================
