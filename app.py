@@ -33,12 +33,12 @@ except Exception as e:
 # test
 
 TELEGRAM_BOT_TOKEN = "8861243663:AAFUEVpqLqGC8reEvuohu_IetngHpKETlgM"
-TELEGRAM_CHANNEL_ID = "@growearnch"
+TELEGRAM_CHANNEL_ID = "@paylixofficial"
 
 def send_to_telegram_channel(title, content, image_url=None):
     try:
         # টেলিগ্রাম মেসেজ ফরম্যাট (HTML)
-        tg_msg = f"✨ <b>{title}</b>\n\n{content}\n\n🌐 <i>  growearn.site</i>"
+        tg_msg = f"✨ <b>{content}\n\n🌐 <i>— PayLix</i>"
         
         if image_url:
             url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendPhoto"
@@ -76,7 +76,7 @@ AD_LINKS = [
 
 # --- VIP LEVEL CONFIGURATION ---
 VIP_PLANS = {
-    1: {'name': 'Grow Pass', 'price': 100, 'daily_profit': 15, 'days': 15, 'min_withdraw': 200},
+    1: {'name': 'PayLix Pass', 'price': 100, 'daily_profit': 15, 'days': 15, 'min_withdraw': 200},
     2: {'name': 'Fast Pass', 'price': 200, 'daily_profit': 25, 'days': 19, 'min_withdraw': 200},
     3: {'name': 'Elite Pass', 'price': 500, 'daily_profit': 40, 'days': 50, 'min_withdraw': 200},
     4: {'name': 'Pro Pass', 'price': 1000, 'daily_profit': 70, 'days': 60, 'min_withdraw': 200},
@@ -3948,14 +3948,14 @@ def admin_panel():
 @app.route('/manifest.json')
 def manifest():
     return jsonify({
-        "name": "Earning App",
-        "short_name": "Grow Earn",
+        "name": "PayLix App",
+        "short_name": "PayLix",
         "start_url": "/",
         "display": "standalone",
         "background_color": "#F3F4F6",
         "theme_color": "#4F46E5",
         "icons":[{
-            "src": "https://i.ibb.co.com/6RMN0j7W/file-00000000cb78720884353d8223cf6438.png", # Default App Icon
+            "src": "https://i.ibb.co.com/qYgbs2R4/Add-Text-06-18-04-31-09.jpg", # Default App Icon
             "sizes": "512x512",
             "type": "image/png"
         }]
