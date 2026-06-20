@@ -24,18 +24,15 @@
         width: 100%; background: #111111; border: 1px solid #222222;
         color: #ffffff; padding: 16px 16px 16px 46px; border-radius: 16px;
         font-size: 13px; outline: none; transition: all 0.3s ease;
+        appearance: none;
     }
     .dark-input:focus { border-color: #555555; background: #000000; box-shadow: 0 0 0 4px rgba(255,255,255,0.05); }
     .dark-input::placeholder { color: #555555; }
-    .dark-input:invalid:not(:placeholder-shown) { border-color: #4A0000; }
+    
+    .dark-input.error-border { border-color: #4A0000; }
     
     .input-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #666666; font-size: 14px; transition: color 0.3s ease; }
     .dark-input:focus ~ .input-icon { color: #ffffff; }
-
-    /* Password Strength Bars */
-    .strength-meter { display: flex; gap: 4px; margin-top: 8px; margin-bottom: 16px; padding: 0 4px; }
-    .strength-bar { height: 4px; border-radius: 2px; flex: 1; background: #222222; transition: all 0.3s ease; }
-    .strength-text { font-size: 10px; font-weight: bold; color: #666666; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
     /* White Button */
     .btn-white {
@@ -75,39 +72,33 @@
 
             <!-- Name -->
             <div class="input-group">
-                <input type="text" name="name" required minlength="3" class="dark-input" placeholder="Full Name">
+                <input type="text" name="name" required class="dark-input" placeholder="Full Name">
                 <i class="fa-regular fa-user input-icon"></i>
             </div>
 
             <!-- Phone -->
             <div class="input-group">
-                <input type="tel" name="phone" id="phoneInput" required pattern="01[3-9][0-9]{8}" class="dark-input font-mono tracking-wider" placeholder="017XXXXXXXX">
+                <input type="tel" name="phone" id="phoneInput" required class="dark-input font-mono tracking-wider" placeholder="017XXXXXXXX">
                 <i class="fa-solid fa-mobile-screen input-icon text-[13px]"></i>
+                <p class="text-[9px] font-bold text-[#FF453A] mt-1.5 hidden" id="phoneError">সঠিক ১১ ডিজিটের নাম্বার দিন</p>
             </div>
 
-            <!-- Email (Strict Validation) -->
+            <!-- Email -->
             <div class="input-group">
-                <input type="email" name="email" id="emailInput" required pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$" class="dark-input font-mono" placeholder="yourmail@gmail.com">
+                <input type="email" name="email" id="emailInput" required class="dark-input font-mono" placeholder="yourmail@gmail.com">
                 <i class="fa-brands fa-google input-icon"></i>
+                <p class="text-[9px] font-bold text-[#FF453A] mt-1.5 hidden" id="emailError">শুধুমাত্র @gmail.com গ্রহণযোগ্য</p>
             </div>
             
-            <!-- Password & Strength Meter -->
+            <!-- Password (Simple, No Complex Validation) -->
             <div class="input-group !mb-0">
-                <input type="password" name="password" id="passwordInput" required minlength="6" class="dark-input font-mono tracking-wider" placeholder="Create Password">
+                <input type="password" name="password" required minlength="6" class="dark-input font-mono tracking-wider" placeholder="Create Password (Min 6 chars)">
                 <i class="fa-solid fa-lock input-icon"></i>
             </div>
-            
-            <!-- Dynamic Strength Indicator -->
-            <div class="strength-meter">
-                <div class="strength-bar" id="bar1"></div>
-                <div class="strength-bar" id="bar2"></div>
-                <div class="strength-bar" id="bar3"></div>
-            </div>
-            <p class="strength-text" id="strengthText">পাসওয়ার্ড টাইপ করুন</p>
 
             <!-- Submit Button -->
             <button type="submit" id="submitBtn" class="btn-white">
-                রেজিস্ট্রেশন সম্পূর্ণ করুন
+                রেজিস্ট্রেশন সম্পূর্ণ করুন <i class="fa-solid fa-arrow-right"></i>
             </button>
         </form>
 
@@ -123,62 +114,48 @@
 </div>
 
 <script>
-    // 1. Password Strength Logic
-    const passwordInput = document.getElementById('passwordInput');
-    const bar1 = document.getElementById('bar1');
-    const bar2 = document.getElementById('bar2');
-    const bar3 = document.getElementById('bar3');
-    const strengthText = document.getElementById('strengthText');
-
-    passwordInput.addEventListener('input', function() {
-        const val = this.value;
-        let strength = 0;
-
-        if(val.length >= 6) strength += 1;
-        if(val.length >= 8 && val.match(/[0-9]/)) strength += 1;
-        if(val.length >= 8 && val.match(/[A-Z]/) && val.match(/[^a-zA-Z0-9]/)) strength += 1;
-
-        // Reset Bars
-        bar1.style.background = '#222'; bar2.style.background = '#222'; bar3.style.background = '#222';
-
-        if (val.length === 0) {
-            strengthText.innerText = "পাসওয়ার্ড টাইপ করুন";
-            strengthText.style.color = "#666";
-        } else if (strength === 1) {
-            bar1.style.background = '#FF453A'; // Red
-            strengthText.innerText = "দুর্বল (Weak)";
-            strengthText.style.color = "#FF453A";
-        } else if (strength === 2) {
-            bar1.style.background = '#FFD60A'; // Yellow
-            bar2.style.background = '#FFD60A';
-            strengthText.innerText = "মোটামুটি (Medium)";
-            strengthText.style.color = "#FFD60A";
-        } else if (strength === 3) {
-            bar1.style.background = '#32D74B'; // Green
-            bar2.style.background = '#32D74B';
-            bar3.style.background = '#32D74B';
-            strengthText.innerText = "শক্তিশালী (Strong)";
-            strengthText.style.color = "#32D74B";
+    // Live Input Validation (Only for Email & Phone)
+    const emailInput = document.getElementById('emailInput');
+    const emailError = document.getElementById('emailError');
+    emailInput.addEventListener('input', function() {
+        if(this.value.length > 0 && !this.value.endsWith('@gmail.com')) {
+            emailError.classList.remove('hidden');
+            this.classList.add('error-border');
+        } else {
+            emailError.classList.add('hidden');
+            this.classList.remove('error-border');
         }
     });
 
-    // 2. ThumbmarkJS & Submit Logic
+    const phoneInput = document.getElementById('phoneInput');
+    const phoneError = document.getElementById('phoneError');
+    phoneInput.addEventListener('input', function() {
+        const regex = /^01[3-9][0-9]{8}$/;
+        if(this.value.length > 0 && !regex.test(this.value)) {
+            phoneError.classList.remove('hidden');
+            this.classList.add('error-border');
+        } else {
+            phoneError.classList.add('hidden');
+            this.classList.remove('error-border');
+        }
+    });
+
+    // ThumbmarkJS Submit (Device Tracking)
     document.getElementById('registerForm').addEventListener('submit', function(e) {
         e.preventDefault(); 
         
-        // Disable button to prevent double clicks
+        // Disable button
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i>';
         btn.style.background = "#333333";
         btn.style.color = "#ffffff";
 
-        // Get Device Fingerprint
+        // Get Device Fingerprint & Submit
         ThumbmarkJS.getFingerprint().then(function(fp) {
             document.getElementById('deviceIdInput').value = fp;
             document.getElementById('registerForm').submit();
         }).catch(function(err) {
-            // Fallback if fingerprint fails
             document.getElementById('registerForm').submit();
         });
     });
