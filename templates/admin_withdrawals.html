@@ -1,108 +1,143 @@
 {% extends "layout.html" %}
-
 {% block content %}
-<div class="max-w-5xl mx-auto space-y-6 fade-up pb-24 pt-4">
 
-    <!-- Header -->
-    <div class="bg-gradient-to-r from-[#0A2540] to-[#4F46E5] rounded-[30px] p-6 text-white shadow-xl shadow-indigo-200 relative overflow-hidden flex justify-between items-center">
-        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
-        <div class="relative z-10 flex items-center gap-4">
-            <div class="h-14 w-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20">
-                <i class="fa-solid fa-hand-holding-dollar"></i>
+<style>
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Admin Dark Card */
+    .admin-req-card {
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
+        padding: 20px; transition: all 0.3s ease; position: relative; overflow: hidden;
+        display: flex; flex-direction: column;
+    }
+    .admin-req-card:hover { border-color: #333333; transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,255,255,0.02); }
+
+    /* Info Box */
+    .info-box {
+        background: #111111; border: 1px solid #222222; border-radius: 16px;
+        padding: 16px; flex-grow: 1; margin-bottom: 16px;
+    }
+
+    /* Buttons */
+    .btn-approve {
+        background: #ffffff; color: #000000; padding: 14px; border-radius: 14px;
+        font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+        transition: all 0.2s ease; text-align: center; flex: 1;
+    }
+    .btn-approve:active { transform: scale(0.96); background: #e5e5e5; }
+
+    .btn-reject {
+        background: transparent; color: #FF453A; border: 1px solid #331111; padding: 14px;
+        border-radius: 14px; font-weight: 800; font-size: 11px; text-transform: uppercase;
+        letter-spacing: 1px; transition: all 0.2s ease; text-align: center; flex: 1;
+    }
+    .btn-reject:hover { background: #1A0505; border-color: #551111; }
+    .btn-reject:active { transform: scale(0.96); }
+</style>
+
+<div class="max-w-6xl mx-auto space-y-6 fade-in-up pb-24 pt-4 px-2">
+
+    <!-- 1. HEADER -->
+    <div class="bg-[#111111] rounded-[32px] p-8 text-white border border-[#222222] shadow-2xl relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-[0.02] rounded-full blur-2xl pointer-events-none"></div>
+        
+        <div class="relative z-10 flex items-center gap-5 w-full md:w-auto">
+            <div class="h-14 w-14 bg-[#1C1C1E] border border-[#333] rounded-[16px] flex items-center justify-center text-2xl flex-shrink-0">
+                <i class="fa-solid fa-money-bill-transfer"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-bold">উত্তোলন রিকোয়েস্ট</h1>
-                <p class="text-indigo-200 text-xs mt-1">ইউজারদের পেমেন্ট রিকোয়েস্ট চেক করুন</p>
+                <h1 class="text-2xl font-black tracking-tight">উত্তোলন রিকোয়েস্ট</h1>
+                <p class="text-[#888888] text-xs mt-1 font-medium">Pending Withdrawal Queue</p>
             </div>
         </div>
-        <div class="relative z-10 bg-white/20 px-4 py-2 rounded-xl text-sm font-bold border border-white/10 backdrop-blur-md">
-            Pending: {{ requests|length }}
+
+        <div class="relative z-10 bg-[#000000] px-6 py-3 rounded-2xl border border-[#333333] w-full md:w-auto text-center flex items-center justify-center gap-3">
+            <span class="text-[10px] text-[#666] font-bold uppercase tracking-widest">Pending</span>
+            <span class="text-xl font-black font-mono">{{ requests|length }}</span>
         </div>
     </div>
 
-    <!-- Requests Grid -->
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <!-- 2. REQUESTS GRID -->
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {% for req in requests %}
-        <div class="bg-white rounded-[24px] shadow-sm border border-slate-100 p-5 relative overflow-hidden group hover:shadow-xl hover:border-indigo-100 transition duration-300 flex flex-col">
+        <div class="admin-req-card">
             
-            <!-- Wallet Type Badge -->
-            <div class="absolute top-3 right-3 text-[10px] font-bold px-3 py-1 rounded-lg uppercase tracking-wider
-                {% if req.wallet_type == 'vip' %} bg-yellow-100 text-yellow-700 border border-yellow-200 
-                {% else %} bg-indigo-50 text-indigo-600 border border-indigo-100 {% endif %}">
-                <i class="fa-solid fa-wallet"></i> {{ req.wallet_type }}
+            <!-- Top Section -->
+            <div class="flex items-start justify-between mb-4">
+                <div class="flex-grow pr-4">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-[#666] mb-1">User Identity</p>
+                    <h3 class="font-bold text-white text-sm truncate" title="{{ req.user_email }}">{{ req.user_email }}</h3>
+                </div>
+                
+                <div class="text-right flex-shrink-0">
+                    <span class="text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-widest border 
+                        {% if req.wallet_type == 'vip' %} bg-[#D4AF37]/10 text-[#D4AF37] border-[#D4AF37]/30 
+                        {% else %} bg-[#1C1C1E] text-[#AAAAAA] border-[#333333] {% endif %}">
+                        <i class="fa-solid fa-wallet"></i> {{ req.wallet_type }}
+                    </span>
+                </div>
             </div>
 
-            <!-- User Info & Badges -->
-            <div class="mb-4 pr-20">
-                <h3 class="font-bold text-slate-800 text-base truncate" title="{{ req.user_email }}">{{ req.user_email }}</h3>
-                
-                <div class="flex flex-wrap items-center gap-2 mt-2">
-                    <!-- Active Status -->
-                    {% if req.is_active %}
-                        <span class="bg-green-50 text-green-600 border border-green-200 px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-check-circle"></i> Active
-                        </span>
-                    {% else %}
-                        <span class="bg-slate-100 text-slate-500 border border-slate-200 px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-lock"></i> Unpaid
-                        </span>
-                    {% endif %}
+            <!-- Badges -->
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+                {% if req.is_active %}
+                    <span class="bg-[#111] text-white border border-[#333] px-2 py-0.5 rounded text-[9px] font-bold"><i class="fa-solid fa-check"></i> Active</span>
+                {% else %}
+                    <span class="bg-[#111] text-[#666] border border-[#222] px-2 py-0.5 rounded text-[9px] font-bold"><i class="fa-solid fa-lock"></i> Unpaid</span>
+                {% endif %}
 
-                    <!-- 🔴 Reject Count Badge (Dynamic) -->
-                    {% if req.rejected_count > 0 %}
-                        <span class="bg-red-50 text-red-600 border border-red-200 px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1 animate-pulse" title="আগে {{ req.rejected_count }} বার পেমেন্ট রিজেক্ট হয়েছে">
-                            <i class="fa-solid fa-triangle-exclamation"></i> {{ req.rejected_count }} বার রিজেক্ট
-                        </span>
-                    {% else %}
-                        <span class="bg-blue-50 text-blue-500 border border-blue-200 px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-shield-check"></i> 0 Reject
-                        </span>
-                    {% endif %}
-                </div>
+                {% if req.rejected_count > 0 %}
+                    <span class="bg-[#1A0505] text-[#FF453A] border border-[#330000] px-2 py-0.5 rounded text-[9px] font-bold animate-pulse">
+                        <i class="fa-solid fa-triangle-exclamation"></i> {{ req.rejected_count }} Rejects
+                    </span>
+                {% else %}
+                    <span class="bg-[#111] text-[#888] border border-[#222] px-2 py-0.5 rounded text-[9px] font-bold">
+                        0 Rejects
+                    </span>
+                {% endif %}
             </div>
 
             <!-- Payment Info Box -->
-            <div class="bg-slate-50 rounded-xl p-4 mb-5 space-y-2.5 text-sm border border-slate-100 flex-grow">
-                <div class="flex justify-between items-center">
-                    <span class="text-slate-500 text-xs font-bold">Method</span>
-                    <span class="font-bold px-2.5 py-1 rounded-lg text-[10px] uppercase tracking-wider
-                        {% if req.method == 'bKash' %} bg-pink-100 text-pink-600 
-                        {% elif req.method == 'Nagad' %} bg-orange-100 text-orange-600 
-                        {% else %} bg-purple-100 text-purple-600 {% endif %}">
-                        {{ req.method }}
-                    </span>
+            <div class="info-box">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-[#666] text-[10px] font-bold uppercase tracking-widest">Gateway</span>
+                    <span class="font-bold text-white text-[10px] uppercase tracking-wider">{{ req.method }}</span>
                 </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-slate-500 text-xs font-bold">Number</span>
-                    <span class="font-mono font-bold text-slate-800 text-base select-all bg-white px-2 py-0.5 rounded border border-slate-200 shadow-sm">{{ req.number }}</span>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-[#666] text-[10px] font-bold uppercase tracking-widest">Number</span>
+                    <span class="font-mono font-bold text-white text-sm select-all bg-[#000] px-2 py-0.5 rounded border border-[#222]">{{ req.number }}</span>
                 </div>
-                <div class="flex justify-between items-center border-t border-slate-200 pt-2.5 mt-2">
-                    <span class="font-bold text-slate-700">Amount</span>
-                    <span class="font-bold text-2xl text-[#E2136E] font-mono">৳ {{ req.amount }}</span>
+                <div class="border-t border-[#222] pt-3 mt-1 flex justify-between items-end">
+                    <span class="font-bold text-[#888] text-[10px] uppercase tracking-widest">Amount</span>
+                    <span class="font-black text-2xl text-white font-mono leading-none">৳{{ req.amount }}</span>
                 </div>
-                <p class="text-[9px] text-slate-400 text-right mt-2 font-mono"><i class="fa-regular fa-clock"></i> {{ req.created_at[:16].replace('T', ' ') }}</p>
+                <p class="text-[8px] text-[#444] text-right mt-3 font-mono uppercase"><i class="fa-regular fa-clock"></i> {{ req.created_at[:16].replace('T', ' ') }}</p>
             </div>
 
             <!-- Actions -->
             <div class="flex gap-3">
-                <a href="/admin/withdraw/reject/{{ req.id }}" onclick="return confirm('রিজেক্ট করলে টাকা ইউজারের ব্যালেন্সে ফেরত যাবে। নিশ্চিত?')" 
-                   class="flex-1 bg-white border-2 border-red-100 text-red-500 py-3 rounded-xl text-xs font-bold text-center hover:bg-red-500 hover:text-white transition shadow-sm">
-                   <i class="fa-solid fa-xmark"></i> রিজেক্ট (Refund)
+                <a href="/admin/withdraw/reject/{{ req.id }}" onclick="return confirm('রিজেক্ট করলে টাকা ইউজারের ব্যালেন্সে ফেরত যাবে। নিশ্চিত?')" class="btn-reject">
+                   <i class="fa-solid fa-xmark"></i> Refund
                 </a>
-                <a href="/admin/withdraw/approve/{{ req.id }}" onclick="return confirm('আপনি কি টাকা পাঠিয়েছেন? এটি অ্যাপ্রুভ মার্ক করা হবে।')" 
-                   class="flex-1 bg-green-500 text-white py-3 rounded-xl text-xs font-bold text-center hover:bg-green-600 shadow-lg shadow-green-200 transition">
-                   <i class="fa-solid fa-check-double"></i> পেমেন্ট ডান
+                <a href="/admin/withdraw/approve/{{ req.id }}" onclick="return confirm('পেমেন্ট পাঠানো হয়েছে?')" class="btn-approve">
+                   <i class="fa-solid fa-check-double"></i> Paid
                 </a>
             </div>
 
         </div>
         {% else %}
-        <div class="col-span-full text-center py-24 bg-white rounded-[32px] border-2 border-dashed border-slate-200 shadow-sm">
-            <div class="h-20 w-20 bg-indigo-50 text-indigo-300 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">
-                <i class="fa-solid fa-money-bill-transfer"></i>
+        <!-- Empty State -->
+        <div class="col-span-full text-center py-24 bg-[#0A0A0A] rounded-[32px] border border-[#1C1C1E]">
+            <div class="h-20 w-20 bg-[#111111] text-[#333333] rounded-[20px] flex items-center justify-center mx-auto mb-4 text-4xl border border-[#222222]">
+                <i class="fa-solid fa-check-double"></i>
             </div>
-            <h3 class="text-lg font-bold text-slate-700">কোনো রিকোয়েস্ট নেই</h3>
-            <p class="text-xs text-slate-400 mt-1">সব পেমেন্ট ক্লিয়ার করা হয়েছে!</p>
+            <h3 class="text-sm font-bold text-white">কোনো রিকোয়েস্ট নেই</h3>
+            <p class="text-[10px] text-[#666666] mt-1 uppercase tracking-widest">Queue is Clear</p>
         </div>
         {% endfor %}
     </div>
