@@ -9,173 +9,269 @@
     .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Method Cards (Dark Theme) */
-    .method-card {
-        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 20px;
-        transition: all 0.3s ease; position: relative; cursor: pointer;
+    /* Admin Action Tile (Black & White Theme) */
+    .bw-card {
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
+        padding: 20px; transition: all 0.3s ease;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+        position: relative; overflow: hidden;
     }
-    .method-card:hover { border-color: #333333; background: #0F0F0F; }
-
-    /* Checked State */
-    input[type="radio"]:checked + .method-card {
-        border-color: #ffffff; background: #111111;
-    }
-    input[type="radio"]:checked + .method-card .icon-circle {
-        background: #ffffff; color: #000000; border-color: #ffffff;
-    }
+    .bw-card:hover { border-color: #333333; background: #0F0F0F; transform: translateY(-4px); }
     
-    .icon-circle {
-        height: 40px; width: 40px; border-radius: 12px;
-        background: #111111; border: 1px solid #222222; color: #E5E5E5;
-        display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.3s;
+    .icon-bw {
+        height: 48px; width: 48px; border-radius: 14px;
+        background: #111111; color: #E5E5E5; border: 1px solid #222222;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 20px; margin-bottom: 12px; transition: all 0.3s ease;
     }
+    .bw-card:hover .icon-bw { background: #ffffff; color: #000000; transform: scale(1.1) rotate(5deg); }
 
-    /* Check Indicator */
-    .check-indicator {
-        position: absolute; top: 8px; right: 8px;
-        height: 16px; width: 16px; border-radius: 50%; border: 1px solid #333333;
-        display: flex; align-items: center; justify-content: center; transition: all 0.3s;
-    }
-    input:checked + .method-card .check-indicator {
-        background: #ffffff; border-color: #ffffff;
-    }
-    input:checked + .method-card .check-indicator::after {
-        content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900;
-        font-size: 8px; color: #000000;
-    }
+    /* Danger Zone Card (Dark Red Touch) */
+    .danger-card { background: #110000; border-color: #330000; }
+    .danger-card:hover { background: #1A0000; border-color: #4A0000; }
+    .danger-card .icon-bw { color: #FF453A; border-color: #330000; }
+    .danger-card:hover .icon-bw { background: #FF453A; color: #ffffff; }
 
-    /* Input Field */
-    .dark-input-large {
-        width: 100%; background: #000000; border: 1px solid #222222; color: #ffffff;
-        padding: 20px 20px 20px 60px; border-radius: 20px; outline: none; 
-        font-size: 18px; font-weight: bold; letter-spacing: 2px; transition: border 0.3s;
+    /* Wide Banner Card */
+    .wide-card {
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
+        padding: 20px 24px; transition: all 0.3s ease;
+        display: flex; align-items: center; justify-content: space-between;
     }
-    .dark-input-large:focus { border-color: #ffffff; }
+    .wide-card:hover { border-color: #333333; background: #0F0F0F; transform: translateY(-2px); }
+
+    /* Custom Toggle Switch (B&W) */
+    .toggle-checkbox:checked { right: 0; border-color: #ffffff; }
+    .toggle-checkbox:checked + .toggle-label { background-color: #ffffff; }
+    .toggle-checkbox { right: 0; z-index: 1; border-color: #222; transition: all 0.3s; }
+    .toggle-label { width: 44px; height: 24px; background-color: #222; border-radius: 9999px; transition: all 0.3s; }
+    .toggle-dot { top: 2px; left: 2px; width: 20px; height: 20px; background-color: #888; border-radius: 50%; transition: all 0.3s; }
+    .toggle-checkbox:checked ~ .toggle-dot { transform: translateX(20px); background-color: #000000; box-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+
+    /* Dark Input */
+    .dark-input {
+        width: 100%; background: #111111; border: 1px solid #222222; color: #ffffff;
+        padding: 16px 16px 16px 46px; border-radius: 16px; outline: none; font-size: 13px; transition: border 0.3s;
+    }
+    .dark-input:focus { border-color: #555555; background: #000000; box-shadow: 0 0 0 4px rgba(255,255,255,0.05); }
 
     /* Button */
     .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 20px;
-        border-radius: 20px; font-weight: 900; font-size: 13px; text-transform: uppercase;
+        background: #ffffff; color: #000000; width: 100%; padding: 18px;
+        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
         letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
-    .btn-white:disabled { background: #222222; color: #666666; cursor: not-allowed; transform: none; }
 </style>
 
-<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-6xl mx-auto space-y-10 pb-10 px-2 pt-4 fade-in-up">
 
-    <!-- 1. HEADER -->
-    <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center gap-4">
-            <a href="/account" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
-                <i class="fa-solid fa-chevron-left text-sm"></i>
-            </a>
-            <div>
-                <h2 class="text-xl font-bold text-white tracking-wide leading-none">পেমেন্ট সেটিংস</h2>
-                <p class="text-[9px] font-bold uppercase tracking-widest text-[#666] mt-1">Withdrawal Gateway</p>
+    <!-- ==========================================
+         1. ADMIN HERO (Command Center)
+    ========================================== -->
+    <div class="bg-[#0A0A0A] border border-[#1C1C1E] rounded-[32px] p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
+        <!-- Ambient Decor -->
+        <div class="absolute top-[-20%] right-[-10%] w-64 h-64 bg-white/5 rounded-full blur-[80px] pointer-events-none"></div>
+        <i class="fa-solid fa-server absolute right-10 top-1/2 transform -translate-y-1/2 text-9xl opacity-[0.03] pointer-events-none rotate-12"></i>
+        
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="flex items-center gap-5">
+                <div class="h-16 w-16 bg-[#111111] rounded-[20px] flex items-center justify-center text-3xl border border-[#222222] text-white flex-shrink-0">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-[#111] text-[#AAA] px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-[#333] mb-2">
+                        <span class="h-1.5 w-1.5 bg-white rounded-full animate-ping"></span> Live Control
+                    </span>
+                    <h1 class="text-3xl md:text-4xl font-black tracking-tight leading-none">Admin Portal</h1>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- 2. ACTIVE WALLET DISPLAY (If Set) -->
-    {% if user.wallet_number and user.wallet_method %}
-    <div class="bg-[#050505] border border-[#1C1C1E] rounded-[24px] p-6 text-white relative overflow-hidden mb-6 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-        <div class="flex justify-between items-start mb-4 relative z-10">
-            <div>
-                <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#666]">Active Receiver</p>
-                <h3 class="text-xl font-mono font-bold tracking-[0.1em] mt-1">{{ user.wallet_number }}</h3>
-            </div>
-            <div class="bg-white text-black px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">
-                {{ user.wallet_method }}
-            </div>
-        </div>
-        <div class="flex items-center gap-1.5 text-white text-[9px] font-bold uppercase tracking-widest border-t border-[#1C1C1E] pt-3 relative z-10">
-            <i class="fa-solid fa-shield-check"></i> Verified Destination
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- 3. FORM CONTAINER -->
-    <div class="bg-[#0A0A0A] p-6 rounded-[28px] border border-[#1C1C1E]">
-        <form method="POST" action="/adm" class="space-y-8" onsubmit="return showLoading()">
-            
-            <!-- Step 1: Select Method -->
-            <div class="space-y-4">
-                <label class="text-[10px] font-bold text-[#888888] uppercase tracking-widest ml-1">১. পেমেন্ট মেথড নির্বাচন করুন</label>
+            <div class="flex items-center gap-3">
+                <!-- Analytics Button -->
+                <a href="/admin/panel-stats" class="bg-white text-black px-6 py-4 rounded-[20px] text-xs font-black uppercase tracking-widest hover:bg-[#E5E5E5] transition shadow-lg flex items-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-chart-line"></i> Stats
+                </a>
                 
-                <div class="grid grid-cols-3 gap-3">
-                    <!-- bKash -->
-                    <label class="relative">
-                        <input type="radio" name="method" value="bKash" class="sr-only" {{ 'checked' if user.wallet_method == 'bKash' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
-                            <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-bolt-lightning"></i></div>
-                            <span class="text-[10px] font-bold uppercase text-[#888]">bKash</span>
-                        </div>
-                    </label>
+                <!-- Global Users Counter -->
+                <div class="bg-[#111] px-6 py-3 rounded-[20px] border border-[#222] text-center min-w-[120px]">
+                    <p class="text-[9px] text-[#666] uppercase font-black tracking-widest mb-0.5">Total Users</p>
+                    <p class="text-2xl font-black text-white font-mono leading-none">{{ user_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <!-- Nagad -->
-                    <label class="relative">
-                        <input type="radio" name="method" value="Nagad" class="sr-only" {{ 'checked' if user.wallet_method == 'Nagad' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
-                            <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-fire-flame-curved"></i></div>
-                            <span class="text-[10px] font-bold uppercase text-[#888]">Nagad</span>
-                        </div>
-                    </label>
+    <!-- ==========================================
+         2. FINANCIAL & VIP OPERATIONS
+    ========================================== -->
+    <div>
+        <h3 class="font-black text-white text-sm mb-4 uppercase tracking-widest flex items-center gap-2 px-1">
+            <i class="fa-solid fa-sack-dollar text-[#666]"></i> Financial Ops
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <a href="/admin/activations" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-user-check"></i></div>
+                <h4 class="font-bold text-white text-xs">Verify Users</h4>
+                <p class="text-[9px] text-[#666] mt-1 font-medium">Account Activation</p>
+            </a>
+            <a href="/admin/withdrawals" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                <h4 class="font-bold text-white text-xs">Withdrawals</h4>
+                <p class="text-[9px] text-[#666] mt-1 font-medium">Pending Cashouts</p>
+            </a>
+            <a href="/admin/vip" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-crown"></i></div>
+                <h4 class="font-bold text-white text-xs">VIP Requests</h4>
+                <p class="text-[9px] text-[#666] mt-1 font-medium">Elite Plan Approvals</p>
+            </a>
+            <a href="/admin/leaders" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-user-tie"></i></div>
+                <h4 class="font-bold text-white text-xs">Ambassadors</h4>
+                <p class="text-[9px] text-[#666] mt-1 font-medium">Leader Applications</p>
+            </a>
+        </div>
+    </div>
 
-                    <!-- Rocket -->
-                    <label class="relative">
-                        <input type="radio" name="method" value="Rocket" class="sr-only" {{ 'checked' if user.wallet_method == 'Rocket' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
-                            <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-shuttle-space"></i></div>
-                            <span class="text-[10px] font-bold uppercase text-[#888]">Rocket</span>
+    <!-- ==========================================
+         3. PLATFORM SERVICES & TASKS
+    ========================================== -->
+    <div>
+        <h3 class="font-black text-white text-sm mb-4 uppercase tracking-widest flex items-center gap-2 px-1">
+            <i class="fa-solid fa-layer-group text-[#666]"></i> Services & Tasks
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <a href="/admin/submissions" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-clipboard-check"></i></div>
+                <h4 class="font-bold text-white text-xs">Review Queue</h4>
+            </a>
+            <a href="/adtask" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-plus"></i></div>
+                <h4 class="font-bold text-white text-xs">Create Task</h4>
+            </a>
+            <a href="/admin/drive/manage" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-wifi"></i></div>
+                <h4 class="font-bold text-white text-xs">Drive Packs</h4>
+            </a>
+            <a href="/proofs" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-images"></i></div>
+                <h4 class="font-bold text-white text-xs">Gallery / Proofs</h4>
+            </a>
+
+            <!-- B2B / Hire Us Inbox -->
+            <a href="/admin/requ" class="wide-card group col-span-2 md:col-span-4">
+                <div class="flex items-center gap-4">
+                    <div class="h-12 w-12 bg-[#111] text-white border border-[#222] rounded-xl flex items-center justify-center text-xl transition group-hover:bg-white group-hover:text-black"><i class="fa-solid fa-briefcase"></i></div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Client Proposals (B2B)</h4>
+                        <p class="text-[10px] text-[#666] mt-0.5 font-medium">Check incoming business requests and promotions</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-arrow-right text-[#444] group-hover:text-white transition"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         4. DATABASE & SYSTEM SECURITY
+    ========================================== -->
+    <div>
+        <h3 class="font-bold text-white text-sm mb-4 uppercase tracking-widest flex items-center gap-2 px-1">
+            <i class="fa-solid fa-database text-[#666]"></i> Core Database
+        </h3>
+        
+        <!-- Ultimate UserX Filter -->
+        <a href="/admin/userx" class="wide-card group mb-3">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-12 bg-[#111] text-white border border-[#222] rounded-xl flex items-center justify-center text-xl transition group-hover:bg-white group-hover:text-black"><i class="fa-solid fa-filter"></i></div>
+                <div>
+                    <h4 class="font-black text-white text-sm">UserX Filter</h4>
+                    <p class="text-[9px] text-[#888] mt-1 uppercase tracking-widest font-bold">Ultimate Search & Export Engine</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-arrow-right text-[#444] group-hover:text-white transition"></i>
+        </a>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <a href="/admin/users" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-list"></i></div>
+                <span class="text-[10px] font-bold text-white">All Users</span>
+            </a>
+            <a href="/admin/ref-check" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-sitemap"></i></div>
+                <span class="text-[10px] font-bold text-white">Refer Check</span>
+            </a>
+            <a href="/admin/api-keys" class="bw-card group">
+                <div class="icon-bw"><i class="fa-solid fa-key"></i></div>
+                <span class="text-[10px] font-bold text-white">ImgBB API</span>
+            </a>
+            <a href="/admin/danger-zone" class="bw-card danger-card group">
+                <div class="icon-bw"><i class="fa-solid fa-radiation"></i></div>
+                <span class="text-[10px] font-bold text-[#FF453A]">Danger Zone</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         5. SITE CONFIGURATION (Toggles)
+    ========================================== -->
+    <div class="bg-[#0A0A0A] p-6 sm:p-8 rounded-[32px] border border-[#1C1C1E] mt-6 relative overflow-hidden">
+        <h3 class="font-black text-white mb-6 pb-4 border-b border-[#1C1C1E] flex items-center gap-2 text-sm uppercase tracking-widest">
+            <i class="fa-solid fa-sliders text-[#666]"></i> Global Settings
+        </h3>
+
+        <form method="POST" action="/admin" class="space-y-6">
+            
+            <div class="grid md:grid-cols-2 gap-5 bg-[#111111] p-5 rounded-[20px] border border-[#222222]">
+                
+                <!-- Maintenance Mode -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 bg-[#1A1A1A] text-white rounded-xl flex items-center justify-center border border-[#333]"><i class="fa-solid fa-person-digging"></i></div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white">Maintenance Mode</h4>
+                            <p class="text-[9px] text-[#666] mt-0.5">সাইট সাধারণ ইউজারদের জন্য বন্ধ</p>
                         </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="maintenance" class="sr-only toggle-checkbox" {{ 'checked' if settings.maintenance_mode }}>
+                        <div class="toggle-label"></div>
+                        <div class="toggle-dot absolute"></div>
+                    </label>
+                </div>
+
+                <!-- Activation Barrier -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 bg-[#1A1A1A] text-white rounded-xl flex items-center justify-center border border-[#333]"><i class="fa-solid fa-lock"></i></div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white">Activation Barrier</h4>
+                            <p class="text-[9px] text-[#666] mt-0.5">ভেরিফাই ছাড়া কেউ কাজ করতে পারবে না</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="activation" class="sr-only toggle-checkbox" {{ 'checked' if settings.activation_required }}>
+                        <div class="toggle-label"></div>
+                        <div class="toggle-dot absolute"></div>
                     </label>
                 </div>
             </div>
 
-            <!-- Step 2: Number Input -->
-            <div class="space-y-4">
-                <label class="text-[10px] font-bold text-[#888888] uppercase tracking-widest ml-1">২. একাউন্ট নাম্বার দিন</label>
+            <!-- Global Notice Textarea -->
+            <div>
+                <label class="block text-[10px] font-black text-[#888] mb-2 uppercase tracking-widest ml-1">Scrolling Feed Notice</label>
                 <div class="relative">
-                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-[#555] font-bold font-mono">+88</span>
-                    <input type="tel" name="number" required pattern="01[3-9][0-9]{8}" placeholder="01700000000" value="{{ user.wallet_number or '' }}" class="dark-input-large font-mono">
+                    <i class="fa-solid fa-bullhorn absolute left-4 top-5 text-[#666]"></i>
+                    <textarea name="notice" rows="3" class="dark-input resize-y" placeholder="এখানে লেখা নোটিশ সবার ড্যাশবোর্ডে ভাসবে...">{{ settings.notice_text }}</textarea>
                 </div>
             </div>
 
-            <!-- Warning Box -->
-            <div class="p-4 rounded-[16px] bg-[#111111] border border-[#222222] flex gap-3">
-                <i class="fa-solid fa-triangle-exclamation text-white mt-0.5 text-sm"></i>
-                <p class="text-[10px] leading-relaxed text-[#AAAAAA] font-medium">
-                    নিশ্চিত করুন যে নাম্বারটি আপনার ব্যক্তিগত। ভুল নাম্বারের জন্য পেমেন্ট আটকে গেলে সিস্টেম দায়ী থাকবে না।
-                </p>
-            </div>
-
-            <!-- Submit -->
-            <button type="submit" id="submitBtn" class="btn-white">
-                আপডেট করুন <i class="fa-solid fa-arrow-right"></i>
+            <button type="submit" class="btn-white">
+                <i class="fa-solid fa-floppy-disk"></i> Update Config
             </button>
-
         </form>
     </div>
 
 </div>
-
-<script>
-    function showLoading() {
-        const form = document.querySelector('form');
-        if (form.checkValidity()) {
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
-            btn.style.background = "#222222";
-            btn.style.color = "#ffffff";
-            return true;
-        }
-        return false;
-    }
-</script>
 
 {% endblock %}
