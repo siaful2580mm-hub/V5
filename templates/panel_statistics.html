@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Dark Cards */
+    .stat-card {
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 20px;
+        padding: 20px; transition: all 0.3s ease; position: relative; overflow: hidden;
+    }
+    .stat-card:hover { border-color: #333333; background: #0F0F0F; transform: translateY(-2px); }
+
+    /* Highlighted Stat Cards for Today */
+    .highlight-card {
+        background: #111111; border: 1px solid #222222;
+    }
+
+    /* System Note Text */
+    .note-text {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 11px; color: #666666; text-transform: uppercase; letter-spacing: 1px;
+    }
+</style>
+
+<div class="max-w-4xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+
+    <!-- 1. HEADER -->
+    <div class="flex items-center justify-between mb-8">
+        <a href="/admin" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+        </a>
+        <div class="text-right">
+            <h2 class="text-xl font-black text-white tracking-wide">প্যানেল স্ট্যাটিস্টিক্স</h2>
+            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#666] mt-1">System Analytics</p>
+        </div>
+    </div>
+
+    <!-- 2. TODAY'S STATS (Highlighted) -->
+    <h3 class="text-xs font-black text-white uppercase tracking-widest mb-3 ml-1 border-l-2 border-white pl-2">আজকের রিপোর্ট (Today)</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+        <div class="stat-card highlight-card">
+            <p class="text-[9px] text-[#888] font-bold uppercase tracking-widest mb-1">Total Members</p>
+            <h3 class="text-2xl font-black text-white font-mono">{{ stats.today_members }}</h3>
+        </div>
+        <div class="stat-card highlight-card">
+            <p class="text-[9px] text-[#888] font-bold uppercase tracking-widest mb-1">VIP Amount</p>
+            <h3 class="text-2xl font-black text-white font-mono">৳{{ stats.today_vip_amount }}</h3>
+        </div>
+        <div class="stat-card highlight-card">
+            <p class="text-[9px] text-[#888] font-bold uppercase tracking-widest mb-1">Activations</p>
+            <h3 class="text-2xl font-black text-white font-mono">{{ stats.today_activation }}</h3>
+        </div>
+        <div class="stat-card highlight-card">
+            <p class="text-[9px] text-[#888] font-bold uppercase tracking-widest mb-1">Recharge (BDT)</p>
+            <h3 class="text-2xl font-black text-white font-mono">৳{{ stats.today_recharge }}</h3>
+        </div>
+    </div>
+
+    <!-- 3. LIFETIME STATS (All Time) -->
+    <h3 class="text-xs font-black text-white uppercase tracking-widest mb-3 ml-1 border-l-2 border-[#555] pl-2 text-[#888]">সর্বমোট (All Time)</h3>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-8">
+        <div class="stat-card">
+            <p class="text-[9px] text-[#666] font-bold uppercase tracking-widest mb-1">Total Members</p>
+            <h3 class="text-xl font-bold text-white font-mono">{{ stats.total_members }}</h3>
+        </div>
+        <div class="stat-card">
+            <p class="text-[9px] text-[#666] font-bold uppercase tracking-widest mb-1">Active Members</p>
+            <h3 class="text-xl font-bold text-white font-mono">{{ stats.active_members }}</h3>
+        </div>
+        <div class="stat-card">
+            <p class="text-[9px] text-[#666] font-bold uppercase tracking-widest mb-1">Total VIP Users</p>
+            <h3 class="text-xl font-bold text-white font-mono">{{ stats.vip_users }}</h3>
+        </div>
+        <div class="stat-card">
+            <p class="text-[9px] text-[#666] font-bold uppercase tracking-widest mb-1">Total VIP Amount</p>
+            <h3 class="text-xl font-bold text-white font-mono">৳{{ stats.total_vip_amount }}</h3>
+        </div>
+        <div class="stat-card">
+            <p class="text-[9px] text-[#666] font-bold uppercase tracking-widest mb-1">Total Activations</p>
+            <h3 class="text-xl font-bold text-white font-mono">{{ stats.total_activation }}</h3>
+        </div>
+        <div class="stat-card">
+            <p class="text-[9px] text-[#666] font-bold uppercase tracking-widest mb-1">Total Recharge</p>
+            <h3 class="text-xl font-bold text-white font-mono">৳{{ stats.total_recharge }}</h3>
+        </div>
+    </div>
+
+    <!-- 4. LAST ACTION TIMESTAMPS -->
+    <div class="bg-[#111111] border border-[#1C1C1E] rounded-[24px] p-6 mb-8">
+        <h3 class="text-xs font-black text-white uppercase tracking-widest mb-5 flex items-center gap-2">
+            <i class="fa-regular fa-clock text-[#888]"></i> Last Approvals
+        </h3>
+        
+        <div class="space-y-4">
+            <div class="flex justify-between items-center pb-4 border-b border-[#222]">
+                <div>
+                    <p class="text-sm font-bold text-white">Last VIP Approval</p>
+                    <p class="text-[10px] text-[#666] font-mono mt-0.5">UID: {{ stats.last_vip.user_id if stats.last_vip else 'N/A' }}</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-mono text-[#888] bg-[#0A0A0A] px-3 py-1.5 rounded-lg border border-[#333]">
+                        {{ stats.last_vip.created_at[:16].replace('T', ' ') if stats.last_vip else 'No Data' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pb-4 border-b border-[#222]">
+                <div>
+                    <p class="text-sm font-bold text-white">Last Activation</p>
+                    <p class="text-[10px] text-[#666] font-mono mt-0.5">UID: {{ stats.last_activation.user_id if stats.last_activation else 'N/A' }}</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-mono text-[#888] bg-[#0A0A0A] px-3 py-1.5 rounded-lg border border-[#333]">
+                        {{ stats.last_activation.created_at[:16].replace('T', ' ') if stats.last_activation else 'No Data' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-sm font-bold text-white">Last Recharge</p>
+                    <p class="text-[10px] text-[#666] font-mono mt-0.5">UID: {{ stats.last_recharge.user_id if stats.last_recharge else 'N/A' }}</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-mono text-[#888] bg-[#0A0A0A] px-3 py-1.5 rounded-lg border border-[#333]">
+                        {{ stats.last_recharge.created_at[:16].replace('T', ' ') if stats.last_recharge else 'No Data' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. SYSTEM FOOTNOTES -->
+    <div class="mt-8 text-center space-y-2 pb-6 border-t border-[#1C1C1E] pt-8">
+        <p class="note-text flex justify-center items-center gap-2"><i class="fa-solid fa-microchip"></i> Fully System Analysts</p>
+        <p class="note-text">Day rest in rat 12</p>
+        <p class="note-text">Count start on 19/06/2026</p>
+        <p class="note-text text-white font-bold mt-2">THIS IS SEASON - 3</p>
+    </div>
+
+</div>
+
+{% endblock %}
