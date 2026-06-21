@@ -1,9 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<!-- ফিল্টার লজিক: PlayStore টাস্কগুলো বাদ দিয়ে বাকিগুলো micro_tasks এ রাখা হলো -->
+{% set micro_tasks = tasks | rejectattr('category', 'equalto', 'PlayStore') | list %}
+
 <style>
     /* ==========================================
-       PURE DARK THEME & REDESIGNED UI
+       PURE DARK THEME
     ========================================== */
     body { background-color: #000000 !important; color: #ffffff !important; }
     .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
@@ -75,12 +78,13 @@
         </a>
         <h2 class="text-lg font-bold text-white tracking-wide">মাইক্রো টাস্ক</h2>
         <div class="bg-[#111111] border border-[#222222] text-[#AAAAAA] px-3 py-1.5 rounded-lg text-[10px] font-bold">
-            {{ tasks|length }} টি কাজ
+            <!-- ফিল্টার করা টাস্কের সংখ্যা দেখানো হচ্ছে -->
+            {{ micro_tasks|length }} টি কাজ
         </div>
     </div>
 
     <!-- ==========================================
-         2. GMAIL FARMING CTA BANNER (New Addition)
+         2. GMAIL FARMING CTA BANNER
     ========================================== -->
     <a href="/gmail-tasks" class="promo-banner group">
         <div class="flex items-start justify-between">
@@ -103,10 +107,11 @@
     </div>
 
     <!-- ==========================================
-         3. REDESIGNED BENTO TASK GRID
+         3. BENTO TASK GRID (Filtered)
     ========================================== -->
     <div class="grid sm:grid-cols-2 gap-4">
-        {% for task in tasks %}
+        <!-- এখানে tasks এর বদলে micro_tasks দিয়ে লুপ চালানো হয়েছে -->
+        {% for task in micro_tasks %}
         
         <!-- Category Icon Logic -->
         {% set icon_class = 'fa-solid fa-globe' %}
