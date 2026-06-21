@@ -2,31 +2,84 @@
 {% block content %}
 
 <style>
-    .fade-up { animation: fadeUp 0.5s ease-out forwards; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    /* ==========================================
+       PURE DARK THEME & ANIMATIONS
+    ========================================== */
+    body { background-color: #000000 !important; color: #ffffff !important; }
+    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Dark Cards */
+    .dark-card {
+        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 28px;
+        padding: 24px; position: relative; overflow: hidden;
+    }
+
+    /* Modern Inputs */
+    .dark-input {
+        width: 100%; background: #111111; border: 1px solid #222222;
+        color: #ffffff; padding: 16px; border-radius: 16px; outline: none;
+        font-size: 13px; transition: all 0.3s ease;
+    }
+    .dark-input:focus { border-color: #555555; background: #000000; box-shadow: 0 0 0 4px rgba(255,255,255,0.05); }
+    .dark-input::placeholder { color: #555555; }
+    
+    /* Select styling to match dark theme */
+    select.dark-input { appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23888888"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>'); background-repeat: no-repeat; background-position: right 16px center; background-size: 16px; padding-right: 40px; }
+    select.dark-input option { background: #000000; color: #ffffff; }
+
+    /* Button */
+    .btn-white {
+        background: #ffffff; color: #000000; width: 100%; padding: 18px;
+        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
+        letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+
+    /* Table/List Styles */
+    .dark-table-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px; border-bottom: 1px solid #1C1C1E; transition: background 0.2s;
+    }
+    .dark-table-row:hover { background: #111111; }
+    .dark-table-row:last-child { border-bottom: none; }
 </style>
 
-<div class="max-w-4xl mx-auto space-y-8 fade-up pb-24 pt-4">
+<div class="max-w-4xl mx-auto space-y-8 fade-in-up pb-24 pt-4 px-2">
 
-    <!-- 1. CREATE TASK FORM -->
-    <div class="clean-card p-6 md:p-8 relative overflow-hidden border-t-4 border-t-emerald-500">
-        <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-            <div class="h-12 w-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-sm">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </div>
+    <!-- 1. HEADER -->
+    <div class="bg-[#111111] rounded-[32px] p-6 sm:p-8 text-white border border-[#222222] shadow-2xl relative overflow-hidden flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-[0.02] rounded-full blur-2xl pointer-events-none"></div>
+        
+        <div class="relative z-10 flex items-center gap-5 w-full md:w-auto">
+            <a href="/admin" class="h-14 w-14 bg-[#1C1C1E] border border-[#333] rounded-[16px] flex items-center justify-center text-xl hover:bg-white hover:text-black transition flex-shrink-0">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
             <div>
-                <h2 class="text-xl font-black text-slate-800">নতুন টাস্ক তৈরি করুন</h2>
-                <p class="text-xs text-slate-500 font-medium">ইউজারদের জন্য কাজ সেট করুন</p>
+                <h1 class="text-2xl font-black tracking-tight">Create Task</h1>
+                <p class="text-[#888888] text-xs mt-1 font-medium uppercase tracking-widest">টাস্ক ম্যানেজমেন্ট প্যানেল</p>
             </div>
         </div>
+
+        <div class="relative z-10 bg-[#000000] px-5 py-2.5 rounded-xl border border-[#333333] flex items-center gap-3">
+            <span class="text-[10px] text-[#666] font-bold uppercase tracking-widest">Total Tasks</span>
+            <span class="text-lg font-black font-mono">{{ tasks|length }}</span>
+        </div>
+    </div>
+
+    <!-- 2. CREATE TASK FORM -->
+    <div class="dark-card">
+        <h3 class="font-bold text-white text-sm mb-6 flex items-center gap-2 uppercase tracking-widest border-b border-[#1C1C1E] pb-4">
+            <i class="fa-solid fa-pen-to-square text-[#888]"></i> নতুন টাস্ক তৈরি করুন
+        </h3>
         
         <form method="POST" action="/adtask" enctype="multipart/form-data" class="space-y-5">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <!-- Category -->
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 mb-1.5 ml-1 uppercase tracking-widest">ক্যাটাগরি</label>
-                    <select name="category" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm font-bold text-slate-700 transition">
+                    <label class="block text-[10px] font-bold text-[#666666] mb-1.5 ml-1 uppercase tracking-widest">ক্যাটাগরি</label>
+                    <select name="category" class="dark-input font-bold text-white">
                         <option value="Facebook">Facebook</option>
                         <option value="YouTube">YouTube</option>
                         <option value="TikTok">TikTok</option>
@@ -37,8 +90,8 @@
                 
                 <!-- Task Type (Triggers JS) -->
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 mb-1.5 ml-1 uppercase tracking-widest">কাজের ধরন</label>
-                    <select name="task_type" id="taskTypeSelect" onchange="toggleFBFields()" class="w-full p-3.5 border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm font-bold text-slate-700 transition">
+                    <label class="block text-[10px] font-bold text-[#666666] mb-1.5 ml-1 uppercase tracking-widest">কাজের ধরন</label>
+                    <select name="task_type" id="taskTypeSelect" onchange="toggleFBFields()" class="dark-input font-bold text-white">
                         <option value="screenshot">Screenshot (Proof Req)</option>
                         <option value="link">Link Click (No Proof)</option>
                         <option value="fb_post">Facebook Post (Copy & Post)</option>
@@ -48,112 +101,104 @@
 
             <!-- Title -->
             <div>
-                <label class="block text-[10px] font-black text-slate-500 mb-1.5 ml-1 uppercase tracking-widest">টাস্ক টাইটেল</label>
-                <input type="text" name="title" required placeholder="Ex: Watch YouTube Video" class="w-full p-3.5 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-slate-50 focus:bg-white transition text-sm font-bold text-slate-800">
+                <label class="block text-[10px] font-bold text-[#666666] mb-1.5 ml-1 uppercase tracking-widest">টাস্ক টাইটেল</label>
+                <input type="text" name="title" required placeholder="Ex: Watch YouTube Video" class="dark-input font-bold">
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div class="md:col-span-2">
-                    <label class="block text-[10px] font-black text-slate-500 mb-1.5 ml-1 uppercase tracking-widest">কাজের লিংক</label>
-                    <input type="url" name="link" placeholder="https://..." class="w-full p-3.5 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-slate-50 focus:bg-white transition text-sm font-mono text-slate-800">
+                    <label class="block text-[10px] font-bold text-[#666666] mb-1.5 ml-1 uppercase tracking-widest">কাজের লিংক</label>
+                    <input type="url" name="link" placeholder="https://..." class="dark-input font-mono">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 mb-1.5 ml-1 uppercase tracking-widest">টাকা (Reward)</label>
+                    <label class="block text-[10px] font-bold text-[#666666] mb-1.5 ml-1 uppercase tracking-widest">টাকা (Reward)</label>
                     <div class="relative">
-                        <span class="absolute left-4 top-3.5 text-slate-400">৳</span>
-                        <input type="number" step="0.01" name="reward" value="5.00" class="w-full pl-8 p-3.5 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-slate-50 focus:bg-white transition text-sm font-bold text-slate-800">
+                        <span class="absolute left-4 top-4 text-[#888] font-bold">৳</span>
+                        <input type="number" step="0.01" name="reward" value="5.00" class="dark-input pl-10 font-black font-mono">
                     </div>
                 </div>
             </div>
 
             <!-- Description -->
             <div>
-                <label class="block text-[10px] font-black text-slate-500 mb-1.5 ml-1 uppercase tracking-widest">বিবরণ</label>
-                <textarea name="description" rows="2" class="w-full p-3.5 border border-slate-200 rounded-xl focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-slate-50 focus:bg-white transition text-sm font-medium text-slate-700" placeholder="বিস্তারিত লিখুন..."></textarea>
+                <label class="block text-[10px] font-bold text-[#666666] mb-1.5 ml-1 uppercase tracking-widest">বিবরণ (Description)</label>
+                <textarea name="description" rows="3" class="dark-input resize-none" placeholder="কাজের বিস্তারিত নিয়মকানুন লিখুন..."></textarea>
             </div>
 
             <!-- ================= FB POST DYNAMIC FIELDS ================= -->
-            <div id="fbPostFields" class="hidden bg-blue-50/50 border border-blue-200 rounded-2xl p-5 space-y-4">
-                <div class="flex items-center gap-2 mb-2">
-                    <i class="fa-brands fa-facebook text-blue-600 text-lg"></i>
-                    <h4 class="font-bold text-slate-800 text-sm">Facebook Post Setup</h4>
+            <div id="fbPostFields" class="hidden bg-[#111111] border border-[#222222] rounded-2xl p-5 space-y-5 mt-4">
+                <div class="flex items-center gap-2 mb-2 border-b border-[#1C1C1E] pb-3">
+                    <i class="fa-brands fa-facebook text-[#3B82F6] text-lg"></i>
+                    <h4 class="font-bold text-white text-sm uppercase tracking-widest">Facebook Post Setup</h4>
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 mb-1.5 ml-1 uppercase tracking-widest">পোস্টের ছবি আপলোড করুন</label>
-                    <input type="file" name="task_image" accept="image/*" class="w-full p-3 border border-blue-200 rounded-xl bg-white text-xs font-bold text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
+                    <label class="block text-[10px] font-bold text-[#666666] mb-1.5 ml-1 uppercase tracking-widest">পোস্টের ছবি আপলোড করুন</label>
+                    <input type="file" name="task_image" accept="image/*" class="w-full p-4 border border-[#333333] rounded-xl bg-[#0A0A0A] text-xs font-bold text-[#AAAAAA] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-white file:text-black hover:file:bg-[#e5e5e5] transition cursor-pointer">
                 </div>
 
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 mb-1.5 ml-1 uppercase tracking-widest">পোস্টের ক্যাপশন (Text)</label>
-                    <textarea name="caption" rows="3" class="w-full p-3 border border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 bg-white transition text-sm font-medium text-slate-700" placeholder="ইউজার এই লেখাটি কপি করে ফেসবুকে পোস্ট করবে..."></textarea>
+                    <label class="block text-[10px] font-bold text-[#666666] mb-1.5 ml-1 uppercase tracking-widest">পোস্টের ক্যাপশন (Text)</label>
+                    <textarea name="caption" rows="3" class="dark-input !bg-[#0A0A0A] resize-none" placeholder="ইউজার এই লেখাটি কপি করে ফেসবুকে পোস্ট করবে..."></textarea>
                 </div>
             </div>
 
             <!-- Submit -->
-            <button type="submit" class="btn-emerald w-full text-white py-4 rounded-xl font-black text-sm uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 mt-4">
-                <i class="fa-solid fa-plus"></i> টাস্ক পাবলিশ করুন
+            <button type="submit" class="btn-white mt-6">
+                টাস্ক পাবলিশ করুন <i class="fa-solid fa-paper-plane"></i>
             </button>
         </form>
     </div>
 
-    <!-- 2. ALL TASK LIST -->
-    <div>
-        <h3 class="font-black text-slate-800 text-sm mb-4 flex items-center gap-2">
-            <i class="fa-solid fa-list-check text-emerald-500"></i> সকল টাস্ক লিস্ট ({{ tasks|length }})
-        </h3>
+    <!-- 3. ALL TASK LIST -->
+    <div class="dark-card !p-0 mt-8">
+        <div class="p-6 border-b border-[#1C1C1E] flex items-center justify-between bg-[#111111]">
+            <h3 class="font-bold text-white text-sm uppercase tracking-widest flex items-center gap-2">
+                <i class="fa-solid fa-list-ul text-[#888]"></i> Active Tasks List
+            </h3>
+        </div>
 
-        <div class="clean-card overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm whitespace-nowrap">
-                    <thead class="bg-slate-50 text-slate-500 text-[10px] uppercase font-black tracking-widest border-b border-slate-100">
-                        <tr>
-                            <th class="p-4">Title & Link</th>
-                            <th class="p-4">Reward</th>
-                            <th class="p-4">Type</th>
-                            <th class="p-4 text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50">
-                        {% for task in tasks %}
-                        <tr class="hover:bg-slate-50/50 transition">
-                            <td class="p-4">
-                                <div class="font-bold text-slate-800">{{ task.title }}</div>
-                                <a href="{{ task.link }}" target="_blank" class="text-[10px] text-blue-500 hover:underline font-mono mt-0.5 truncate w-32 block">
-                                    {{ task.link }}
-                                </a>
-                            </td>
-                            <td class="p-4">
-                                <span class="bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-md font-bold text-xs font-mono border border-emerald-100">
-                                    ৳ {{ task.reward }}
-                                </span>
-                            </td>
-                            <td class="p-4">
-                                <span class="text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider border 
-                                    {% if task.task_type == 'screenshot' %} bg-purple-50 text-purple-600 border-purple-100
-                                    {% elif task.task_type == 'fb_post' %} bg-blue-50 text-blue-600 border-blue-100
-                                    {% else %} bg-slate-100 text-slate-600 border-slate-200 {% endif %}">
-                                    {{ task.task_type | replace('_', ' ') }}
-                                </span>
-                            </td>
-                            <td class="p-4 text-center">
-                                <a href="/admin/task/delete/{{ task.id }}" onclick="return confirm('এই টাস্ক ডিলিট করবেন?')" 
-                                   class="inline-flex h-8 w-8 bg-red-50 text-red-500 rounded-lg items-center justify-center hover:bg-red-500 hover:text-white transition shadow-sm" title="Delete Task">
-                                    <i class="fa-solid fa-trash-can text-xs"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="4" class="p-10 text-center text-slate-400">
-                                <i class="fa-solid fa-folder-open text-3xl mb-2 opacity-50"></i>
-                                <p class="text-xs font-bold">কোনো টাস্ক তৈরি করা হয়নি</p>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class="flex flex-col">
+            {% for task in tasks %}
+            <div class="dark-table-row group">
+                
+                <div class="flex-grow pr-4 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="bg-[#111111] text-[#AAAAAA] border border-[#222222] px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest">
+                            {{ task.category }}
+                        </span>
+                        <span class="bg-[#1C1C1E] text-white border border-[#333333] px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest">
+                            {{ task.task_type | replace('_', ' ') }}
+                        </span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm truncate">{{ task.title }}</h4>
+                    <a href="{{ task.link }}" target="_blank" class="text-[9px] text-[#444444] hover:text-[#888888] font-mono mt-0.5 truncate block transition">
+                        {{ task.link }}
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4 flex-shrink-0">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-[9px] font-bold text-[#666666] uppercase tracking-widest mb-0.5">Reward</p>
+                        <p class="text-sm font-black text-white font-mono">৳{{ task.reward }}</p>
+                    </div>
+                    
+                    <a href="/admin/task/delete/{{ task.id }}" onclick="return confirm('এই টাস্ক ডিলিট করবেন? (এর সাথে যুক্ত সকল সাবমিশনও মুছে যাবে)')" 
+                       class="h-10 w-10 bg-[#111111] text-[#FF453A] border border-[#222222] rounded-xl flex items-center justify-center hover:bg-[#FF453A] hover:text-white transition shadow-sm" title="Delete Task">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </a>
+                </div>
+
             </div>
+            {% else %}
+            <div class="p-16 text-center">
+                <div class="h-16 w-16 bg-[#111111] rounded-full flex items-center justify-center mx-auto mb-4 text-[#333333] text-2xl border border-[#222222]">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h3 class="text-sm font-bold text-white">কোনো টাস্ক নেই</h3>
+                <p class="text-[10px] text-[#666666] mt-1">নতুন টাস্ক তৈরি করলে এখানে শো করবে।</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
