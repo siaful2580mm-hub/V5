@@ -2693,41 +2693,6 @@ def withdraw_action(action, id):
 
     return redirect(url_for('admin_withdrawals'))
 
-# --- ADMIN: REFERRAL CHECKER & USER INSIGHT ---
-@app.route('/admin/ref-check', methods=['GET', 'POST'])
-@login_required
-@admin_required
-def admin_ref_check():
-    target_user = None
-    referrals = []
-    ref_count = 0
-    search_email = ""
-
-    if request.method == 'POST':
-        search_email = request.form.get('email')
-        
-        if search_email:
-            try:
-                # ১. টার্গেট ইউজারকে ইমেইল দিয়ে খোঁজা
-                # ilike ব্যবহার করছি যাতে ছোট/বড় হাতের অক্ষর সমস্যা না করে
-                user_res = supabase.table('profiles').select('*').ilike('email', search_email.strip()).execute()
-                
-                if user_res.data:
-                    target_user = user_res.data[0] # প্রথম রেজাল্ট নেওয়া হলো
-                    
-                    # ২. তার রেফার করা মেম্বারদের খোঁজা (যাদের referred_by = target_user.id)
-                    ref_res = supabase.table('profiles').select('*').eq('referred_by', target_user['id']).order('created_at', desc=True).execute()
-                    referrals = ref_res.data
-                    ref_count = len(referrals)
-                else:
-                    flash("❌ এই ইমেইলে কোনো ইউজার পাওয়া যায়নি।", "error")
-                    
-            except Exception as e:
-                print(f"Search Error: {e}")
-                flash(f"System Error: {str(e)}", "error")
-
-    return render_template('ref_check.html', target_user=target_user, referrals=referrals, count=ref_count, search_email=search_email)
-    
 # --- ADMIN: ADVANCED USER INSIGHT & REF CHECK ---
 @app.route('/admin/ref-check', methods=['GET', 'POST'])
 @login_required
