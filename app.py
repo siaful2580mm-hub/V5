@@ -2727,7 +2727,68 @@ def admin_ref_check():
                 flash(f"System Error: {str(e)}", "error")
 
     return render_template('ref_check.html', target_user=target_user, referrals=referrals, count=ref_count, search_email=search_email)
-# --- REFERRALS PAGE (LOGIC UPDATED) ---
+    
+# --- ADMIN: ADVANCED USER INSIGHT & REF CHECK ---
+@app.route('/admin/ref-check', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_ref_check():
+    target_user = None
+    referrals = []
+    ref_count = 0
+    search_query = ""
+    user_stats = {}
+
+    if request.method == 'POST':
+        search_query = request.form.get('query', '').strip()
+        
+        if search_query:
+            try:
+                # ১. টার্গেট ইউজারকে ইমেইল অথবা ID দিয়ে খোঁজা
+                if '@' in search_query:
+                    user_res = supabase.table('profiles').select('*').ilike('email', search_query).execute()
+                else:
+                    user_res = supabase.table('profiles').select('*').eq('referral_code', search_query).execute()
+                
+                if user_res.data:
+                    target_user = user_res.data[0]
+                    uid = target_user['id']
+                    
+                    # ২. তার রেফার করা মেম্বারদের খোঁজা
+                    ref_res = supabase.table('profiles').select('*').eq('referred_by', uid).order('created_at', desc=True).execute()
+                    referrals = ref_res.data
+                    ref_count = len(referrals)
+
+                    # ৩. ইউজারের ফুল হিস্টোরি/স্ট্যাটস বের করা
+                    # A. Withdrawals Check
+                    with_res = supabase.table('withdrawals').select('status').eq('user_id', uid).execute()
+                    withdrawals_all = with_res.data
+                    user_stats['total_withdraw'] = len(withdrawals_all)
+                    user_stats['rejected_withdraw'] = sum(1 for w in withdrawals_all if w['status'] == 'rejected')
+                    user_stats['approved_withdraw'] = sum(1 for w in withdrawals_all if w['status'] == 'approved')
+
+                    # B. Tasks Check
+                    sub_res = supabase.table('submissions').select('id').eq('user_id', uid).execute()
+                    user_stats['total_tasks'] = len(sub_res.data)
+
+                    # C. Gmail Tasks Check
+                    gmail_res = supabase.table('gmail_tasks').select('id').eq('assigned_to', uid).execute()
+                    user_stats['total_gmails'] = len(gmail_res.data)
+
+                else:
+                    flash("❌ এই তথ্যের কোনো ইউজার পাওয়া যায়নি।", "error")
+                    
+            except Exception as e:
+                print(f"Search Error: {e}")
+                flash(f"System Error: {str(e)}", "error")
+
+    return render_template('ref_check.html', 
+                           target_user=target_user, 
+                           referrals=referrals, 
+                           count=ref_count, 
+                           search_query=search_query, 
+                           user_stats=user_stats)
+    
 @app.route('/referrals')
 @login_required
 def referrals():
