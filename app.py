@@ -2692,7 +2692,6 @@ def withdraw_action(action, id):
         flash(f"Error: {str(e)}", "error")
 
     return redirect(url_for('admin_withdrawals'))
-
 # --- ADMIN: ADVANCED USER INSIGHT & REF CHECK ---
 @app.route('/admin/ref-check', methods=['GET', 'POST'])
 @login_required
@@ -2703,6 +2702,10 @@ def admin_ref_check():
     ref_count = 0
     search_query = ""
     user_stats = {}
+    
+    # 🟢 [নতুন] ইউজারের সাবমিট করা ডাটা স্টোর করার জন্য
+    submitted_tasks = []
+    submitted_gmails = []
 
     if request.method == 'POST':
         search_query = request.form.get('query', '').strip()
@@ -2725,20 +2728,23 @@ def admin_ref_check():
                     ref_count = len(referrals)
 
                     # ৩. ইউজারের ফুল হিস্টোরি/স্ট্যাটস বের করা
-                    # A. Withdrawals Check
                     with_res = supabase.table('withdrawals').select('status').eq('user_id', uid).execute()
                     withdrawals_all = with_res.data
                     user_stats['total_withdraw'] = len(withdrawals_all)
                     user_stats['rejected_withdraw'] = sum(1 for w in withdrawals_all if w['status'] == 'rejected')
                     user_stats['approved_withdraw'] = sum(1 for w in withdrawals_all if w['status'] == 'approved')
 
-                    # B. Tasks Check
-                    sub_res = supabase.table('submissions').select('id').eq('user_id', uid).execute()
-                    user_stats['total_tasks'] = len(sub_res.data)
+                    # 🟢 [নতুন] ৪. ইউজারের সাবমিট করা মাইক্রো টাস্কগুলো আনা
+                    # submissions টেবিলের সাথে tasks টেবিলের title এবং reward আনা হচ্ছে
+                    subs_raw = supabase.table('submissions').select('*, tasks(title, reward)').eq('user_id', uid).order('created_at', desc=True).execute()
+                    submitted_tasks = subs_raw.data
+                    user_stats['total_tasks'] = len(submitted_tasks)
 
-                    # C. Gmail Tasks Check
-                    gmail_res = supabase.table('gmail_tasks').select('id').eq('assigned_to', uid).execute()
-                    user_stats['total_gmails'] = len(gmail_res.data)
+                    # 🟢 [নতুন] ৫. ইউজারের সাবমিট করা জিমেইলগুলো আনা
+                    # শুধু যেগুলো submit বা approve বা reject হয়েছে সেগুলোই আনবে
+                    gmails_raw = supabase.table('gmail_tasks').select('*').eq('assigned_to', uid).in_('status', ['submitted', 'approved', 'rejected']).order('updated_at', desc=True).execute()
+                    submitted_gmails = gmails_raw.data
+                    user_stats['total_gmails'] = len(submitted_gmails)
 
                 else:
                     flash("❌ এই তথ্যের কোনো ইউজার পাওয়া যায়নি।", "error")
@@ -2752,8 +2758,10 @@ def admin_ref_check():
                            referrals=referrals, 
                            count=ref_count, 
                            search_query=search_query, 
-                           user_stats=user_stats)
-    
+                           user_stats=user_stats,
+                           submitted_tasks=submitted_tasks,
+                           submitted_gmails=submitted_gmails)
+                               
 @app.route('/referrals')
 @login_required
 def referrals():
