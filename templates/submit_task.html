@@ -11,9 +11,7 @@
 
     /* Timeline Structure */
     .timeline-container {
-        position: relative;
-        padding-left: 28px;
-        margin-top: 32px;
+        position: relative; padding-left: 28px; margin-top: 32px;
     }
     .timeline-line {
         position: absolute; left: 10px; top: 10px; bottom: 0;
@@ -30,7 +28,7 @@
         box-shadow: 0 0 0 4px #000000; z-index: 10;
     }
 
-    /* Action Blocks (No Borders, Deep Dark) */
+    /* Action Blocks */
     .action-block {
         background: #0A0A0A; border-radius: 24px; padding: 24px;
         transition: all 0.3s ease; border: 1px solid #111111;
@@ -40,8 +38,7 @@
     /* Terminal Style Box for Copy Text */
     .terminal-box {
         background: #050505; border: 1px solid #1C1C1E; border-radius: 16px;
-        padding: 16px; font-family: monospace; color: #AAAAAA;
-        position: relative;
+        padding: 16px; font-family: monospace; color: #AAAAAA; position: relative;
     }
 
     /* Massive Button */
@@ -50,7 +47,7 @@
         border-radius: 24px; font-weight: 900; font-size: 14px;
         text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;
         display: flex; align-items: center; justify-content: center; gap: 8px;
-        box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        box-shadow: 0 10px 30px rgba(255,255,255,0.1); border: none; cursor: pointer;
     }
     .btn-massive:active { transform: scale(0.96); background: #e5e5e5; }
     .btn-massive:disabled { background: #111111; color: #444444; box-shadow: none; cursor: not-allowed; }
@@ -58,7 +55,7 @@
     .btn-dark {
         background: #111111; color: #ffffff; padding: 16px; border-radius: 16px;
         font-weight: 800; font-size: 12px; text-transform: uppercase; border: 1px solid #222222;
-        letter-spacing: 1px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+        letter-spacing: 1px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; text-decoration: none;
     }
     .btn-dark:active { background: #000000; border-color: #333333; }
 
@@ -70,16 +67,12 @@
     }
     .minimal-dropzone:hover { border-color: #ffffff; background: #050505; }
     .minimal-dropzone.has-file { border-style: solid; border-color: #ffffff; background: #111111; }
-    
-    /* Smart Progress Line */
-    .smart-progress-bg { width: 100%; height: 4px; background: #1C1C1E; border-radius: 4px; overflow: hidden; margin-top: 16px; display: none; }
-    .smart-progress-fill { height: 100%; width: 0%; background: #ffffff; transition: width 0.3s ease; }
 </style>
 
 <div class="max-w-xl mx-auto fade-in-up pb-10 px-4 mt-4">
 
     <!-- ==========================================
-         1. INVOICE STYLE TASK BRIEF (No Cards)
+         1. INVOICE STYLE TASK BRIEF
     ========================================== -->
     <div class="flex items-center justify-between mb-8">
         <a href="/tasks" class="h-10 w-10 bg-[#111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#222]">
@@ -114,30 +107,19 @@
             <div class="step-indicator">1</div>
             <h3 class="font-bold text-white text-sm mb-4 uppercase tracking-widest">Execute Task</h3>
 
-            <div class="action-block" id="taskActionBox">
+            <div class="action-block">
                 
-                <!-- If it's a LINK task (Requires Timer) -->
+                <!-- If it's a LINK task -->
                 {% if task.task_type == 'screenshot' and task.link %}
-                
-                <div class="flex items-center justify-between mb-4">
-                    <p class="text-[11px] text-[#888] font-medium">নিচের লিংকে ক্লিক করে নির্ধারিত সময় অপেক্ষা করুন।</p>
-                    <span id="requiredTimeBadge" class="bg-[#111] text-white px-2 py-1 rounded text-[9px] font-black uppercase font-mono border border-[#333]">
-                        <span id="timeText">--s</span>
-                    </span>
+                <div class="space-y-4">
+                    <p class="text-[11px] text-[#888] font-medium leading-relaxed">নিচের লিংকে ক্লিক করে কাজটি সম্পন্ন করুন। এরপর ফিরে এসে স্ক্রিনশট জমা দিন।</p>
+                    <a href="{{ task.link }}" target="_blank" class="btn-dark">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> লিংকে প্রবেশ করুন
+                    </a>
                 </div>
-
-                <button id="startLinkBtn" onclick="startTaskTimer('{{ task.link }}')" class="btn-dark">
-                    <i class="fa-solid fa-arrow-up-right-from-square" id="linkIcon"></i> <span id="linkBtnText">লিংকে প্রবেশ করুন</span>
-                </button>
-
-                <div class="smart-progress-bg" id="progressContainer">
-                    <div class="smart-progress-fill" id="progressBar"></div>
-                </div>
-                <p id="timerMessage" class="text-[10px] font-bold text-[#888] mt-3 hidden text-center uppercase tracking-widest animate-pulse"></p>
 
                 <!-- If it's a FACEBOOK POST task -->
                 {% elif task.task_type == 'fb_post' %}
-                
                 <div class="space-y-6">
                     {% if task.image_url %}
                     <div>
@@ -156,14 +138,13 @@
                         <p class="text-[10px] font-bold text-[#666] uppercase tracking-widest mb-2">2. Copy Text</p>
                         <div class="terminal-box">
                             <p id="captionText" class="text-[11px] pr-8">{{ task.caption }}</p>
-                            <button onclick="copyCaption(this)" class="absolute top-2 right-2 h-8 w-8 bg-[#111] text-white rounded-lg border border-[#333] flex items-center justify-center hover:bg-white hover:text-black transition">
+                            <button type="button" onclick="copyCaption(this)" class="absolute top-2 right-2 h-8 w-8 bg-[#111] text-white rounded-lg border border-[#333] flex items-center justify-center hover:bg-white hover:text-black transition">
                                 <i class="fa-regular fa-copy"></i>
                             </button>
                         </div>
                     </div>
                     {% endif %}
                 </div>
-
                 {% endif %}
 
             </div>
@@ -176,16 +157,8 @@
             <div class="step-indicator">2</div>
             <h3 class="font-bold text-white text-sm mb-4 uppercase tracking-widest">Provide Proof</h3>
 
-            <form method="POST" enctype="multipart/form-data" onsubmit="return submitFinalProof()" class="action-block relative">
+            <form method="POST" enctype="multipart/form-data" onsubmit="return submitFinalProof()" class="action-block">
                 
-                <!-- Lock Overlay for Timer Tasks -->
-                {% if task.task_type == 'screenshot' and task.link %}
-                <div id="uploadLockOverlay" class="absolute inset-0 bg-[#0A0A0A]/90 backdrop-blur-[4px] z-30 flex flex-col items-center justify-center transition-opacity duration-300 rounded-[24px]">
-                    <i class="fa-solid fa-lock text-3xl text-[#444] mb-3"></i>
-                    <p class="text-[10px] font-bold text-[#666] uppercase tracking-widest">Complete Step 1 First</p>
-                </div>
-                {% endif %}
-
                 <!-- File Dropzone -->
                 <div class="relative w-full cursor-pointer mb-6">
                     <input type="file" name="screenshot" id="fileInput" accept="image/*" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" onchange="handleFileUpload(this)">
@@ -224,90 +197,6 @@
         });
     }
 
-    // Timer Logic for Link Tasks
-    const categoryName = document.getElementById('taskCategory') ? document.getElementById('taskCategory').innerText.toLowerCase() : '';
-    let requiredTime = 30; 
-    if (categoryName.includes('facebook') || categoryName.includes('telegram')) requiredTime = 15;
-    if (categoryName.includes('tiktok')) requiredTime = 30;
-
-    let timeLeft = requiredTime;
-    let leaveTime = 0;
-    let isTracking = false;
-    let taskCompleted = false;
-
-    const timeText = document.getElementById('timeText');
-    if(timeText) timeText.innerText = `${requiredTime}s`;
-
-    function startTaskTimer(url) {
-        if(taskCompleted) return;
-
-        const btn = document.getElementById('startLinkBtn');
-        const btnText = document.getElementById('linkBtnText');
-        const icon = document.getElementById('linkIcon');
-        const progContainer = document.getElementById('progressContainer');
-        const msg = document.getElementById('timerMessage');
-
-        // Dark Tracking State
-        btn.className = "btn-dark !bg-[#111] !text-[#555] !border-[#222] !pointer-events-none";
-        btnText.innerText = "Monitoring...";
-        icon.className = "fa-solid fa-satellite-dish animate-pulse";
-
-        progContainer.style.display = 'block';
-        msg.style.display = 'block';
-        msg.innerText = "Awaiting return...";
-
-        isTracking = true;
-        window.open(url, '_blank');
-    }
-
-    document.addEventListener('visibilitychange', function() {
-        if (!isTracking || taskCompleted) return;
-
-        const btn = document.getElementById('startLinkBtn');
-        const btnText = document.getElementById('linkBtnText');
-        const icon = document.getElementById('linkIcon');
-        const progressBar = document.getElementById('progressBar');
-        const msg = document.getElementById('timerMessage');
-        const lockOverlay = document.getElementById('uploadLockOverlay');
-
-        if (document.hidden) {
-            leaveTime = Date.now();
-            msg.innerText = "Tracking active...";
-        } else {
-            if (leaveTime > 0) {
-                let timeSpent = Math.floor((Date.now() - leaveTime) / 1000);
-                timeLeft -= timeSpent;
-                leaveTime = 0;
-
-                if (timeLeft <= 0) {
-                    isTracking = false;
-                    taskCompleted = true;
-                    timeLeft = 0;
-
-                    progressBar.style.width = "100%";
-                    msg.innerText = "Target reached. Proceed to step 2.";
-                    msg.className = "text-[10px] font-bold text-white mt-3 text-center uppercase tracking-widest";
-                    
-                    btn.className = "btn-dark !bg-white !text-black !pointer-events-none";
-                    btnText.innerText = "Task Verified";
-                    icon.className = "fa-solid fa-check-double";
-
-                    if(lockOverlay) {
-                        lockOverlay.style.opacity = '0';
-                        setTimeout(() => lockOverlay.style.display = 'none', 300);
-                    }
-                } else {
-                    progressBar.style.width = ((requiredTime - timeLeft) / requiredTime * 100) + "%";
-                    msg.innerText = `Return aborted. ${timeLeft}s remaining.`;
-                    
-                    btn.className = "btn-dark !border-[#ffffff]";
-                    btnText.innerText = "Resume Task";
-                    icon.className = "fa-solid fa-play";
-                }
-            }
-        }
-    });
-
     // Smart File Upload UI
     function handleFileUpload(input) {
         const uploadBox = document.getElementById('uploadBox');
@@ -325,15 +214,6 @@
 
     // Submit Loader
     function submitFinalProof() {
-        const isLinkTask = !!document.getElementById('taskActionBox');
-        const lockOverlay = document.getElementById('uploadLockOverlay');
-        
-        // Ensure user completed timer if lock exists
-        if(lockOverlay && lockOverlay.style.display !== 'none' && !taskCompleted) {
-            alert("⚠️ Please complete Step 1 first.");
-            return false;
-        }
-
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="tracking-widest">ENCRYPTING...</span>';
