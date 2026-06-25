@@ -1983,13 +1983,13 @@ def withdraw():
         if wallet_type == 'main':
             if user_level == 0:
                 # 🔴 ফ্রি ইউজারদের শর্ত
-                if ref_count < 2:
+                if ref_count < 4:
                     flash("❌ ফ্রি ইউজারদের ২টি রেফার প্রয়োজন।", "error")
                     return redirect(url_for('withdraw'))
                 if account_hours < 24:
                     flash("❌ একাউন্ট খোলার পর ২৪ ঘণ্টা অপেক্ষা করতে হবে।", "error")
                     return redirect(url_for('withdraw'))
-                if amount < 270:
+                if amount < 250:
                     flash("❌ ফ্রি ইউজারদের সর্বনিম্ন উইথড্র ২৭০ টাকা।", "error")
                     return redirect(url_for('withdraw'))
             else:
