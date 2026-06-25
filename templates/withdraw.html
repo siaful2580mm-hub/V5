@@ -160,12 +160,12 @@
             {% else %}
                 <!-- FREE USER CLEARANCE -->
                 <!-- Check 1: Referrals -->
-                <div class="sec-node {{ 'passed' if ref_count >= 2 else 'failed' }}">
+                <div class="sec-node {{ 'passed' if ref_count >= 4 else 'failed' }}">
                     <div class="flex items-center gap-3">
                         <i class="fa-solid fa-users text-[#666]"></i>
                         <span class="text-[11px] font-bold text-white">Active Referrals</span>
                     </div>
-                    <span class="text-[10px] font-mono text-[#888]">{{ ref_count }} / 2</span>
+                    <span class="text-[10px] font-mono text-[#888]">{{ ref_count }} / 4</span>
                 </div>
 
                 <!-- Check 2: Account Age -->
@@ -178,7 +178,7 @@
                 </div>
 
                 <!-- Check 3: Minimum Balance -->
-                <div class="sec-node {{ 'passed' if current_bal >= 270 else 'failed' }}">
+                <div class="sec-node {{ 'passed' if current_bal >= 250 else 'failed' }}">
                     <div class="flex items-center gap-3">
                         <i class="fa-solid fa-coins text-[#666]"></i>
                         <span class="text-[11px] font-bold text-white">Min. Balance</span>
