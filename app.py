@@ -2,7 +2,7 @@ import os
 import random
 import string
 import requests
-import base64
+import base64import jwt
 from flask import jsonify, Response
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash, g, make_response
@@ -350,7 +350,33 @@ def index():
         return redirect(url_for('dashboard'))
     return render_template('home.html')
 
+# ==========================================
+# 🎧 AI & LIVE SUPPORT SSO HANDOVER ROUTE
+# ==========================================
+@app.route('/support-redirect')
+def support_redirect():
+    """
+    ইউজার লগইন থাকলে তার ডেটা দিয়ে টোকেন তৈরি করবে,
+    আর লগইন না থাকলে Guest হিসেবে help.domain.com এ পাঠিয়ে দেবে।
+    """
+    help_desk_url = os.getenv("HELP_DESK_URL", "https://help.domain.com")
+    shared_secret = os.getenv("SECRET_KEY", "TypeYourRandomSecretKeyHere123")
 
+    if 'user_id' in session and g.user:
+        # লগইন করা ইউজারের ডাটা এনকোড করা হচ্ছে
+        payload = {
+            'user_id': str(g.user.get('id')),
+            'email': g.user.get('email'),
+            'name': g.user.get('full_name') or g.user.get('email', '').split('@')[0],
+            'ref_code': g.user.get('referral_code', 'N/A'),
+            'exp': datetime.now(timezone.utc) + timedelta(minutes=30)  # টোকেনের মেয়াদ ৩০ মিনিট
+        }
+        token = jwt.encode(payload, shared_secret, algorithm='HS256')
+        return redirect(f"{help_desk_url}?auth_token={token}")
+    else:
+        # গেস্ট ইউজার
+        return redirect(help_desk_url)
+        
 # ==========================================
 # ⭐ REVIEW & RATING SYSTEM (Shadow Ban Logic)
 # ==========================================
