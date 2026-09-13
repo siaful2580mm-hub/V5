@@ -355,10 +355,7 @@ def index():
 # ==========================================
 @app.route('/support-redirect')
 def support_redirect():
-    """
-    ইউজার লগইন থাকলে তার ডেটা দিয়ে টোকেন তৈরি করবে,
-    আর লগইন না থাকলে Guest হিসেবে help.domain.com এ পাঠিয়ে দেবে।
-    """
+
     help_desk_url = os.getenv("HELP_DESK_URL", "https://help.domain.com")
     shared_secret = os.getenv("SECRET_KEY", "TypeYourRandomSecretKeyHere123")
 
