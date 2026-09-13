@@ -2,7 +2,8 @@ import os
 import random
 import string
 import requests
-import base64import jwt
+import base64
+import jwt
 from flask import jsonify, Response
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, session, flash, g, make_response
