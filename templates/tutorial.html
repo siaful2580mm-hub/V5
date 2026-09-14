@@ -2,75 +2,104 @@
 {% block content %}
 
 <style>
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    /* ==========================================
+       EARN DAILY - MODERN TUTORIAL UI (SOFT LIGHT)
+    ========================================== */
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
     
     /* Device Mockup Wrapper */
     .video-mockup {
-        background: #0A0A0A; border-radius: 36px; padding: 8px;
-        border: 1px solid #1C1C1E; position: relative;
-        box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), 0 20px 40px rgba(0,0,0,0.8);
+        background: #FFFFFF; 
+        border-radius: 36px; 
+        padding: 10px;
+        border: 1px solid #E2E8F0; 
+        position: relative;
+        box-shadow: 0 20px 50px -10px rgba(16, 185, 129, 0.15), 0 4px 15px rgba(15, 23, 42, 0.03);
     }
     .video-inner {
-        border-radius: 28px; overflow: hidden; background: #000;
-        position: relative; height: 650px;
+        border-radius: 28px; 
+        overflow: hidden; 
+        background: #0F172A;
+        position: relative; 
+        height: 640px;
     }
     
     /* Step Cards */
     .step-card {
-        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
-        padding: 24px; transition: all 0.3s ease; position: relative; overflow: hidden;
+        background: #FFFFFF; 
+        border: 1px solid #E2E8F0; 
+        border-radius: 24px;
+        padding: 24px; 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        position: relative; 
+        overflow: hidden;
+        box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.02);
     }
-    .step-card:hover { border-color: #333333; background: #0F0F0F; transform: translateY(-2px); }
+    .step-card:hover { 
+        border-color: #A7F3D0; 
+        background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%); 
+        transform: translateY(-3px); 
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.1);
+    }
     
     .step-number {
-        position: absolute; top: -10px; right: 0px;
-        font-size: 80px; font-weight: 900; color: #111111;
-        line-height: 1; pointer-events: none; transition: all 0.5s ease;
+        position: absolute; top: -5px; right: 10px;
+        font-size: 75px; font-weight: 900; color: rgba(16, 185, 129, 0.08);
+        line-height: 1; pointer-events: none; transition: all 0.3s ease;
     }
-    .step-card:hover .step-number { color: #1A1A1A; transform: scale(1.1) rotate(-5deg); }
+    .step-card:hover .step-number { 
+        color: rgba(16, 185, 129, 0.18); 
+        transform: scale(1.08) rotate(-4deg); 
+    }
 
-    .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 18px;
-        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 1px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    /* Buttons */
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; width: 100%; padding: 16px 28px;
+        border-radius: 18px; font-weight: 800; font-size: 13.5px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
-    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
+    .btn-emerald:active { transform: scale(0.96); }
     
-    .btn-outline {
-        background: transparent; color: #ffffff; border: 1px solid #333333;
-        width: 100%; padding: 18px; border-radius: 16px; font-weight: 800; font-size: 13px;
+    .btn-light-outline {
+        background: #FFFFFF; color: #334155; border: 1px solid #CBD5E1;
+        width: 100%; padding: 16px 28px; border-radius: 18px; font-weight: 700; font-size: 13.5px;
         transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     }
+    .btn-light-outline:hover { background: #F8FAFC; border-color: #94A3B8; color: #0F172A; }
+    .btn-light-outline:active { transform: scale(0.96); }
 </style>
 
-<div class="max-w-3xl mx-auto space-y-8 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-3xl mx-auto space-y-7 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. HEADER -->
-    <div class="text-center space-y-3 mb-8">
-        <div class="inline-flex items-center justify-center h-14 w-14 rounded-[20px] bg-[#111111] text-white text-2xl border border-[#222222]">
+    <div class="text-center space-y-2 mb-6">
+        <div class="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-tr from-rose-500 to-red-600 text-white text-2xl shadow-lg shadow-rose-500/20 mb-2">
             <i class="fa-brands fa-youtube"></i>
         </div>
-        <h2 class="text-2xl font-black text-white tracking-tight leading-none">ভিডিও টিউটোরিয়াল</h2>
-        <p class="text-[#888888] text-[10px] font-bold max-w-sm mx-auto uppercase tracking-widest">কীভাবে কাজ করবেন?</p>
+        <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">ভিডিও টিউটোরিয়াল</h2>
+        <p class="text-slate-500 text-xs font-semibold max-w-sm mx-auto">কীভাবে সঠিক নিয়মে কাজ করবেন ও টাকা তুলবেন?</p>
     </div>
 
-    <!-- 2. VIDEO PLAYER (App Mockup) -->
-    <div class="flex justify-center px-2 relative z-20">
+    <!-- 2. VIDEO PLAYER (App Device Mockup) -->
+    <div class="flex justify-center px-1 relative z-20">
         <div class="w-full max-w-[360px] video-mockup group">
             
-            <!-- Mobile Notch -->
-            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-5 bg-[#000000] rounded-b-[10px] z-30"></div>
+            <!-- Mobile Speaker/Camera Notch -->
+            <div class="absolute top-2.5 left-1/2 transform -translate-x-1/2 w-20 h-4 bg-slate-200 rounded-full z-30 opacity-70"></div>
 
             <div class="video-inner">
                 <!-- Loading State -->
-                <div class="absolute inset-0 flex flex-col items-center justify-center bg-[#111111] z-0">
-                    <i class="fa-solid fa-circle-notch fa-spin text-[#666666] text-3xl mb-3"></i>
-                    <span class="text-[9px] font-bold text-[#555555] uppercase tracking-widest">Loading Stream...</span>
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-slate-900 z-0">
+                    <i class="fa-solid fa-circle-notch fa-spin text-emerald-400 text-3xl mb-3"></i>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Loading Video...</span>
                 </div>
 
-                <!-- 🚀 UPDATED Facebook Reels Iframe 🚀 -->
+                <!-- Facebook Reels / Video Iframe -->
                 <iframe 
                     src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1000980702734268%2F%3Fapp%3Dfbl&width=500&show_text=false&height=700&appId" 
                     class="absolute top-0 left-0 w-full h-full z-10" 
@@ -84,47 +113,58 @@
         </div>
     </div>
     
-    <!-- Sound Hint -->
-    <div class="text-center -mt-4 relative z-30">
-        <p class="text-[9px] text-[#AAAAAA] font-bold bg-[#111111] px-4 py-2 rounded-full inline-block border border-[#222222]">
-            <i class="fa-solid fa-volume-high text-white mr-1.5"></i> সাউন্ড শুনতে ভিডিওর ওপর একবার ট্যাপ করুন
+    <!-- Sound Hint Bubble -->
+    <div class="text-center -mt-2 relative z-30">
+        <p class="text-[11px] text-slate-600 font-bold bg-white px-4 py-2 rounded-full inline-block border border-slate-200 shadow-sm shadow-emerald-500/5">
+            <i class="fa-solid fa-volume-high text-emerald-600 mr-1.5"></i> সাউন্ড চালু করতে ভিডিওর ওপর একবার ট্যাপ করুন
         </p>
     </div>
 
     <!-- 3. INSTRUCTION STEPS -->
-    <div class="mt-12">
+    <div class="mt-10">
         <div class="grid sm:grid-cols-3 gap-4">
             <div class="step-card">
-                <div class="step-number">1</div>
-                <h4 class="text-sm font-bold text-white mb-2 relative z-10">একাউন্ট তৈরি</h4>
-                <p class="text-[10px] text-[#888888] font-medium leading-relaxed relative z-10">সঠিক তথ্য এবং একটি ভ্যালিড জিমেইল ব্যবহার করে আপনার একাউন্ট রেজিস্ট্রেশন সম্পূর্ণ করুন।</p>
+                <div class="step-number">১</div>
+                <div class="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold mb-3 border border-emerald-100 relative z-10">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h4 class="text-sm font-extrabold text-slate-800 mb-1.5 relative z-10">একাউন্ট তৈরি</h4>
+                <p class="text-xs text-slate-500 font-medium leading-relaxed relative z-10">সঠিক তথ্য এবং একটি ভ্যালিড জিমেইল ব্যবহার করে আপনার ফ্রি একাউন্ট রেজিস্ট্রেশন সম্পন্ন করুন।</p>
             </div>
+
             <div class="step-card">
-                <div class="step-number">2</div>
-                <h4 class="text-sm font-bold text-white mb-2 relative z-10">কাজ সম্পন্ন</h4>
-                <p class="text-[10px] text-[#888888] font-medium leading-relaxed relative z-10">জিমেইল ক্রিয়েট বা মাইক্রো টাস্কগুলো নিয়ম মেনে করুন এবং সঠিক প্রুফ জমা দিন।</p>
+                <div class="step-number">২</div>
+                <div class="h-9 w-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-sm font-bold mb-3 border border-teal-100 relative z-10">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h4 class="text-sm font-extrabold text-slate-800 mb-1.5 relative z-10">কাজ সম্পন্ন করুন</h4>
+                <p class="text-xs text-slate-500 font-medium leading-relaxed relative z-10">জিমেইল ফার্মিং বা মাইক্রো টাস্কগুলো সঠিক নিয়ম মেনে সম্পন্ন করে প্রুফ জমা দিন।</p>
             </div>
+
             <div class="step-card">
-                <div class="step-number">3</div>
-                <h4 class="text-sm font-bold text-white mb-2 relative z-10">পেমেন্ট গ্রহণ</h4>
-                <p class="text-[10px] text-[#888888] font-medium leading-relaxed relative z-10">আপনার ব্যালেন্স মিনিমাম উইথড্র এমাউন্টে পৌঁছালেই বিকাশ বা নগদের মাধ্যমে টাকা তুলে নিন।</p>
+                <div class="step-number">৩</div>
+                <div class="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold mb-3 border border-emerald-100 relative z-10">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <h4 class="text-sm font-extrabold text-slate-800 mb-1.5 relative z-10">পেমেন্ট গ্রহণ</h4>
+                <p class="text-xs text-slate-500 font-medium leading-relaxed relative z-10">আপনার একাউন্ট ব্যালেন্স বিকাশ, নগদ অথবা রকেটের মাধ্যমে খুব সহজেই উইথড্র করে নিন।</p>
             </div>
         </div>
     </div>
 
     <!-- 4. CTA BUTTONS -->
-    <div class="pt-8 border-t border-[#1C1C1E] flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/dashboard" class="btn-outline sm:w-auto">
-            <i class="fa-solid fa-house"></i> হোমপেজ
+    <div class="pt-6 border-t border-slate-200/90 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+        <a href="/dashboard" class="btn-light-outline sm:w-auto">
+            <i class="fa-solid fa-house text-slate-400"></i> হোমপেজ
         </a>
         
         {% if session.get('user_id') %}
-        <a href="/work" class="btn-white sm:w-auto">
-            <span>কাজ শুরু করুন</span> <i class="fa-solid fa-arrow-right"></i>
+        <a href="/work" class="btn-emerald sm:w-auto">
+            <span>কাজ শুরু করুন</span> <i class="fa-solid fa-arrow-right text-xs"></i>
         </a>
         {% else %}
-        <a href="/register" class="btn-white sm:w-auto">
-            <span>একাউন্ট খুলুন</span> <i class="fa-solid fa-user-plus"></i>
+        <a href="/register" class="btn-emerald sm:w-auto">
+            <span>একাউন্ট খুলুন</span> <i class="fa-solid fa-user-plus text-xs"></i>
         </a>
         {% endif %}
     </div>
