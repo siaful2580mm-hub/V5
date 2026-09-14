@@ -3,89 +3,119 @@
 
 <style>
     /* ==========================================
-       PURE DARK THEME & ANIMATIONS
+       EARN DAILY - MODERN REFERRALS UI (SOFT LIGHT)
     ========================================== */
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    
-    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Custom Cards */
-    .dark-panel {
-        background: #0A0A0A;
-        border: 1px solid #1C1C1E;
-        border-radius: 24px;
+    /* Modern Light Panels */
+    .light-panel {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 28px;
         padding: 24px;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.03);
     }
     
     /* Progress Bar */
-    .progress-bg { background: #1C1C1E; height: 6px; border-radius: 10px; overflow: hidden; width: 100%; margin-top: 8px; }
-    .progress-fill { background: #ffffff; height: 100%; border-radius: 10px; transition: width 0.5s ease; position: relative; }
-    
-    /* Shimmer inside progress */
+    .progress-bg { 
+        background: #F1F5F9; height: 8px; border-radius: 999px; overflow: hidden; width: 100%; margin-top: 10px; 
+    }
+    .progress-fill { 
+        background: linear-gradient(90deg, #059669 0%, #10B981 100%); 
+        height: 100%; border-radius: 999px; transition: width 0.5s ease; position: relative; 
+    }
     .progress-fill::after {
         content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(0,0,0,0.2), transparent);
-        animation: progressShine 1.5s infinite;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: progressShine 1.8s infinite;
     }
     @keyframes progressShine { 100% { left: 200%; } }
 
     /* Custom Scrollbar for Team List */
     .team-scroll::-webkit-scrollbar { width: 4px; }
-    .team-scroll::-webkit-scrollbar-thumb { background: #333333; border-radius: 10px; }
+    .team-scroll::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
 
-    /* Input Field */
+    /* Copy Link Input Field */
     .link-input {
-        background: #111111; border: 1px solid #222222; color: #ffffff;
-        outline: none; transition: border 0.3s ease;
+        background: #F8FAFC; border: 1.5px solid #E2E8F0; color: #0F172A;
+        outline: none; transition: all 0.25s ease;
     }
-    .link-input:focus { border-color: #555555; }
+    .link-input:focus { border-color: #10B981; background: #FFFFFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+
+    /* Buttons */
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; padding: 14px 24px;
+        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.35);
+    }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 12px 25px -4px rgba(16, 185, 129, 0.45); }
+    .btn-emerald:active { transform: scale(0.96); }
 </style>
 
-<div class="max-w-3xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-2xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. HEADER -->
-    <div class="flex items-center justify-between mb-6">
-        <div class="flex items-center gap-4">
-            <a href="/dashboard" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+    <div class="flex items-center justify-between mb-2 px-2">
+        <div class="flex items-center gap-3">
+            <a href="/dashboard" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
                 <i class="fa-solid fa-chevron-left text-sm"></i>
             </a>
             <div>
-                <h2 class="text-lg font-bold text-white tracking-wide">আমার টিম</h2>
-                <p class="text-[10px] text-[#666666] font-bold uppercase tracking-widest mt-0.5">রেফারেল নেটওয়ার্ক</p>
+                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">আমার টিম ও রেফারেল</h2>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Referral Network & Bonus Hub</p>
             </div>
         </div>
-        <div class="bg-[#111111] border border-[#222222] px-3 py-1.5 rounded-xl flex items-center gap-2">
-            <i class="fa-solid fa-users text-[#888888] text-xs"></i>
-            <span class="text-white font-bold text-xs">{{ total_count }}</span>
+        <div class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5">
+            <i class="fa-solid fa-users text-emerald-600"></i>
+            <span>{{ total_count }} জন</span>
         </div>
     </div>
 
-    <!-- 2. BOUNTY REWARDS (Milestones) -->
-    <div class="dark-panel">
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="font-bold text-white text-sm flex items-center gap-2 uppercase tracking-widest">
-                <i class="fa-solid fa-gift text-[#888888]"></i> মেগা বোনাস প্রোগ্রাম
+    <!-- 2. COPY LINK SECTION (Top Highlight) -->
+    <div class="light-panel">
+        <h3 class="font-extrabold text-slate-800 text-sm mb-1 leading-tight">আপনার রেফারেল লিংক</h3>
+        <p class="text-xs text-slate-500 font-medium mb-4">বন্ধুদের লিংক শেয়ার করে জয়েন করালে আজীবন রেফারেল কমিশন পাবেন।</p>
+        
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+            <div class="relative w-full">
+                <input type="text" id="refLink" value="..." class="link-input w-full pl-4 pr-10 py-3.5 rounded-2xl font-mono text-xs font-semibold" readonly>
+                <i class="fa-solid fa-link absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+            </div>
+            <button onclick="copyRef(this)" class="btn-emerald w-full sm:w-auto flex-shrink-0">
+                <i class="fa-regular fa-copy"></i> <span>কপি করুন</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. BOUNTY REWARDS (Milestone Program) -->
+    <div class="light-panel">
+        <div class="flex items-center justify-between mb-5">
+            <h3 class="font-extrabold text-slate-800 text-sm flex items-center gap-2 uppercase tracking-wider">
+                <i class="fa-solid fa-gift text-emerald-600"></i> মেগা ক্যাশ বোনাস প্রোগ্রাম
             </h3>
-            <span class="bg-[#111111] text-[#888888] px-2 py-1 rounded text-[9px] font-bold uppercase tracking-widest border border-[#222222]">
+            <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-[11px] font-black border border-emerald-100">
                 Active: {{ active_count }}
             </span>
         </div>
 
-        <div class="space-y-5">
-            <!-- Target 1: 50 Referrals -->
-            <div class="bg-[#111111] border border-[#1C1C1E] p-4 rounded-[16px] relative overflow-hidden">
+        <div class="space-y-4">
+            <!-- Milestone 1: 50 Referrals -->
+            <div class="bg-slate-50 border border-slate-200/80 p-4 rounded-2xl relative overflow-hidden">
                 <div class="flex justify-between items-end mb-1">
                     <div>
-                        <p class="text-[10px] text-[#666666] font-bold uppercase tracking-widest mb-1">লেভেল ১ বোনাস</p>
-                        <h4 class="text-sm font-bold text-white">৫০ জন এক্টিভ রেফার = <span class="font-mono">৳১,০০০</span></h4>
+                        <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-0.5">লেভেল ১ বাউন্টি</p>
+                        <h4 class="text-sm font-extrabold text-slate-800">৫০ জন এক্টিভ রেফার = <span class="text-emerald-600 font-mono">৳১,০০০</span></h4>
                     </div>
                     {% if active_count >= 50 %}
-                        <span class="text-[10px] bg-white text-black px-2 py-1 rounded font-bold uppercase"><i class="fa-solid fa-check"></i> সম্পন্ন</span>
+                        <span class="text-[10px] bg-emerald-600 text-white px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider shadow-sm"><i class="fa-solid fa-check mr-0.5"></i> সম্পন্ন</span>
                     {% else %}
-                        <span class="text-[10px] text-[#666666] font-mono">{{ active_count }} / 50</span>
+                        <span class="text-xs text-slate-500 font-mono font-bold">{{ active_count }} / 50</span>
                     {% endif %}
                 </div>
                 <div class="progress-bg">
@@ -93,17 +123,17 @@
                 </div>
             </div>
 
-            <!-- Target 2: 1000 Referrals -->
-            <div class="bg-[#111111] border border-[#1C1C1E] p-4 rounded-[16px] relative overflow-hidden">
+            <!-- Milestone 2: 1000 Referrals -->
+            <div class="bg-slate-50 border border-slate-200/80 p-4 rounded-2xl relative overflow-hidden">
                 <div class="flex justify-between items-end mb-1">
                     <div>
-                        <p class="text-[10px] text-[#666666] font-bold uppercase tracking-widest mb-1">লেভেল ২ বোনাস</p>
-                        <h4 class="text-sm font-bold text-white">১০০০ জন এক্টিভ রেফার = <span class="font-mono">৳২,০০০</span></h4>
+                        <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-0.5">লেভেল ২ বাউন্টি</p>
+                        <h4 class="text-sm font-extrabold text-slate-800">১,০০০ জন এক্টিভ রেফার = <span class="text-emerald-600 font-mono">৳২,০০০</span></h4>
                     </div>
                     {% if active_count >= 1000 %}
-                        <span class="text-[10px] bg-white text-black px-2 py-1 rounded font-bold uppercase"><i class="fa-solid fa-check"></i> সম্পন্ন</span>
+                        <span class="text-[10px] bg-emerald-600 text-white px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider shadow-sm"><i class="fa-solid fa-check mr-0.5"></i> সম্পন্ন</span>
                     {% else %}
-                        <span class="text-[10px] text-[#666666] font-mono">{{ active_count }} / 1000</span>
+                        <span class="text-xs text-slate-500 font-mono font-bold">{{ active_count }} / 1000</span>
                     {% endif %}
                 </div>
                 <div class="progress-bg">
@@ -113,68 +143,53 @@
         </div>
     </div>
 
-    <!-- 3. COPY LINK SECTION -->
-    <div class="dark-panel !p-5">
-        <h3 class="font-bold text-white text-sm leading-tight mb-1">আপনার রেফারেল লিংক</h3>
-        <p class="text-[10px] text-[#888888] font-medium mb-4">লিংক শেয়ার করে বন্ধুদের ইনভাইট করুন।</p>
-        
-        <div class="flex flex-col sm:flex-row items-center gap-3">
-            <div class="relative w-full">
-                <input type="text" id="refLink" value="..." class="link-input w-full pl-4 pr-10 py-3.5 rounded-xl font-mono text-xs" readonly>
-                <i class="fa-solid fa-link absolute right-4 top-1/2 transform -translate-y-1/2 text-[#444444]"></i>
-            </div>
-            <button onclick="copyRef(this)" class="w-full sm:w-auto bg-white text-black px-8 py-3.5 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-[#E5E5E5] transition flex items-center justify-center gap-2 flex-shrink-0 active:scale-95">
-                <i class="fa-regular fa-copy"></i> কপি করুন
-            </button>
-        </div>
-    </div>
-
-    <!-- 4. MY TEAM LIST (Full Width) -->
-    <div class="dark-panel flex flex-col h-full !p-0">
-        <div class="p-5 border-b border-[#1C1C1E] flex items-center justify-between">
-            <h3 class="font-bold text-white text-sm uppercase tracking-widest">
-                <i class="fa-solid fa-network-wired text-[#666666] mr-2"></i> মেম্বার লিস্ট
+    <!-- 4. MY TEAM LIST -->
+    <div class="light-panel !p-0">
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+            <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-network-wired text-emerald-600"></i> টিম মেম্বার লিস্ট
             </h3>
+            <span class="text-xs text-slate-400 font-bold">মোট: {{ total_count }} জন</span>
         </div>
 
         <!-- Scrollable Team List -->
-        <div class="overflow-y-auto team-scroll" style="max-height: 500px;">
+        <div class="overflow-y-auto team-scroll" style="max-height: 480px;">
             {% for ref in referrals %}
-            <div class="flex items-center justify-between p-4 border-b border-[#161616] hover:bg-[#111111] transition group">
+            <div class="flex items-center justify-between p-4 border-b border-slate-100 hover:bg-slate-50 transition">
                 
-                <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-full flex items-center justify-center text-sm shadow-sm border transition-colors
-                        {{ 'bg-white text-black border-white' if ref.is_active else 'bg-[#141414] text-[#666666] border-[#222222]' }}">
+                <div class="flex items-center gap-3.5">
+                    <div class="h-10 w-10 rounded-2xl flex items-center justify-center text-sm font-bold border transition-colors
+                        {{ 'bg-emerald-50 text-emerald-600 border-emerald-200' if ref.is_active else 'bg-slate-100 text-slate-400 border-slate-200' }}">
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-white truncate w-32 sm:w-48">{{ ref.email.split('@')[0] }}</p>
-                        <p class="text-[9px] text-[#666666] font-mono mt-0.5">{{ ref.created_at[:10] }}</p>
+                        <p class="text-sm font-extrabold text-slate-800 truncate w-36 sm:w-48">{{ ref.email.split('@')[0] }}</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">{{ ref.created_at[:10] }}</p>
                     </div>
                 </div>
                 
                 <div class="text-right flex flex-col items-end">
                     {% if ref.is_active %}
-                        <span class="text-[9px] font-black bg-white/10 text-white border border-white/20 px-2 py-0.5 rounded uppercase tracking-widest">
+                        <span class="text-[9.5px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md uppercase tracking-wider">
                             Verified
                         </span>
-                        <p class="text-[11px] text-white font-bold mt-1 font-mono">+৳10.00</p>
+                        <p class="text-xs text-emerald-600 font-extrabold mt-1 font-mono">+৳10.00</p>
                     {% else %}
-                        <!-- Removed Unpaid, using a neutral status -->
-                        <span class="text-[9px] font-bold text-[#444444] uppercase tracking-widest">
+                        <span class="text-[9.5px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md uppercase tracking-wider border border-slate-200">
                             Pending
                         </span>
-                        <p class="text-[11px] text-[#333333] font-bold mt-1 font-mono">-</p>
+                        <p class="text-xs text-slate-300 font-bold mt-1 font-mono">-</p>
                     {% endif %}
                 </div>
             </div>
             {% else %}
+            <!-- Empty State -->
             <div class="text-center py-16">
-                <div class="h-14 w-14 bg-[#111111] rounded-full flex items-center justify-center mx-auto mb-3 text-xl text-[#333333] border border-[#1C1C1E]">
+                <div class="h-16 w-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl border border-slate-100">
                     <i class="fa-solid fa-user-plus"></i>
                 </div>
-                <p class="text-sm font-bold text-[#888888]">টিম মেম্বার নেই</p>
-                <p class="text-[10px] text-[#555555] mt-1">লিংক শেয়ার করে বন্ধুদের ইনভাইট করুন।</p>
+                <p class="text-sm font-bold text-slate-700">কোনো টিম মেম্বার নেই</p>
+                <p class="text-xs text-slate-400 mt-1">আপনার রেফারেল লিংক শেয়ার করে বন্ধুদের যুক্ত করুন।</p>
             </div>
             {% endfor %}
         </div>
@@ -204,7 +219,7 @@
         navigator.clipboard.writeText(copyText.value);
         
         const originalHTML = btnElement.innerHTML;
-        btnElement.innerHTML = '<i class="fa-solid fa-check text-black"></i> কপিড!';
+        btnElement.innerHTML = '<i class="fa-solid fa-check"></i> <span>কপি হয়েছে!</span>';
         btnElement.classList.add("opacity-80");
         
         setTimeout(() => {
