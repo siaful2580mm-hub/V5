@@ -1,0 +1,311 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    /* ==========================================
+       CITY TOUCH CORPORATE BANKING THEME
+    ========================================== */
+    :root {
+        --city-red: #D71920;      /* City Bank Corporate Red */
+        --city-dark: #1E293B;     /* Corporate Navy/Slate */
+        --city-blue: #0284C7;     /* City Touch Secondary Accent */
+    }
+
+    .city-card {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05);
+    }
+
+    /* City Touch Header Gradient */
+    .city-header-gradient {
+        background: linear-gradient(135deg, #B91C1C 0%, #D71920 50%, #991B1B 100%);
+        border-radius: 24px;
+        box-shadow: 0 12px 30px -5px rgba(215, 25, 32, 0.35);
+    }
+
+    /* Custom Scrollbar */
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+
+    /* Print styling */
+    @media print {
+        body * { visibility: hidden; }
+        #printArea, #printArea * { visibility: visible; }
+        #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+        .no-print { display: none !important; }
+    }
+</style>
+
+<div class="max-w-5xl mx-auto space-y-6 pb-16 px-1 mt-2">
+
+    <!-- ==========================================
+         1. CITY TOUCH CORPORATE HEADER
+    ========================================== -->
+    <div class="city-header-gradient p-6 sm:p-8 text-white relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+        <i class="fa-solid fa-building-columns absolute right-6 top-1/2 transform -translate-y-1/2 text-8xl opacity-10 pointer-events-none rotate-12"></i>
+        
+        <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-14 w-14 bg-white rounded-2xl flex items-center justify-center text-3xl font-black text-[#D71920] shadow-lg shadow-black/20 flex-shrink-0">
+                    C
+                </div>
+                <div>
+                    <div class="inline-flex items-center gap-1.5 bg-black/20 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/20 mb-1">
+                        <span class="h-1.5 w-1.5 bg-emerald-400 rounded-full animate-ping"></span> Live Bulk Disburser
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-tight leading-tight">City B. Distribution</h1>
+                    <p class="text-xs text-red-100 font-medium mt-0.5">Automated Electronic Fund Settlement Portal</p>
+                </div>
+            </div>
+
+            <div class="text-left sm:text-right bg-white/15 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/20">
+                <p class="text-[9.5px] font-black uppercase tracking-widest text-red-100 mb-0.5">Settlement Mode</p>
+                <p class="text-sm font-black tracking-wide font-mono">RTGS / BEFTN / MFS API</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         2. CONTROLLER FORM (Inputs & Summary)
+    ========================================== -->
+    <div class="city-card p-6 no-print">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-5">
+            <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-[#D71920]"></i> ব্যাচ ডিস্ট্রিবিউশন কন্ট্রোলার
+            </h3>
+            <span class="text-xs font-bold text-slate-400">City Touch Corporate Protocol</span>
+        </div>
+
+        <div class="grid sm:grid-cols-3 gap-4 items-end">
+            <div class="sm:col-span-2">
+                <label class="block text-xs font-bold text-slate-600 mb-2">কতজন ইউজারের পেমেন্ট জেনারেট করবেন? (User Count)</label>
+                <div class="relative">
+                    <input type="number" id="userCountInput" min="5" max="500" value="45" placeholder="উদাঃ ৫০, ১০০, ২৫০..." 
+                           class="w-full pl-11 pr-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-[#D71920] outline-none font-black text-slate-800 text-base font-mono">
+                    <i class="fa-solid fa-users absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                </div>
+            </div>
+
+            <div>
+                <button onclick="generateDistributionList()" class="w-full bg-[#D71920] hover:bg-[#B91C1C] text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-red-500/20 active:scale-95 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bolt-lightning"></i> জেনারেট করুন
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Calculation Banner -->
+        <div id="summaryBar" class="hidden mt-6 pt-5 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Disbursed</p>
+                <h4 class="text-lg font-black text-slate-800 font-mono" id="sumAmount">৳0.00</h4>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Success Count</p>
+                <h4 class="text-lg font-black text-emerald-600 font-mono" id="sumSuccess">0</h4>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Failed Transactions</p>
+                <h4 class="text-lg font-black text-rose-600 font-mono" id="sumFailed">0</h4>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Success Ratio</p>
+                <h4 class="text-lg font-black text-blue-600 font-mono" id="sumRatio">98.5%</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         3. GENERATED DISTRIBUTION TABLE
+    ========================================== -->
+    <div id="printArea" class="city-card overflow-hidden">
+        
+        <!-- Table Action Header -->
+        <div class="p-5 bg-slate-50 border-b border-slate-200 flex flex-wrap justify-between items-center gap-3">
+            <div>
+                <h3 class="font-extrabold text-slate-800 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice-dollar text-[#D71920]"></i> Electronic Disbursement Sheet
+                </h3>
+                <p class="text-[10px] text-slate-500 font-mono mt-0.5" id="genBatchId">Batch: CT-DISB-XXXXXX</p>
+            </div>
+
+            <div class="flex items-center gap-2 no-print">
+                <button onclick="window.print()" class="bg-slate-800 hover:bg-black text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-print"></i> প্রিন্ট শীট
+                </button>
+                <button onclick="exportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-file-excel"></i> Export CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="overflow-x-auto custom-scroll">
+            <table class="w-full text-left text-xs whitespace-nowrap">
+                <thead class="bg-slate-100 text-slate-600 uppercase font-black tracking-wider text-[10px] border-b border-slate-200">
+                    <tr>
+                        <th class="p-3.5 text-center">SL</th>
+                        <th class="p-3.5">Gateway</th>
+                        <th class="p-3.5">Masked Number</th>
+                        <th class="p-3.5">Amount (BDT)</th>
+                        <th class="p-3.5">Transaction ID (TrxID)</th>
+                        <th class="p-3.5 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="distributionTbody" class="divide-y divide-slate-100 font-medium">
+                    <!-- Default State -->
+                    <tr>
+                        <td colspan="6" class="p-12 text-center text-slate-400">
+                            <i class="fa-solid fa-calculator text-4xl mb-3 text-slate-300"></i>
+                            <p class="text-sm font-bold text-slate-600">কন্ট্রোলারে সংখ্যা লিখে 'জেনারেট করুন' বাটনে চাপ দিন।</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- ==========================================
+     DISTRIBUTION ALGORITHM SCRIPT
+========================================== -->
+<script>
+    let generatedRecords = [];
+
+    function generateDistributionList() {
+        const count = parseInt(document.getElementById('userCountInput').value) || 20;
+        const tbody = document.getElementById('distributionTbody');
+        tbody.innerHTML = '';
+        generatedRecords = [];
+
+        let totalAmount = 0;
+        let successCount = 0;
+        let failedCount = 0;
+
+        // Operator Prefixes (Teletalk kept rare)
+        const gp = ['017', '013'];
+        const bl = ['019', '014'];
+        const rb = ['018'];
+        const at = ['016'];
+        const tt = ['015']; // Teletalk (Lowest)
+
+        // 1. Generate Batch ID
+        const batchId = "CT-" + Math.random().toString(36).substring(2, 9).toUpperCase();
+        document.getElementById('genBatchId').innerText = `Batch ID: ${batchId} | Settlement: ${new Date().toLocaleDateString()}`;
+
+        // 2. Loop & Generate Records
+        for (let i = 1; i <= count; i++) {
+            
+            // A. GATEWAY LOGIC (Maximum bKash, then Nagad, then Rocket)
+            let gateway = 'bKash';
+            const gwRand = Math.random() * 100;
+            if (gwRand < 62) {
+                gateway = 'bKash';        // 62% bKash
+            } else if (gwRand < 88) {
+                gateway = 'Nagad';        // 26% Nagad
+            } else {
+                gateway = 'Rocket';       // 12% Rocket
+            }
+
+            // B. PHONE NUMBER LOGIC (Teletalk is kept extremely rare, ~2-3%)
+            let prefix;
+            const opRand = Math.random() * 100;
+            if (opRand < 40) prefix = gp[Math.floor(Math.random() * gp.length)];
+            else if (opRand < 68) prefix = bl[Math.floor(Math.random() * bl.length)];
+            else if (opRand < 88) prefix = rb[Math.floor(Math.random() * rb.length)];
+            else if (opRand < 97) prefix = at[Math.floor(Math.random() * at.length)];
+            else prefix = tt[0]; // Teletalk (Only ~3%)
+
+            const middleDigits = "****";
+            const lastDigits = Math.floor(1000 + Math.random() * 9000);
+            const maskedNumber = `${prefix}${middleDigits}${lastDigits}`;
+
+            // C. AMOUNT LOGIC (Round figure 0 or 5)
+            // - Maximum 400 to 1000 (~65%)
+            // - Under 400 (~25%)
+            // - Too small 1000 to 3000 (~10%)
+            let amount = 500;
+            const amtRand = Math.random() * 100;
+            if (amtRand < 65) {
+                // 400 to 1000
+                const raw = 400 + Math.floor(Math.random() * 121) * 5; 
+                amount = Math.min(raw, 1000);
+            } else if (amtRand < 90) {
+                // Under 400 (e.g. 150 to 395)
+                amount = 150 + Math.floor(Math.random() * 50) * 5;
+            } else {
+                // 1000 to 3000
+                amount = 1000 + Math.floor(Math.random() * 401) * 5;
+            }
+            totalAmount += amount;
+
+            // D. STATUS LOGIC (97% - 99% Success, 2-3% Failed)
+            const isSuccess = (Math.random() * 100) >= 2.5;
+            const status = isSuccess ? 'Success' : 'Failed';
+            if (isSuccess) successCount++; else failedCount++;
+
+            // E. TRANSACTION ID
+            let trxId;
+            if(gateway === 'bKash') trxId = "BK" + Math.random().toString(36).substring(2, 10).toUpperCase();
+            else if(gateway === 'Nagad') trxId = "NG" + Math.random().toString(36).substring(2, 10).toUpperCase();
+            else trxId = "RK" + Math.random().toString(36).substring(2, 10).toUpperCase();
+
+            // Save record
+            generatedRecords.push({ sl: i, gateway, maskedNumber, amount, trxId, status });
+
+            // Create Row
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-50 transition";
+            tr.innerHTML = `
+                <td class="p-3.5 text-center font-mono text-slate-400 font-bold">${i}</td>
+                <td class="p-3.5 font-bold flex items-center gap-2">
+                    ${gateway === 'bKash' ? '<span class="text-[#E2136E] bg-pink-50 px-2 py-0.5 rounded font-black">bKash</span>' : 
+                      gateway === 'Nagad' ? '<span class="text-[#F97316] bg-orange-50 px-2 py-0.5 rounded font-black">Nagad</span>' : 
+                      '<span class="text-[#0284C7] bg-sky-50 px-2 py-0.5 rounded font-black">Rocket</span>'}
+                </td>
+                <td class="p-3.5 font-mono font-bold text-slate-800 tracking-wider">${maskedNumber}</td>
+                <td class="p-3.5 font-mono font-black text-slate-900 text-sm">৳${amount.toLocaleString()}</td>
+                <td class="p-3.5 font-mono text-xs font-bold text-slate-600 select-all">${trxId}</td>
+                <td class="p-3.5 text-center">
+                    ${status === 'Success' ? 
+                      '<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase"><i class="fa-solid fa-check mr-1"></i>Success</span>' : 
+                      '<span class="bg-rose-50 text-rose-700 border border-rose-200 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase"><i class="fa-solid fa-xmark mr-1"></i>Failed</span>'}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        // 3. Update Summary Board
+        document.getElementById('sumAmount').innerText = "৳" + totalAmount.toLocaleString();
+        document.getElementById('sumSuccess').innerText = successCount;
+        document.getElementById('sumFailed').innerText = failedCount;
+        document.getElementById('sumRatio').innerText = ((successCount / count) * 100).toFixed(1) + "%";
+        document.getElementById('summaryBar').classList.remove('hidden');
+    }
+
+    // Export to CSV
+    function exportCSV() {
+        if (!generatedRecords.length) {
+            alert("আগে ডাটা জেনারেট করুন!");
+            return;
+        }
+
+        let csvContent = "data:text/csv;charset=utf-8,SL,Gateway,Receiver_Number,Amount_BDT,TrxID,Status\n";
+        generatedRecords.forEach(r => {
+            csvContent += `${r.sl},${r.gateway},${r.maskedNumber},${r.amount},${r.trxId},${r.status}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `City_Distribution_${Date.now()}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+
+{% endblock %}
