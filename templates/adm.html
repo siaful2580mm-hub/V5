@@ -3,159 +3,182 @@
 
 <style>
     /* ==========================================
-       PURE DARK THEME & ANIMATIONS
+       EARN DAILY - MODERN PAYMENT SETTINGS UI
     ========================================== */
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Method Cards (Dark Theme) */
+    /* Method Selection Cards */
     .method-card {
-        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 20px;
-        transition: all 0.3s ease; position: relative; cursor: pointer;
+        background: #FFFFFF; 
+        border: 2px solid #E2E8F0; 
+        border-radius: 22px;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        position: relative; 
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
     }
-    .method-card:hover { border-color: #333333; background: #0F0F0F; }
+    .method-card:hover { 
+        border-color: #A7F3D0; 
+        background: #F0FDF4; 
+        transform: translateY(-2px);
+    }
 
     /* Checked State */
     input[type="radio"]:checked + .method-card {
-        border-color: #ffffff; background: #111111;
+        border-color: #10B981; 
+        background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%);
+        box-shadow: 0 10px 24px -5px rgba(16, 185, 129, 0.18);
     }
     input[type="radio"]:checked + .method-card .icon-circle {
-        background: #ffffff; color: #000000; border-color: #ffffff;
+        background: #059669; 
+        color: #FFFFFF; 
+        border-color: #059669;
+        transform: scale(1.05);
     }
     
     .icon-circle {
-        height: 40px; width: 40px; border-radius: 12px;
-        background: #111111; border: 1px solid #222222; color: #E5E5E5;
-        display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.3s;
+        height: 44px; width: 44px; border-radius: 14px;
+        background: #F8FAFC; border: 1px solid #E2E8F0; color: #475569;
+        display: flex; align-items: center; justify-content: center; font-size: 19px; 
+        transition: all 0.25s ease;
     }
 
     /* Check Indicator */
     .check-indicator {
-        position: absolute; top: 8px; right: 8px;
-        height: 16px; width: 16px; border-radius: 50%; border: 1px solid #333333;
-        display: flex; align-items: center; justify-content: center; transition: all 0.3s;
+        position: absolute; top: 10px; right: 10px;
+        height: 18px; width: 18px; border-radius: 50%; border: 1.5px solid #CBD5E1;
+        display: flex; align-items: center; justify-content: center; transition: all 0.25s;
     }
     input:checked + .method-card .check-indicator {
-        background: #ffffff; border-color: #ffffff;
+        background: #059669; border-color: #059669;
     }
     input:checked + .method-card .check-indicator::after {
         content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900;
-        font-size: 8px; color: #000000;
+        font-size: 9px; color: #FFFFFF;
     }
 
-    /* Input Field */
-    .dark-input-large {
-        width: 100%; background: #000000; border: 1px solid #222222; color: #ffffff;
-        padding: 20px 20px 20px 60px; border-radius: 20px; outline: none; 
-        font-size: 18px; font-weight: bold; letter-spacing: 2px; transition: border 0.3s;
+    /* Large Number Input */
+    .light-input-large {
+        width: 100%; background: #F8FAFC; border: 2px solid #E2E8F0; color: #0F172A;
+        padding: 18px 18px 18px 64px; border-radius: 20px; outline: none; 
+        font-size: 18px; font-weight: 800; letter-spacing: 1.5px; transition: all 0.25s ease;
     }
-    .dark-input-large:focus { border-color: #ffffff; }
+    .light-input-large:focus { 
+        border-color: #10B981; 
+        background: #FFFFFF;
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); 
+    }
+    .light-input-large::placeholder { color: #CBD5E1; }
 
     /* Button */
-    .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 20px;
-        border-radius: 20px; font-weight: 900; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; width: 100%; padding: 18px;
+        border-radius: 20px; font-weight: 800; font-size: 14px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
-    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
-    .btn-white:disabled { background: #222222; color: #666666; cursor: not-allowed; transform: none; }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
+    .btn-emerald:active { transform: scale(0.96); }
+    .btn-emerald:disabled { background: #E2E8F0 !important; color: #94A3B8 !important; box-shadow: none !important; cursor: not-allowed; transform: none !important; }
 </style>
 
-<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. HEADER -->
-    <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center gap-4">
-            <a href="/account" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+    <div class="flex items-center justify-between mb-4 px-2">
+        <div class="flex items-center gap-3">
+            <a href="/account" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
                 <i class="fa-solid fa-chevron-left text-sm"></i>
             </a>
             <div>
-                <h2 class="text-xl font-bold text-white tracking-wide leading-none">পেমেন্ট সেটিংস</h2>
-                <p class="text-[9px] font-bold uppercase tracking-widest text-[#666] mt-1">Withdrawal Gateway</p>
+                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">পেমেন্ট মেথড সেটিংস</h2>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Withdrawal Gateway Setup</p>
             </div>
         </div>
     </div>
 
-    <!-- 2. ACTIVE WALLET DISPLAY (If Set) -->
+    <!-- 2. ACTIVE WALLET TICKET (If Set) -->
     {% if user.wallet_number and user.wallet_method %}
-    <div class="bg-[#050505] border border-[#1C1C1E] rounded-[24px] p-6 text-white relative overflow-hidden mb-6 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-        <div class="flex justify-between items-start mb-4 relative z-10">
+    <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-[26px] p-6 text-white shadow-lg shadow-emerald-600/20 relative overflow-hidden">
+        <div class="flex justify-between items-start mb-3 relative z-10">
             <div>
-                <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-[#666]">Active Receiver</p>
-                <h3 class="text-xl font-mono font-bold tracking-[0.1em] mt-1">{{ user.wallet_number }}</h3>
+                <p class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-200">Active Receiver Gateway</p>
+                <h3 class="text-2xl font-black font-mono tracking-wider mt-1">{{ user.wallet_number }}</h3>
             </div>
-            <div class="bg-white text-black px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest">
+            <div class="bg-white text-emerald-800 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm">
                 {{ user.wallet_method }}
             </div>
         </div>
-        <div class="flex items-center gap-1.5 text-white text-[9px] font-bold uppercase tracking-widest border-t border-[#1C1C1E] pt-3 relative z-10">
-            <i class="fa-solid fa-shield-check"></i> Verified Destination
+        <div class="flex items-center gap-1.5 text-emerald-100 text-[11px] font-bold border-t border-white/20 pt-3 relative z-10">
+            <i class="fa-solid fa-circle-check text-emerald-300"></i> Verified Cashout Destination
         </div>
     </div>
     {% endif %}
 
     <!-- 3. FORM CONTAINER -->
-    <div class="bg-[#0A0A0A] p-6 rounded-[28px] border border-[#1C1C1E]">
-        <form method="POST" action="/adm" class="space-y-8" onsubmit="return showLoading()">
+    <div class="bg-white p-6 sm:p-7 rounded-[28px] border border-slate-200/90 shadow-sm">
+        <form method="POST" action="/adm" class="space-y-6" onsubmit="return showLoading()">
             
             <!-- Step 1: Select Method -->
-            <div class="space-y-4">
-                <label class="text-[10px] font-bold text-[#888888] uppercase tracking-widest ml-1">১. পেমেন্ট মেথড নির্বাচন করুন</label>
+            <div class="space-y-3">
+                <label class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider ml-1">১. মেথড নির্বাচন করুন</label>
                 
                 <div class="grid grid-cols-3 gap-3">
                     <!-- bKash -->
                     <label class="relative">
                         <input type="radio" name="method" value="bKash" class="sr-only" {{ 'checked' if user.wallet_method == 'bKash' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
+                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
                             <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-bolt-lightning"></i></div>
-                            <span class="text-[10px] font-bold uppercase text-[#888]">bKash</span>
+                            <div class="icon-circle"><i class="fa-solid fa-bolt text-[#E2136E]"></i></div>
+                            <span class="text-xs font-bold text-slate-700">bKash</span>
                         </div>
                     </label>
 
                     <!-- Nagad -->
                     <label class="relative">
                         <input type="radio" name="method" value="Nagad" class="sr-only" {{ 'checked' if user.wallet_method == 'Nagad' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
+                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
                             <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-fire-flame-curved"></i></div>
-                            <span class="text-[10px] font-bold uppercase text-[#888]">Nagad</span>
+                            <div class="icon-circle"><i class="fa-solid fa-fire-flame-curved text-[#F97316]"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Nagad</span>
                         </div>
                     </label>
 
                     <!-- Rocket -->
                     <label class="relative">
                         <input type="radio" name="method" value="Rocket" class="sr-only" {{ 'checked' if user.wallet_method == 'Rocket' }} required>
-                        <div class="method-card p-4 flex flex-col items-center justify-center gap-2">
+                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
                             <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-shuttle-space"></i></div>
-                            <span class="text-[10px] font-bold uppercase text-[#888]">Rocket</span>
+                            <div class="icon-circle"><i class="fa-solid fa-rocket text-[#8B5CF6]"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Rocket</span>
                         </div>
                     </label>
                 </div>
             </div>
 
             <!-- Step 2: Number Input -->
-            <div class="space-y-4">
-                <label class="text-[10px] font-bold text-[#888888] uppercase tracking-widest ml-1">২. একাউন্ট নাম্বার দিন</label>
+            <div class="space-y-2">
+                <label class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider ml-1">২. অ্যাকাউন্ট নাম্বার দিন</label>
                 <div class="relative">
-                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-[#555] font-bold font-mono">+88</span>
-                    <input type="tel" name="number" required pattern="01[3-9][0-9]{8}" placeholder="01700000000" value="{{ user.wallet_number or '' }}" class="dark-input-large font-mono">
+                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold font-mono text-sm">+88</span>
+                    <input type="tel" name="number" required pattern="01[3-9][0-9]{8}" placeholder="01700000000" value="{{ user.wallet_number or '' }}" class="light-input-large font-mono">
                 </div>
             </div>
 
-            <!-- Warning Box -->
-            <div class="p-4 rounded-[16px] bg-[#111111] border border-[#222222] flex gap-3">
-                <i class="fa-solid fa-triangle-exclamation text-white mt-0.5 text-sm"></i>
-                <p class="text-[10px] leading-relaxed text-[#AAAAAA] font-medium">
-                    নিশ্চিত করুন যে নাম্বারটি আপনার ব্যক্তিগত। ভুল নাম্বারের জন্য পেমেন্ট আটকে গেলে সিস্টেম দায়ী থাকবে না।
+            <!-- Warning Alert Box -->
+            <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex gap-3 text-amber-900">
+                <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-sm flex-shrink-0"></i>
+                <p class="text-xs leading-relaxed font-medium">
+                    নিশ্চিত করুন নম্বরটি সম্পূর্ণ ব্যক্তিগত এবং সঠিক। ভুল নম্বরে টাকা চলে গেলে বা পেমেন্ট আটকে গেলে প্ল্যাটফর্ম দায়ী থাকবে না।
                 </p>
             </div>
 
             <!-- Submit -->
-            <button type="submit" id="submitBtn" class="btn-white">
-                আপডেট করুন <i class="fa-solid fa-arrow-right"></i>
+            <button type="submit" id="submitBtn" class="btn-emerald">
+                <span>সেভ ও আপডেট করুন</span> <i class="fa-solid fa-arrow-right text-xs"></i>
             </button>
 
         </form>
@@ -169,9 +192,8 @@
         if (form.checkValidity()) {
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
-            btn.style.background = "#222222";
-            btn.style.color = "#ffffff";
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">আপডেট হচ্ছে...</span>';
+            btn.classList.add('opacity-80');
             return true;
         }
         return false;
