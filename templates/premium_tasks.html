@@ -3,114 +3,128 @@
 
 <style>
     /* ==========================================
-       PURE DARK THEME & ANIMATIONS
+       EARN DAILY - MODERN PREMIUM TASKS UI (SOFT LIGHT)
     ========================================== */
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    
-    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* ==========================================
-       EXCLUSIVE LOCKED CARD (Premium Dark Vibe)
-    ========================================== */
+    /* Exclusive Header Card */
     .premium-header-card {
-        background: linear-gradient(145deg, #111111 0%, #000000 100%);
-        border: 1px solid #333333;
+        background: linear-gradient(135deg, #065F46 0%, #047857 50%, #059669 100%);
         border-radius: 32px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
+        color: #FFFFFF;
+        box-shadow: 0 20px 45px -10px rgba(5, 150, 105, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .premium-header-card::before {
-        content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
-        pointer-events: none; z-index: 0;
+        content: ''; position: absolute; top: -40%; right: -20%; width: 260px; height: 260px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, transparent 65%);
+        border-radius: 50%; pointer-events: none;
     }
 
     /* Locked Task Row */
     .locked-task {
-        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
-        padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
-        cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;
+        background: #FFFFFF; 
+        border: 1px solid #E2E8F0; 
+        border-radius: 24px;
+        padding: 18px 20px; 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between;
+        cursor: pointer; 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        position: relative; 
+        overflow: hidden;
+        box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.02);
     }
-    
+    .locked-task:hover {
+        transform: translateY(-2px);
+        border-color: #A7F3D0; 
+        background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%);
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.12);
+    }
+
     /* Shimmer Effect for Locked Tasks */
     .locked-task::after {
         content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-        background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
-        transform: skewX(-20deg); animation: shimmerFast 2s infinite; pointer-events: none;
+        background: linear-gradient(to right, transparent, rgba(16, 185, 129, 0.05), transparent);
+        transform: skewX(-20deg); animation: shimmerFast 2.5s infinite; pointer-events: none;
     }
     @keyframes shimmerFast { 100% { left: 200%; } }
-    
-    .locked-task:hover {
-        transform: translateY(-2px) scale(1.01);
-        border-color: #444444; background: #0F0F0F;
-    }
 
     /* Blurring the text to show it's locked */
     .blur-text {
-        filter: blur(1px); user-select: none; transition: filter 0.3s ease;
+        filter: blur(1.5px); user-select: none; transition: filter 0.3s ease;
     }
-    .locked-task:hover .blur-text { filter: blur(0.5px); }
+    .locked-task:hover .blur-text { filter: blur(0.8px); }
 
     /* Button */
-    .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 16px;
+    .btn-action {
+        background: #FFFFFF; color: #065F46; padding: 14px 28px;
         border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 1px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        letter-spacing: 0.5px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    .btn-action:hover { background: #ECFDF5; transform: scale(1.02); }
+    .btn-action:active { transform: scale(0.96); }
 </style>
 
-<div class="max-w-3xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-3xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
-    <!-- 1. HEADER (Navigation) -->
-    <div class="flex items-center justify-between mb-6">
-        <a href="/work" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
-            <i class="fa-solid fa-chevron-left text-sm"></i>
-        </a>
-        <h2 class="text-lg font-bold text-white tracking-wide">Premium Work</h2>
-        <div class="w-10"></div> 
+    <!-- 1. HEADER -->
+    <div class="flex items-center justify-between mb-2 px-2">
+        <div class="flex items-center gap-3">
+            <a href="/work" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </a>
+            <div>
+                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">প্রিমিয়াম ওয়ার্ক বোর্ড</h2>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">High-Paying Elite Jobs</p>
+            </div>
+        </div>
+        <span class="bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1">
+            <i class="fa-solid fa-crown text-amber-500"></i> Elite Only
+        </span>
     </div>
 
     <!-- ==========================================
          2. EXCLUSIVE LOCK BANNER
     ========================================== -->
-    <div class="premium-header-card p-8 sm:p-10 text-center sm:text-left flex flex-col sm:flex-row items-center gap-6">
+    <div class="premium-header-card p-7 sm:p-9 text-center sm:text-left flex flex-col sm:flex-row items-center gap-6">
         
-        <i class="fa-solid fa-gem absolute right-4 top-1/2 transform -translate-y-1/2 text-9xl opacity-[0.02] pointer-events-none rotate-12"></i>
-        
-        <div class="h-20 w-20 bg-[#111111] text-white rounded-2xl flex items-center justify-center text-3xl border border-[#333333] flex-shrink-0 relative z-10 shadow-lg">
-            <i class="fa-solid fa-lock"></i>
+        <div class="h-20 w-20 bg-white/15 backdrop-blur-md text-white rounded-2xl flex items-center justify-center text-3xl border border-white/25 flex-shrink-0 relative z-10 shadow-lg shadow-black/10">
+            <i class="fa-solid fa-lock text-amber-300"></i>
         </div>
 
         <div class="relative z-10 flex-grow">
-            <span class="inline-flex items-center gap-1.5 bg-[#1C1C1E] text-[#AAAAAA] px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-[#333333] mb-3">
-                <i class="fa-solid fa-crown text-white"></i> Elite Access Only
+            <span class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border border-white/20 mb-2.5">
+                <i class="fa-solid fa-gem text-amber-300"></i> Private Work Board
             </span>
             
-            <h1 class="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">প্রাইভেট ওয়ার্ক বোর্ড</h1>
+            <h1 class="text-2xl sm:text-3xl font-black text-white mb-2 tracking-tight">হাই-পেইং প্রাইভেট সার্ভার</h1>
             
-            <p class="text-xs text-[#888888] font-medium leading-relaxed max-w-sm mb-6">
-                এটি PayLix-এর হাই-পেইং প্রাইভেট সার্ভার। এখানে থাকা কাজগুলো খুবই সহজ, কিন্তু সাধারণ কাজের চেয়ে ১০ গুন বেশি আয় করা সম্ভব!
+            <p class="text-xs text-emerald-100 font-medium leading-relaxed max-w-sm mb-5">
+                এটি Earn Daily-এর স্পেশাল কাজের বোর্ড। এখানকার কাজগুলো অত্যন্ত সহজ, কিন্তু সাধারণ কাজের চেয়ে ৫ থেকে ১০ গুণ বেশি ইনকাম পাওয়া যায়।
             </p>
             
-            <button onclick="triggerLockedAlert()" class="btn-white sm:w-auto px-10">
-                <i class="fa-solid fa-unlock"></i> আনলক করুন
+            <button onclick="triggerLockedAlert()" class="btn-action">
+                <i class="fa-solid fa-unlock text-emerald-700"></i> <span>আনলক করুন</span>
             </button>
         </div>
     </div>
 
     <!-- ==========================================
-         3. FAKE LIVE TICKER
+         3. LIVE TICKER
     ========================================== -->
-    <div class="bg-[#0A0A0A] border border-[#1C1C1E] rounded-2xl p-3 flex items-center gap-3 overflow-hidden">
-        <div class="h-8 w-8 bg-white text-black rounded-xl flex items-center justify-center flex-shrink-0">
-            <i class="fa-solid fa-satellite-dish text-sm animate-[spin_4s_linear_infinite]"></i>
+    <div class="bg-white border border-slate-200/90 rounded-2xl p-3 flex items-center gap-3 overflow-hidden shadow-sm">
+        <div class="h-8 w-8 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0 border border-emerald-100">
+            <i class="fa-solid fa-satellite-dish text-xs animate-[spin_4s_linear_infinite]"></i>
         </div>
         <div class="flex-grow whitespace-nowrap overflow-hidden">
-            <p class="text-[10px] text-[#666666] font-bold uppercase tracking-widest animate-[marquee_15s_linear_infinite] inline-block">
-                • New App Rating tasks arrived • Telegram Airdrop tasks available • TikTok Video Share tasks added •
+            <p class="text-xs text-slate-500 font-semibold animate-[marquee_18s_linear_infinite] inline-block">
+                • New App Rating tasks arrived (৳45) • Telegram KYC Bounty available (৳80) • TikTok Video Share tasks added (৳35) • Finance Survey Project live •
             </p>
         </div>
     </div>
@@ -119,22 +133,22 @@
     </style>
 
     <!-- ==========================================
-         4. LOCKED TASK LIST (Dark Minimalist)
+         4. LOCKED TASK LIST
     ========================================== -->
-    <div class="flex items-center justify-between px-1 mb-4 mt-8">
-        <h3 class="font-bold text-white text-sm uppercase tracking-widest flex items-center gap-2">
-            লাইভ প্রজেক্টস
+    <div class="flex items-center justify-between px-2 mb-3 mt-6">
+        <h3 class="font-extrabold text-slate-800 text-sm tracking-tight flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-emerald-500"></span> লাইভ প্রজেক্টস তালিকা
         </h3>
-        <span class="text-[9px] bg-[#111111] text-[#888888] px-3 py-1.5 rounded-full font-bold uppercase tracking-widest border border-[#222222] flex items-center gap-1.5">
-            <i class="fa-solid fa-circle-notch fa-spin text-white"></i> Auto Sync
+        <span class="text-[11px] bg-emerald-50 text-emerald-800 px-3 py-1 rounded-full font-bold border border-emerald-100 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-notch fa-spin text-emerald-600"></i> Auto Sync
         </span>
     </div>
 
-    <div class="grid sm:grid-cols-2 gap-3">
+    <div class="grid sm:grid-cols-2 gap-3.5">
         {% set easy_titles = [
             'TikTok Video Share & Comment', 
-            'Rate 5-Star on PlayStore', 
-            'Join Crypto Telegram Group', 
+            'Rate 5-Star on PlayStore App', 
+            'Join Crypto Telegram Community', 
             'Watch 2 Min YouTube Video', 
             'Retweet Twitter/X Post', 
             'Facebook Page Like & Share'
@@ -143,31 +157,31 @@
         {% for task in tasks %}
         <div class="locked-task" onclick="triggerLockedAlert()">
             
-            <div class="flex items-center gap-4 w-full overflow-hidden">
+            <div class="flex items-center gap-3.5 w-full overflow-hidden">
                 <!-- Icon Box with Lock Overlay -->
-                <div class="h-12 w-12 bg-[#111111] text-[#444444] rounded-[14px] flex items-center justify-center text-xl border border-[#222222] flex-shrink-0 relative overflow-hidden">
-                    {% if loop.index % 3 == 0 %} <i class="fa-brands fa-tiktok opacity-30"></i>
-                    {% elif loop.index % 2 == 0 %} <i class="fa-brands fa-telegram opacity-30"></i>
-                    {% else %} <i class="fa-brands fa-youtube opacity-30"></i> {% endif %}
+                <div class="h-12 w-12 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center text-xl border border-slate-200 flex-shrink-0 relative overflow-hidden">
+                    {% if loop.index % 3 == 0 %} <i class="fa-brands fa-tiktok opacity-40"></i>
+                    {% elif loop.index % 2 == 0 %} <i class="fa-brands fa-telegram opacity-40"></i>
+                    {% else %} <i class="fa-brands fa-youtube opacity-40"></i> {% endif %}
                     
-                    <div class="absolute inset-0 flex items-center justify-center backdrop-blur-[2px]">
-                        <i class="fa-solid fa-lock text-white text-sm drop-shadow-lg"></i>
+                    <div class="absolute inset-0 flex items-center justify-center bg-white/70 backdrop-blur-[1px]">
+                        <i class="fa-solid fa-lock text-amber-500 text-sm"></i>
                     </div>
                 </div>
                 
                 <div class="flex-grow pr-2 min-w-0">
-                    <h4 class="font-bold text-[#E5E5E5] text-sm truncate w-full blur-text">
+                    <h4 class="font-extrabold text-slate-800 text-sm truncate w-full blur-text">
                         {{ easy_titles[loop.index % easy_titles|length] }}
                     </h4>
-                    <span class="text-[9px] font-black text-white bg-[#1C1C1E] px-2 py-0.5 rounded border border-[#333333] uppercase tracking-widest mt-1.5 inline-block">Easy Task</span>
+                    <span class="text-[9.5px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 uppercase tracking-wider mt-1 inline-block">Easy Task</span>
                 </div>
             </div>
 
             <!-- Reward Tag -->
-            <div class="flex flex-col items-end flex-shrink-0 pl-3 border-l border-[#222222]">
-                <span class="text-base font-black text-white font-mono blur-text">৳{{ task.reward }}</span>
-                <span class="mt-1 text-[#888888] text-[8px] font-black uppercase tracking-widest flex items-center gap-1">
-                    <i class="fa-solid fa-crown text-white"></i> Elite
+            <div class="flex flex-col items-end flex-shrink-0 pl-3 border-l border-slate-100">
+                <span class="text-base font-black text-slate-900 font-mono blur-text">৳{{ task.reward }}</span>
+                <span class="mt-0.5 text-amber-600 text-[9px] font-extrabold uppercase tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-crown text-[10px]"></i> Elite
                 </span>
             </div>
 
@@ -181,7 +195,7 @@
 <script>
     function triggerLockedAlert() {
         alert("🔒 SYSTEM LOCKED\n\nআপনি বর্তমানে Free Plan এ আছেন। এই সহজ এবং হাই-পেইং কাজগুলোর অ্যাক্সেস পেতে আপনার অ্যাকাউন্টটি 'Elite Member' হিসেবে আপগ্রেড করুন।");
-        window.location.href = "/vip"; // Redirects to VIP page
+        window.location.href = "/vip";
     }
 </script>
 
