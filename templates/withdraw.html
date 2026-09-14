@@ -3,197 +3,241 @@
 
 <style>
     /* ==========================================
-       EARN DAILY - MODERN PAYMENT SETTINGS UI
+       EARN DAILY - MODERN FINTECH WITHDRAW UI
     ========================================== */
     .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Method Selection Cards */
-    .method-card {
-        background: #FFFFFF; 
-        border: 2px solid #E2E8F0; 
-        border-radius: 22px;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
-        position: relative; 
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    /* Digital Wallet Cards */
+    .wallet-card-container { 
+        display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; 
     }
-    .method-card:hover { 
-        border-color: #A7F3D0; 
-        background: #F0FDF4; 
-        transform: translateY(-2px);
-    }
-
-    /* Checked State */
-    input[type="radio"]:checked + .method-card {
-        border-color: #10B981; 
-        background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%);
-        box-shadow: 0 10px 24px -5px rgba(16, 185, 129, 0.18);
-    }
-    input[type="radio"]:checked + .method-card .icon-circle {
-        background: #059669; 
-        color: #FFFFFF; 
-        border-color: #059669;
-        transform: scale(1.05);
+    .wallet-card-container::-webkit-scrollbar { display: none; }
+    
+    .wallet-card {
+        min-width: 82%; scroll-snap-align: center;
+        background: #FFFFFF; border: 2px solid #E2E8F0; border-radius: 26px;
+        padding: 22px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        position: relative; overflow: hidden;
+        box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.03);
     }
     
-    .icon-circle {
-        height: 44px; width: 44px; border-radius: 14px;
-        background: #F8FAFC; border: 1px solid #E2E8F0; color: #475569;
-        display: flex; align-items: center; justify-content: center; font-size: 19px; 
-        transition: all 0.25s ease;
-    }
-
-    /* Check Indicator */
-    .check-indicator {
-        position: absolute; top: 10px; right: 10px;
-        height: 18px; width: 18px; border-radius: 50%; border: 1.5px solid #CBD5E1;
-        display: flex; align-items: center; justify-content: center; transition: all 0.25s;
-    }
-    input:checked + .method-card .check-indicator {
-        background: #059669; border-color: #059669;
-    }
-    input:checked + .method-card .check-indicator::after {
-        content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900;
-        font-size: 9px; color: #FFFFFF;
-    }
-
-    /* Large Number Input */
-    .light-input-large {
-        width: 100%; background: #F8FAFC; border: 2px solid #E2E8F0; color: #0F172A;
-        padding: 18px 18px 18px 64px; border-radius: 20px; outline: none; 
-        font-size: 18px; font-weight: 800; letter-spacing: 1.5px; transition: all 0.25s ease;
-    }
-    .light-input-large:focus { 
+    /* Checked Card State */
+    input[type="radio"]:checked + .wallet-card {
         border-color: #10B981; 
-        background: #FFFFFF;
+        background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%);
+        box-shadow: 0 12px 28px -5px rgba(16, 185, 129, 0.15);
+    }
+    input[type="radio"]:checked + .wallet-card .check-icon { opacity: 1; transform: scale(1); }
+    input[type="radio"]:disabled + .wallet-card { opacity: 0.5; cursor: not-allowed; background: #F8FAFC; }
+
+    .check-icon {
+        position: absolute; top: 18px; right: 18px; height: 24px; width: 24px;
+        background: #059669; color: #FFFFFF; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; font-size: 11px;
+        opacity: 0; transform: scale(0.6); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Minimal Amount Input Field */
+    .amount-input-box {
+        background: #FFFFFF; border: 2px solid #E2E8F0; border-radius: 26px;
+        padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: center;
+        transition: all 0.25s ease; box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.02);
+    }
+    .amount-input-box:focus-within { 
+        border-color: #10B981; 
         box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); 
     }
-    .light-input-large::placeholder { color: #CBD5E1; }
+    
+    .amount-field {
+        background: transparent; border: none; outline: none;
+        font-size: 44px; font-weight: 900; font-family: 'Plus Jakarta Sans', monospace;
+        color: #0F172A; text-align: center; width: 100%; letter-spacing: -1px;
+    }
+    .amount-field::placeholder { color: #CBD5E1; }
 
-    /* Button */
+    /* Security Checklist Nodes */
+    .sec-node {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 18px; background: #FFFFFF; border: 1px solid #E2E8F0;
+        border-radius: 18px; margin-bottom: 8px; transition: all 0.25s;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+    }
+    .sec-node.passed { border-color: #A7F3D0; background: #F0FDF4; }
+    .sec-node.failed { border-color: #FECDD3; background: #FFF1F2; }
+
+    /* Buttons */
     .btn-emerald {
         background: linear-gradient(135deg, #059669 0%, #10B981 100%);
         color: #FFFFFF; width: 100%; padding: 18px;
-        border-radius: 20px; font-weight: 800; font-size: 14px; text-transform: uppercase;
-        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        border-radius: 20px; font-weight: 800; font-size: 14px;
+        letter-spacing: 0.3px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex; align-items: center; justify-content: center; gap: 8px;
         box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
     .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
     .btn-emerald:active { transform: scale(0.96); }
-    .btn-emerald:disabled { background: #E2E8F0 !important; color: #94A3B8 !important; box-shadow: none !important; cursor: not-allowed; transform: none !important; }
+    .btn-emerald:disabled { 
+        background: #E2E8F0 !important; color: #94A3B8 !important; 
+        box-shadow: none !important; cursor: not-allowed; transform: none !important; 
+    }
 </style>
 
 <div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. HEADER -->
     <div class="flex items-center justify-between mb-4 px-2">
-        <div class="flex items-center gap-3">
-            <a href="/account" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
-                <i class="fa-solid fa-chevron-left text-sm"></i>
+        <a href="/dashboard" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+        </a>
+        <h2 class="text-base font-extrabold text-slate-800 tracking-tight">উত্তোলন (Cashout)</h2>
+        <div class="w-10"></div> 
+    </div>
+
+    <form method="POST" action="/withdraw" onsubmit="return showLoading(this)">
+
+        <!-- 2. WALLET SELECTION (Horizontal Cards) -->
+        <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2.5 ml-2">১. ওয়ালেট নির্বাচন করুন</p>
+        
+        <div class="wallet-card-container mb-6 pl-1">
+            <!-- Main Wallet Card -->
+            <label class="relative block">
+                <input type="radio" name="wallet_type" value="main" class="peer sr-only" checked onchange="updateUI()">
+                <div class="wallet-card">
+                    <div class="check-icon"><i class="fa-solid fa-check"></i></div>
+                    <div class="h-10 w-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-lg mb-3 border border-emerald-100">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">মেইন অ্যাকাউন্ট</p>
+                    <h3 class="text-2xl font-black font-mono text-slate-800 tracking-tight">৳{{ user.balance }}</h3>
+                </div>
+            </label>
+
+            <!-- Elite Wallet Card -->
+            <label class="relative block">
+                <input type="radio" name="wallet_type" value="vip" class="peer sr-only" {{ 'disabled' if user.current_level == 0 }} onchange="updateUI()">
+                <div class="wallet-card">
+                    <div class="check-icon"><i class="fa-solid fa-check"></i></div>
+                    <div class="h-10 w-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center text-lg mb-3 border border-amber-100">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">এলিট অ্যাকাউন্ট (VIP)</p>
+                    <h3 class="text-2xl font-black font-mono text-slate-800 tracking-tight">৳{{ user.vip_balance or 0 }}</h3>
+                </div>
+            </label>
+        </div>
+
+        <!-- 3. DESTINATION TICKET -->
+        <div class="bg-white border border-slate-200/90 rounded-[22px] p-4 flex items-center justify-between mb-6 shadow-sm">
+            <div>
+                <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-0.5">টাকা প্রাপ্তির নম্বর</p>
+                <div class="flex items-center gap-2">
+                    <h3 class="text-sm font-extrabold text-slate-800 font-mono tracking-wider">{{ user.wallet_number or 'Not Set' }}</h3>
+                    <span class="text-[9px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100/70 border border-emerald-200 px-2 py-0.5 rounded-md">{{ user.wallet_method or 'None' }}</span>
+                </div>
+            </div>
+            <a href="/adm" class="h-9 w-9 bg-slate-50 hover:bg-emerald-50 text-slate-500 hover:text-emerald-600 rounded-xl flex items-center justify-center transition border border-slate-200 shadow-sm active:scale-95" title="Edit Gateway">
+                <i class="fa-solid fa-pen text-xs"></i>
             </a>
-            <div>
-                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">পেমেন্ট মেথড সেটিংস</h2>
-                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Withdrawal Gateway Setup</p>
-            </div>
         </div>
-    </div>
 
-    <!-- 2. ACTIVE WALLET TICKET (If Set) -->
-    {% if user.wallet_number and user.wallet_method %}
-    <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-[26px] p-6 text-white shadow-lg shadow-emerald-600/20 relative overflow-hidden">
-        <div class="flex justify-between items-start mb-3 relative z-10">
-            <div>
-                <p class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-200">Active Receiver Gateway</p>
-                <h3 class="text-2xl font-black font-mono tracking-wider mt-1">{{ user.wallet_number }}</h3>
-            </div>
-            <div class="bg-white text-emerald-800 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm">
-                {{ user.wallet_method }}
+        <!-- 4. AMOUNT INPUT -->
+        <div class="px-2">
+            <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2 text-center">২. উত্তোলনের পরিমাণ লিখুন</p>
+            <div class="amount-input-box">
+                <span class="text-3xl font-black text-emerald-600 mr-2">৳</span>
+                <input type="number" name="amount" required placeholder="0" class="amount-field">
             </div>
         </div>
-        <div class="flex items-center gap-1.5 text-emerald-100 text-[11px] font-bold border-t border-white/20 pt-3 relative z-10">
-            <i class="fa-solid fa-circle-check text-emerald-300"></i> Verified Cashout Destination
-        </div>
-    </div>
-    {% endif %}
 
-    <!-- 3. FORM CONTAINER -->
-    <div class="bg-white p-6 sm:p-7 rounded-[28px] border border-slate-200/90 shadow-sm">
-        <form method="POST" action="/adm" class="space-y-6" onsubmit="return showLoading()">
+        <!-- 5. SMART SECURITY NODES -->
+        <div class="px-1 mb-7">
+            <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2.5">৩. উইথড্র ক্লিয়ারেন্স শর্ত</p>
+
+            {% set is_vip = (user.current_level > 0) %}
+            {% set current_bal = user.balance | float %}
             
-            <!-- Step 1: Select Method -->
-            <div class="space-y-3">
-                <label class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider ml-1">১. মেথড নির্বাচন করুন</label>
-                
-                <div class="grid grid-cols-3 gap-3">
-                    <!-- bKash -->
-                    <label class="relative">
-                        <input type="radio" name="method" value="bKash" class="sr-only" {{ 'checked' if user.wallet_method == 'bKash' }} required>
-                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
-                            <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-bolt text-[#E2136E]"></i></div>
-                            <span class="text-xs font-bold text-slate-700">bKash</span>
+            {% if is_vip %}
+                <!-- VIP CLEARANCE -->
+                <div class="sec-node passed">
+                    <div class="flex items-center gap-3">
+                        <div class="h-9 w-9 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-sm border border-amber-100">
+                            <i class="fa-solid fa-crown"></i>
                         </div>
-                    </label>
-
-                    <!-- Nagad -->
-                    <label class="relative">
-                        <input type="radio" name="method" value="Nagad" class="sr-only" {{ 'checked' if user.wallet_method == 'Nagad' }} required>
-                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
-                            <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-fire-flame-curved text-[#F97316]"></i></div>
-                            <span class="text-xs font-bold text-slate-700">Nagad</span>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">এলিট মেম্বারশিপ প্রিভিলেজ</p>
+                            <p class="text-[10px] text-emerald-600 font-medium mt-0.5">কোনো শর্ত বা রেফার লাগবে না। মিনিমাম মাত্র ৳২০।</p>
                         </div>
-                    </label>
-
-                    <!-- Rocket -->
-                    <label class="relative">
-                        <input type="radio" name="method" value="Rocket" class="sr-only" {{ 'checked' if user.wallet_method == 'Rocket' }} required>
-                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
-                            <div class="check-indicator"></div>
-                            <div class="icon-circle"><i class="fa-solid fa-rocket text-[#8B5CF6]"></i></div>
-                            <span class="text-xs font-bold text-slate-700">Rocket</span>
-                        </div>
-                    </label>
+                    </div>
+                    <i class="fa-solid fa-check-circle text-emerald-600 text-base"></i>
                 </div>
-            </div>
+                {% set can_withdraw = true %}
 
-            <!-- Step 2: Number Input -->
-            <div class="space-y-2">
-                <label class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider ml-1">২. অ্যাকাউন্ট নাম্বার দিন</label>
-                <div class="relative">
-                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold font-mono text-sm">+88</span>
-                    <input type="tel" name="number" required pattern="01[3-9][0-9]{8}" placeholder="01700000000" value="{{ user.wallet_number or '' }}" class="light-input-large font-mono">
+            {% else %}
+                <!-- FREE USER CLEARANCE -->
+                <!-- Check 1: Referrals -->
+                <div class="sec-node {{ 'passed' if ref_count >= 4 else 'failed' }}">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-users {{ 'text-emerald-600' if ref_count >= 4 else 'text-rose-500' }}"></i>
+                        <span class="text-xs font-bold text-slate-700">এক্টিভ রেফারেল</span>
+                    </div>
+                    <span class="text-xs font-mono font-bold {{ 'text-emerald-600' if ref_count >= 4 else 'text-rose-500' }}">{{ ref_count }} / 4</span>
                 </div>
-            </div>
 
-            <!-- Warning Alert Box -->
-            <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex gap-3 text-amber-900">
-                <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-sm flex-shrink-0"></i>
-                <p class="text-xs leading-relaxed font-medium">
-                    নিশ্চিত করুন নম্বরটি সম্পূর্ণ ব্যক্তিগত এবং সঠিক। ভুল নম্বরে টাকা চলে গেলে বা পেমেন্ট আটকে গেলে প্ল্যাটফর্ম দায়ী থাকবে না।
-                </p>
-            </div>
+                <!-- Check 2: Account Age -->
+                <div class="sec-node {{ 'passed' if account_hours >= 24 else 'failed' }}">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-clock {{ 'text-emerald-600' if account_hours >= 24 else 'text-rose-500' }}"></i>
+                        <span class="text-xs font-bold text-slate-700">অ্যাকাউন্টের বয়স (ঘণ্টা)</span>
+                    </div>
+                    <span class="text-xs font-mono font-bold {{ 'text-emerald-600' if account_hours >= 24 else 'text-rose-500' }}">{{ "%.0f"|format(account_hours) if account_hours < 24 else 24 }} / 24</span>
+                </div>
 
-            <!-- Submit -->
-            <button type="submit" id="submitBtn" class="btn-emerald">
-                <span>সেভ ও আপডেট করুন</span> <i class="fa-solid fa-arrow-right text-xs"></i>
-            </button>
+                <!-- Check 3: Minimum Balance -->
+                <div class="sec-node {{ 'passed' if current_bal >= 270 else 'failed' }}">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-coins {{ 'text-emerald-600' if current_bal >= 270 else 'text-rose-500' }}"></i>
+                        <span class="text-xs font-bold text-slate-700">মিনিমাম ব্যালেন্স</span>
+                    </div>
+                    <span class="text-xs font-mono font-bold {{ 'text-emerald-600' if current_bal >= 270 else 'text-rose-500' }}">৳{{ current_bal }} / 270</span>
+                </div>
 
-        </form>
-    </div>
+                {% set can_withdraw = (ref_count >= 4 and account_hours >= 24 and current_bal >= 270) %}
+            {% endif %}
+        </div>
 
+        <!-- 6. ACTION BUTTON -->
+        <div class="px-1">
+            {% if is_vip or can_withdraw %}
+                <button type="submit" id="submitBtn" class="btn-emerald">
+                    <span>উইথড্র রিকোয়েস্ট পাঠান</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            {% else %}
+                <button type="button" disabled class="btn-emerald">
+                    <i class="fa-solid fa-lock text-sm mr-1"></i> শর্ত পূরণ করুন
+                </button>
+            {% endif %}
+            
+            <p class="text-center text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest mt-3.5 flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-shield-check text-emerald-600 text-xs"></i> 100% Secure & Automated Transfer
+            </p>
+        </div>
+
+    </form>
 </div>
 
 <script>
-    function showLoading() {
-        const form = document.querySelector('form');
+    function updateUI() {
+        // UI Visual Update
+    }
+
+    function showLoading(form) {
         if (form.checkValidity()) {
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">আপডেট হচ্ছে...</span>';
-            btn.classList.add('opacity-80');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">রিকোয়েস্ট প্রসেস হচ্ছে...</span>';
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
             return true;
         }
         return false;
