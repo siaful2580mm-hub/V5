@@ -3,225 +3,197 @@
 
 <style>
     /* ==========================================
-       PURE DARK THEME & FINTECH WALLET UI
+       EARN DAILY - MODERN PAYMENT SETTINGS UI
     ========================================== */
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Digital Wallet Cards */
-    .wallet-card-container { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; }
-    .wallet-card-container::-webkit-scrollbar { display: none; }
+    /* Method Selection Cards */
+    .method-card {
+        background: #FFFFFF; 
+        border: 2px solid #E2E8F0; 
+        border-radius: 22px;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        position: relative; 
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    }
+    .method-card:hover { 
+        border-color: #A7F3D0; 
+        background: #F0FDF4; 
+        transform: translateY(-2px);
+    }
+
+    /* Checked State */
+    input[type="radio"]:checked + .method-card {
+        border-color: #10B981; 
+        background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%);
+        box-shadow: 0 10px 24px -5px rgba(16, 185, 129, 0.18);
+    }
+    input[type="radio"]:checked + .method-card .icon-circle {
+        background: #059669; 
+        color: #FFFFFF; 
+        border-color: #059669;
+        transform: scale(1.05);
+    }
     
-    .wallet-card {
-        min-width: 85%; scroll-snap-align: center;
-        background: #0A0A0A; border: 2px solid #1C1C1E; border-radius: 24px;
-        padding: 24px; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden;
-    }
-    .wallet-card::after {
-        content: ''; position: absolute; right: -20px; bottom: -20px;
-        width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
-        border-radius: 50%; pointer-events: none;
-    }
-    
-    /* Checked Card State */
-    input[type="radio"]:checked + .wallet-card {
-        border-color: #ffffff; background: #111111;
-        box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
-    }
-    input[type="radio"]:checked + .wallet-card .check-icon { opacity: 1; transform: scale(1); }
-    input[type="radio"]:disabled + .wallet-card { opacity: 0.4; cursor: not-allowed; }
-
-    .check-icon {
-        position: absolute; top: 20px; right: 20px; height: 24px; width: 24px;
-        background: #ffffff; color: #000000; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; font-size: 10px;
-        opacity: 0; transform: scale(0.5); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    .icon-circle {
+        height: 44px; width: 44px; border-radius: 14px;
+        background: #F8FAFC; border: 1px solid #E2E8F0; color: #475569;
+        display: flex; align-items: center; justify-content: center; font-size: 19px; 
+        transition: all 0.25s ease;
     }
 
-    /* Minimal Input Area */
-    .amount-input-box {
-        background: transparent; border-bottom: 2px solid #333333;
-        padding: 20px 0; margin-bottom: 30px; display: flex; align-items: center; justify-content: center;
-        transition: border-color 0.3s;
+    /* Check Indicator */
+    .check-indicator {
+        position: absolute; top: 10px; right: 10px;
+        height: 18px; width: 18px; border-radius: 50%; border: 1.5px solid #CBD5E1;
+        display: flex; align-items: center; justify-content: center; transition: all 0.25s;
     }
-    .amount-input-box:focus-within { border-color: #ffffff; }
-    
-    .amount-field {
-        background: transparent; border: none; outline: none;
-        font-size: 56px; font-weight: 900; font-family: 'Inter', monospace;
-        color: #ffffff; text-align: center; width: 100%; letter-spacing: -2px;
+    input:checked + .method-card .check-indicator {
+        background: #059669; border-color: #059669;
     }
-    .amount-field::placeholder { color: #222222; }
+    input:checked + .method-card .check-indicator::after {
+        content: '\f00c'; font-family: "Font Awesome 6 Free"; font-weight: 900;
+        font-size: 9px; color: #FFFFFF;
+    }
 
-    /* Security Nodes (Checklist) */
-    .sec-node {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 16px; background: #050505; border: 1px solid #161616;
-        border-radius: 16px; margin-bottom: 8px; transition: all 0.3s;
+    /* Large Number Input */
+    .light-input-large {
+        width: 100%; background: #F8FAFC; border: 2px solid #E2E8F0; color: #0F172A;
+        padding: 18px 18px 18px 64px; border-radius: 20px; outline: none; 
+        font-size: 18px; font-weight: 800; letter-spacing: 1.5px; transition: all 0.25s ease;
     }
-    .sec-node.passed { border-color: #333333; }
-    .sec-node.failed { border-color: #330000; background: #0A0000; }
+    .light-input-large:focus { 
+        border-color: #10B981; 
+        background: #FFFFFF;
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); 
+    }
+    .light-input-large::placeholder { color: #CBD5E1; }
 
-    /* Submit Button */
-    .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 20px;
-        border-radius: 20px; font-weight: 900; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 2px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    /* Button */
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; width: 100%; padding: 18px;
+        border-radius: 20px; font-weight: 800; font-size: 14px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
-    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
-    .btn-white:disabled { background: #111111; color: #444444; cursor: not-allowed; }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
+    .btn-emerald:active { transform: scale(0.96); }
+    .btn-emerald:disabled { background: #E2E8F0 !important; color: #94A3B8 !important; box-shadow: none !important; cursor: not-allowed; transform: none !important; }
 </style>
 
-<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-md mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. HEADER -->
-    <div class="flex items-center justify-between mb-8 px-2">
-        <a href="/dashboard" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
-            <i class="fa-solid fa-chevron-left text-sm"></i>
-        </a>
-        <h2 class="text-sm font-black text-[#888888] uppercase tracking-[0.2em]">Fund Transfer</h2>
-        <div class="w-10"></div> 
+    <div class="flex items-center justify-between mb-4 px-2">
+        <div class="flex items-center gap-3">
+            <a href="/account" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </a>
+            <div>
+                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">পেমেন্ট মেথড সেটিংস</h2>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Withdrawal Gateway Setup</p>
+            </div>
+        </div>
     </div>
 
-    <form method="POST" action="/withdraw" onsubmit="return showLoading(this)">
-
-        <!-- 2. WALLET SELECTION (Horizontal Cards) -->
-        <p class="text-[10px] font-bold text-[#666666] uppercase tracking-widest mb-3 ml-2">1. Select Source Wallet</p>
-        
-        <div class="wallet-card-container mb-8 pl-2">
-            <!-- Main Wallet Card -->
-            <label class="relative block">
-                <input type="radio" name="wallet_type" value="main" class="peer sr-only" checked onchange="updateUI()">
-                <div class="wallet-card">
-                    <div class="check-icon"><i class="fa-solid fa-check"></i></div>
-                    <i class="fa-solid fa-wallet text-[#444] text-2xl mb-4"></i>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-[#888] mb-1">Main Account</p>
-                    <h3 class="text-2xl font-black font-mono text-white tracking-tight">৳{{ user.balance }}</h3>
-                </div>
-            </label>
-
-            <!-- Elite Wallet Card -->
-            <label class="relative block">
-                <input type="radio" name="wallet_type" value="vip" class="peer sr-only" {{ 'disabled' if user.current_level == 0 }} onchange="updateUI()">
-                <div class="wallet-card">
-                    <div class="check-icon"><i class="fa-solid fa-check"></i></div>
-                    <i class="fa-solid fa-crown text-[#444] text-2xl mb-4"></i>
-                    <p class="text-[9px] font-black uppercase tracking-widest text-[#888] mb-1">Elite Account</p>
-                    <h3 class="text-2xl font-black font-mono text-white tracking-tight">৳{{ user.vip_balance or 0 }}</h3>
-                </div>
-            </label>
-        </div>
-
-        <!-- 3. DESTINATION INFO -->
-        <div class="bg-[#0A0A0A] border border-[#1C1C1E] rounded-[20px] p-4 flex items-center justify-between mb-8 mx-2">
+    <!-- 2. ACTIVE WALLET TICKET (If Set) -->
+    {% if user.wallet_number and user.wallet_method %}
+    <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-[26px] p-6 text-white shadow-lg shadow-emerald-600/20 relative overflow-hidden">
+        <div class="flex justify-between items-start mb-3 relative z-10">
             <div>
-                <p class="text-[9px] font-black text-[#666] uppercase tracking-widest mb-1">Destination</p>
-                <div class="flex items-center gap-2">
-                    <h3 class="text-sm font-bold text-white font-mono tracking-widest">{{ user.wallet_number or 'Not Set' }}</h3>
-                    <span class="text-[8px] font-black uppercase tracking-widest text-black bg-white px-1.5 py-0.5 rounded">{{ user.wallet_method or 'None' }}</span>
-                </div>
+                <p class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-200">Active Receiver Gateway</p>
+                <h3 class="text-2xl font-black font-mono tracking-wider mt-1">{{ user.wallet_number }}</h3>
             </div>
-            <a href="/adm" class="h-8 w-8 bg-[#111] rounded-full flex items-center justify-center text-[#888] hover:text-white transition border border-[#222]">
-                <i class="fa-solid fa-pen text-[10px]"></i>
-            </a>
-        </div>
-
-        <!-- 4. AMOUNT INPUT -->
-        <div class="px-4">
-            <p class="text-[10px] font-bold text-[#666] uppercase tracking-widest mb-2 text-center">2. Enter Amount</p>
-            <div class="amount-input-box">
-                <span class="text-3xl font-bold text-[#444] mr-2">৳</span>
-                <input type="number" name="amount" required placeholder="0" class="amount-field">
+            <div class="bg-white text-emerald-800 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm">
+                {{ user.wallet_method }}
             </div>
         </div>
+        <div class="flex items-center gap-1.5 text-emerald-100 text-[11px] font-bold border-t border-white/20 pt-3 relative z-10">
+            <i class="fa-solid fa-circle-check text-emerald-300"></i> Verified Cashout Destination
+        </div>
+    </div>
+    {% endif %}
 
-        <!-- 5. SMART SECURITY NODES -->
-        <div class="px-2 mb-8">
-            <p class="text-[10px] font-bold text-[#666] uppercase tracking-widest mb-3">3. Clearance Check</p>
-
-            {% set is_vip = (user.current_level > 0) %}
-            {% set current_bal = user.balance | float %}
+    <!-- 3. FORM CONTAINER -->
+    <div class="bg-white p-6 sm:p-7 rounded-[28px] border border-slate-200/90 shadow-sm">
+        <form method="POST" action="/adm" class="space-y-6" onsubmit="return showLoading()">
             
-            {% if is_vip %}
-                <!-- VIP CLEARANCE -->
-                <div class="sec-node passed">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-crown text-[#888] text-lg"></i>
-                        <div>
-                            <p class="text-[11px] font-bold text-white">Elite Privilege Active</p>
-                            <p class="text-[9px] text-[#666] mt-0.5">No restrictions. Min ৳20.</p>
+            <!-- Step 1: Select Method -->
+            <div class="space-y-3">
+                <label class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider ml-1">১. মেথড নির্বাচন করুন</label>
+                
+                <div class="grid grid-cols-3 gap-3">
+                    <!-- bKash -->
+                    <label class="relative">
+                        <input type="radio" name="method" value="bKash" class="sr-only" {{ 'checked' if user.wallet_method == 'bKash' }} required>
+                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
+                            <div class="check-indicator"></div>
+                            <div class="icon-circle"><i class="fa-solid fa-bolt text-[#E2136E]"></i></div>
+                            <span class="text-xs font-bold text-slate-700">bKash</span>
                         </div>
-                    </div>
-                    <i class="fa-solid fa-check-circle text-white"></i>
+                    </label>
+
+                    <!-- Nagad -->
+                    <label class="relative">
+                        <input type="radio" name="method" value="Nagad" class="sr-only" {{ 'checked' if user.wallet_method == 'Nagad' }} required>
+                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
+                            <div class="check-indicator"></div>
+                            <div class="icon-circle"><i class="fa-solid fa-fire-flame-curved text-[#F97316]"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Nagad</span>
+                        </div>
+                    </label>
+
+                    <!-- Rocket -->
+                    <label class="relative">
+                        <input type="radio" name="method" value="Rocket" class="sr-only" {{ 'checked' if user.wallet_method == 'Rocket' }} required>
+                        <div class="method-card p-3.5 flex flex-col items-center justify-center gap-2">
+                            <div class="check-indicator"></div>
+                            <div class="icon-circle"><i class="fa-solid fa-rocket text-[#8B5CF6]"></i></div>
+                            <span class="text-xs font-bold text-slate-700">Rocket</span>
+                        </div>
+                    </label>
                 </div>
-                {% set can_withdraw = true %}
+            </div>
 
-            {% else %}
-                <!-- FREE USER CLEARANCE -->
-                <!-- Check 1: Referrals -->
-                <div class="sec-node {{ 'passed' if ref_count >= 4 else 'failed' }}">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-users text-[#666]"></i>
-                        <span class="text-[11px] font-bold text-white">Active Referrals</span>
-                    </div>
-                    <span class="text-[10px] font-mono text-[#888]">{{ ref_count }} / 4</span>
+            <!-- Step 2: Number Input -->
+            <div class="space-y-2">
+                <label class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider ml-1">২. অ্যাকাউন্ট নাম্বার দিন</label>
+                <div class="relative">
+                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-extrabold font-mono text-sm">+88</span>
+                    <input type="tel" name="number" required pattern="01[3-9][0-9]{8}" placeholder="01700000000" value="{{ user.wallet_number or '' }}" class="light-input-large font-mono">
                 </div>
+            </div>
 
-                <!-- Check 2: Account Age -->
-                <div class="sec-node {{ 'passed' if account_hours >= 24 else 'failed' }}">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-clock text-[#666]"></i>
-                        <span class="text-[11px] font-bold text-white">Account Age (Hours)</span>
-                    </div>
-                    <span class="text-[10px] font-mono text-[#888]">{{ "%.0f"|format(account_hours) if account_hours < 24 else 24 }} / 24</span>
-                </div>
+            <!-- Warning Alert Box -->
+            <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex gap-3 text-amber-900">
+                <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 text-sm flex-shrink-0"></i>
+                <p class="text-xs leading-relaxed font-medium">
+                    নিশ্চিত করুন নম্বরটি সম্পূর্ণ ব্যক্তিগত এবং সঠিক। ভুল নম্বরে টাকা চলে গেলে বা পেমেন্ট আটকে গেলে প্ল্যাটফর্ম দায়ী থাকবে না।
+                </p>
+            </div>
 
-                <!-- Check 3: Minimum Balance -->
-                <div class="sec-node {{ 'passed' if current_bal >= 250 else 'failed' }}">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-coins text-[#666]"></i>
-                        <span class="text-[11px] font-bold text-white">Min. Balance</span>
-                    </div>
-                    <span class="text-[10px] font-mono text-[#888]">৳{{ current_bal }}/270</span>
-                </div>
+            <!-- Submit -->
+            <button type="submit" id="submitBtn" class="btn-emerald">
+                <span>সেভ ও আপডেট করুন</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
 
-                {% set can_withdraw = (ref_count >= 2 and account_hours >= 24 and current_bal >= 270) %}
-            {% endif %}
-        </div>
+        </form>
+    </div>
 
-        <!-- 6. ACTION BUTTON -->
-        <div class="px-2">
-            {% if is_vip or can_withdraw %}
-                <button type="submit" id="submitBtn" class="btn-white">
-                    Submit Transfer <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            {% else %}
-                <button type="button" disabled class="btn-white opacity-50">
-                    <i class="fa-solid fa-lock text-[#555]"></i> Requirements Pending
-                </button>
-            {% endif %}
-            
-            <p class="text-center text-[9px] font-mono font-bold text-[#444] uppercase tracking-widest mt-4">
-                Encrypted Transaction
-            </p>
-        </div>
-
-    </form>
 </div>
 
 <script>
-    function updateUI() {
-        // Just for visual effect on change
-    }
-
-    function showLoading(form) {
+    function showLoading() {
+        const form = document.querySelector('form');
         if (form.checkValidity()) {
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i>';
-            btn.style.background = "#222222";
-            btn.style.color = "#ffffff";
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">আপডেট হচ্ছে...</span>';
+            btn.classList.add('opacity-80');
             return true;
         }
         return false;
