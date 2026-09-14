@@ -7,34 +7,45 @@
     ========================================== */
     :root {
         --city-red: #D71920;      /* City Bank Corporate Red */
-        --city-dark: #1E293B;     /* Corporate Navy/Slate */
-        --city-blue: #0284C7;     /* City Touch Secondary Accent */
+        --city-dark: #0F172A;     /* Deep Navy Slate */
+        --city-emerald: #059669;  /* Success Emerald */
     }
 
     .city-card {
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
-        border-radius: 20px;
+        border-radius: 24px;
         box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05);
     }
 
     /* City Touch Header Gradient */
     .city-header-gradient {
-        background: linear-gradient(135deg, #B91C1C 0%, #D71920 50%, #991B1B 100%);
-        border-radius: 24px;
-        box-shadow: 0 12px 30px -5px rgba(215, 25, 32, 0.35);
+        background: linear-gradient(135deg, #991B1B 0%, #D71920 60%, #B91C1C 100%);
+        border-radius: 28px;
+        box-shadow: 0 15px 35px -5px rgba(215, 25, 32, 0.35);
     }
 
     /* Custom Scrollbar */
     .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
 
-    /* Print styling */
+    /* ==========================================
+       PRINT / PDF SPECIAL STYLES (A4 Slip Format)
+    ========================================== */
+    #printOnlySection { display: none; }
+
     @media print {
-        body * { visibility: hidden; }
-        #printArea, #printArea * { visibility: visible; }
-        #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+        body * { visibility: hidden !important; }
+        #printOnlySection, #printOnlySection * { visibility: visible !important; }
+        #printOnlySection {
+            display: block !important;
+            position: absolute !important;
+            left: 0 !important; top: 0 !important;
+            width: 100% !important; margin: 0 !important;
+            padding: 20px 25px !important; background: #FFFFFF !important; color: #000000 !important;
+        }
         .no-print { display: none !important; }
+        @page { size: A4 portrait; margin: 12mm; }
     }
 </style>
 
@@ -43,9 +54,9 @@
     <!-- ==========================================
          1. CITY TOUCH CORPORATE HEADER
     ========================================== -->
-    <div class="city-header-gradient p-6 sm:p-8 text-white relative overflow-hidden">
+    <div class="city-header-gradient p-6 sm:p-8 text-white relative overflow-hidden no-print">
         <div class="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
-        <i class="fa-solid fa-building-columns absolute right-6 top-1/2 transform -translate-y-1/2 text-8xl opacity-10 pointer-events-none rotate-12"></i>
+        <i class="fa-solid fa-building-columns absolute right-6 top-1/2 transform -translate-y-1/2 text-9xl opacity-10 pointer-events-none rotate-12"></i>
         
         <div class="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div class="flex items-center gap-4">
@@ -57,26 +68,26 @@
                         <span class="h-1.5 w-1.5 bg-emerald-400 rounded-full animate-ping"></span> Live Bulk Disburser
                     </div>
                     <h1 class="text-2xl sm:text-3xl font-black tracking-tight leading-tight">City B. Distribution</h1>
-                    <p class="text-xs text-red-100 font-medium mt-0.5">Automated Electronic Fund Settlement Portal</p>
+                    <p class="text-xs text-red-100 font-medium mt-0.5">Corporate Electronic Fund Settlement Portal</p>
                 </div>
             </div>
 
             <div class="text-left sm:text-right bg-white/15 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/20">
-                <p class="text-[9.5px] font-black uppercase tracking-widest text-red-100 mb-0.5">Settlement Mode</p>
+                <p class="text-[9.5px] font-black uppercase tracking-widest text-red-100 mb-0.5">Corporate Protocol</p>
                 <p class="text-sm font-black tracking-wide font-mono">RTGS / BEFTN / MFS API</p>
             </div>
         </div>
     </div>
 
     <!-- ==========================================
-         2. CONTROLLER FORM (Inputs & Summary)
+         2. GENERATOR INPUT CONTROLLER
     ========================================== -->
-    <div class="city-card p-6 no-print">
+    <div id="controllerCard" class="city-card p-6 no-print transition-all duration-300">
         <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-5">
             <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-solid fa-sliders text-[#D71920]"></i> ব্যাচ ডিস্ট্রিবিউশন কন্ট্রোলার
             </h3>
-            <span class="text-xs font-bold text-slate-400">City Touch Corporate Protocol</span>
+            <span class="text-xs font-bold text-slate-400">City Touch Batch Engine</span>
         </div>
 
         <div class="grid sm:grid-cols-3 gap-4 items-end">
@@ -84,7 +95,7 @@
                 <label class="block text-xs font-bold text-slate-600 mb-2">কতজন ইউজারের পেমেন্ট জেনারেট করবেন? (User Count)</label>
                 <div class="relative">
                     <input type="number" id="userCountInput" min="5" max="500" value="45" placeholder="উদাঃ ৫০, ১০০, ২৫০..." 
-                           class="w-full pl-11 pr-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-[#D71920] outline-none font-black text-slate-800 text-base font-mono">
+                           class="w-full pl-11 pr-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-[#D71920] outline-none font-black text-slate-800 text-base font-mono transition">
                     <i class="fa-solid fa-users absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                 </div>
             </div>
@@ -95,56 +106,61 @@
                 </button>
             </div>
         </div>
+    </div>
 
-        <!-- Live Calculation Banner -->
-        <div id="summaryBar" class="hidden mt-6 pt-5 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Disbursed</p>
-                <h4 class="text-lg font-black text-slate-800 font-mono" id="sumAmount">৳0.00</h4>
-            </div>
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Success Count</p>
-                <h4 class="text-lg font-black text-emerald-600 font-mono" id="sumSuccess">0</h4>
-            </div>
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Failed Transactions</p>
-                <h4 class="text-lg font-black text-rose-600 font-mono" id="sumFailed">0</h4>
-            </div>
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Success Ratio</p>
-                <h4 class="text-lg font-black text-blue-600 font-mono" id="sumRatio">98.5%</h4>
-            </div>
+    <!-- ==========================================
+         3. STATS BOARD (Shows after generation)
+    ========================================== -->
+    <div id="summaryBar" class="hidden grid grid-cols-2 md:grid-cols-4 gap-3.5 no-print">
+        <div class="city-card p-4 flex flex-col justify-between border-l-4 border-l-[#D71920]">
+            <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">মোট বিতরণকৃত অর্থ</p>
+            <h3 class="text-2xl font-black text-slate-900 font-mono" id="sumAmount">৳0.00</h3>
+        </div>
+        <div class="city-card p-4 flex flex-col justify-between border-l-4 border-l-emerald-500">
+            <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">সফল লেনদেন (Success)</p>
+            <h3 class="text-2xl font-black text-emerald-600 font-mono" id="sumSuccess">0</h3>
+        </div>
+        <div class="city-card p-4 flex flex-col justify-between border-l-4 border-l-rose-500">
+            <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">ব্যর্থ লেনদেন (Failed)</p>
+            <h3 class="text-2xl font-black text-rose-600 font-mono" id="sumFailed">0</h3>
+        </div>
+        <div class="city-card p-4 flex flex-col justify-between border-l-4 border-l-blue-500">
+            <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">সাকসেস রেট (Ratio)</p>
+            <h3 class="text-2xl font-black text-blue-600 font-mono" id="sumRatio">98.5%</h3>
         </div>
     </div>
 
     <!-- ==========================================
-         3. GENERATED DISTRIBUTION TABLE
+         4. GENERATED DISTRIBUTION TABLE
     ========================================== -->
-    <div id="printArea" class="city-card overflow-hidden">
+    <div id="tableWrapper" class="city-card overflow-hidden no-print">
         
-        <!-- Table Action Header -->
+        <!-- Table Action Bar -->
         <div class="p-5 bg-slate-50 border-b border-slate-200 flex flex-wrap justify-between items-center gap-3">
             <div>
                 <h3 class="font-extrabold text-slate-800 text-sm flex items-center gap-2">
                     <i class="fa-solid fa-file-invoice-dollar text-[#D71920]"></i> Electronic Disbursement Sheet
                 </h3>
-                <p class="text-[10px] text-slate-500 font-mono mt-0.5" id="genBatchId">Batch: CT-DISB-XXXXXX</p>
+                <p class="text-[10px] text-slate-500 font-mono mt-0.5" id="genBatchId">Batch ID: CT-DISB-XXXXXX</p>
             </div>
 
-            <div class="flex items-center gap-2 no-print">
-                <button onclick="window.print()" class="bg-slate-800 hover:bg-black text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-                    <i class="fa-solid fa-print"></i> প্রিন্ট শীট
+            <div class="flex items-center gap-2">
+                <button onclick="resetBatchGenerator()" id="resetBtn" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i> New Batch
                 </button>
-                <button onclick="exportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                <button onclick="triggerPrint()" class="bg-[#D71920] hover:bg-[#B91C1C] text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-red-500/15 active:scale-95">
+                    <i class="fa-solid fa-print"></i> প্রিন্ট ভাউচার / PDF
+                </button>
+                <button onclick="exportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95">
                     <i class="fa-solid fa-file-excel"></i> Export CSV
                 </button>
             </div>
         </div>
 
-        <!-- Data Table -->
-        <div class="overflow-x-auto custom-scroll">
+        <!-- Table Element -->
+        <div class="overflow-x-auto custom-scroll max-h-[550px]">
             <table class="w-full text-left text-xs whitespace-nowrap">
-                <thead class="bg-slate-100 text-slate-600 uppercase font-black tracking-wider text-[10px] border-b border-slate-200">
+                <thead class="bg-slate-100 text-slate-600 uppercase font-black tracking-wider text-[10px] border-b border-slate-200 sticky top-0 z-10">
                     <tr>
                         <th class="p-3.5 text-center">SL</th>
                         <th class="p-3.5">Gateway</th>
@@ -155,11 +171,11 @@
                     </tr>
                 </thead>
                 <tbody id="distributionTbody" class="divide-y divide-slate-100 font-medium">
-                    <!-- Default State -->
+                    <!-- Default Initial State -->
                     <tr>
-                        <td colspan="6" class="p-12 text-center text-slate-400">
+                        <td colspan="6" class="p-14 text-center text-slate-400">
                             <i class="fa-solid fa-calculator text-4xl mb-3 text-slate-300"></i>
-                            <p class="text-sm font-bold text-slate-600">কন্ট্রোলারে সংখ্যা লিখে 'জেনারেট করুন' বাটনে চাপ দিন।</p>
+                            <p class="text-sm font-bold text-slate-600">ইউজার সংখ্যা লিখে 'জেনারেট করুন' বাটনে চাপ দিন।</p>
                         </td>
                     </tr>
                 </tbody>
@@ -170,98 +186,187 @@
 </div>
 
 <!-- ==========================================
-     DISTRIBUTION ALGORITHM SCRIPT
+     5. ADVANCED PRINT / PDF VOUCHER TEMPLATE
+========================================== -->
+<div id="printOnlySection">
+    
+    <!-- Voucher Memorandum Header -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2.5px solid #D71920; padding-bottom: 15px; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 48px; height: 48px; background: #D71920; color: #FFFFFF; font-size: 26px; font-weight: 900; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
+                C
+            </div>
+            <div>
+                <h1 style="font-size: 20px; font-weight: 900; margin: 0; color: #1E293B;">THE CITY BANK LIMITED</h1>
+                <p style="font-size: 11px; font-weight: 700; color: #D71920; margin: 2px 0 0 0; text-transform: uppercase;">City Touch Bulk Disbursement Voucher</p>
+                <p style="font-size: 10px; color: #64748B; margin: 1px 0 0 0;">Corporate Client: <b>Earn Daily Network (Pvt.) Ltd.</b></p>
+            </div>
+        </div>
+        <div style="text-align: right; font-size: 10px; color: #475569; font-family: monospace;">
+            <p style="margin: 0; font-weight: 800; font-size: 12px; color: #0F172A;" id="voucherBatchId">BATCH: CT-DISB-XXXXXX</p>
+            <p style="margin: 2px 0 0 0;" id="voucherDate">Issue Date: 2025-01-01</p>
+            <p style="margin: 2px 0 0 0;">Clearing: Instant MFS/BEFTN</p>
+        </div>
+    </div>
+
+    <!-- Print Stats Overview Table -->
+    <div style="display: flex; justify-content: space-between; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px 18px; border-radius: 8px; margin-bottom: 18px; font-size: 11px;">
+        <div><b>Total Amount Disbursed:</b> <span id="vouchTotalAmount" style="font-family: monospace; font-weight: 800; color: #D71920;">৳0.00</span></div>
+        <div><b>Total Accounts:</b> <span id="vouchTotalUsers" style="font-family: monospace; font-weight: 800;">0</span></div>
+        <div><b>Success Ratio:</b> <span id="vouchRatio" style="font-family: monospace; font-weight: 800; color: #059669;">98.5%</span></div>
+        <div><b>Failure Cases:</b> <span id="vouchFailed" style="font-family: monospace; font-weight: 800; color: #E11D48;">0</span></div>
+    </div>
+
+    <!-- Print Data Table -->
+    <table style="width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 35px;">
+        <thead>
+            <tr style="background: #F1F5F9; border-bottom: 1.5px solid #CBD5E1; text-align: left;">
+                <th style="padding: 6px 8px; text-align: center;">SL</th>
+                <th style="padding: 6px 8px;">Gateway</th>
+                <th style="padding: 6px 8px;">Beneficiary Mobile (Masked)</th>
+                <th style="padding: 6px 8px;">Disbursed (BDT)</th>
+                <th style="padding: 6px 8px;">Bank / MFS TrxID</th>
+                <th style="padding: 6px 8px; text-align: center;">Status</th>
+            </tr>
+        </thead>
+        <tbody id="printTbody" style="font-family: monospace;">
+            <!-- Rendered in JS -->
+        </tbody>
+    </table>
+
+    <!-- ==========================================
+         OFFICIAL DUAL SIGNATURE & SEAL BLOCK
+    ========================================== -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 50px; padding: 0 20px;">
+        
+        <!-- City Touch Authorized Signatory -->
+        <div style="text-align: center; width: 220px;">
+            <div style="border-bottom: 1.5px solid #64748B; padding-bottom: 8px; margin-bottom: 6px;">
+                <img src="https://api.iconify.design/fluent-emoji-flat:pen.svg" style="height: 20px; margin: 0 auto 4px; opacity: 0.7;">
+                <p style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 18px; margin: 0; color: #0F172A;">A. H. Chowdhury</p>
+            </div>
+            <p style="font-size: 11px; font-weight: 800; margin: 0; color: #1E293B;">Authorized Signatory</p>
+            <p style="font-size: 9.5px; color: #64748B; margin: 2px 0 0 0;">Settlement Ops, City Touch</p>
+            <div style="border: 1.5px dashed #D71920; color: #D71920; border-radius: 6px; padding: 2px 6px; font-size: 8px; font-weight: 900; margin-top: 6px; display: inline-block;">
+                CITY BANK DISBURSED SEAL
+            </div>
+        </div>
+
+        <!-- Earn Daily Corporate Authority -->
+        <div style="text-align: center; width: 220px;">
+            <div style="border-bottom: 1.5px solid #64748B; padding-bottom: 8px; margin-bottom: 6px;">
+                <img src="https://api.iconify.design/fluent-emoji-flat:check-mark-button.svg" style="height: 20px; margin: 0 auto 4px; opacity: 0.7;">
+                <p style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 18px; margin: 0; color: #047857;">Tanvir Hasan</p>
+            </div>
+            <p style="font-size: 11px; font-weight: 800; margin: 0; color: #1E293B;">Corporate Approval</p>
+            <p style="font-size: 9.5px; color: #64748B; margin: 2px 0 0 0;">Managing Director, Earn Daily</p>
+            <div style="border: 1.5px dashed #059669; color: #059669; border-radius: 6px; padding: 2px 6px; font-size: 8px; font-weight: 900; margin-top: 6px; display: inline-block;">
+                EARN DAILY OFFICIAL STAMP
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Security Footnote -->
+    <div style="text-align: center; margin-top: 40px; border-top: 1px solid #E2E8F0; padding-top: 10px; font-size: 8.5px; color: #94A3B8;">
+        This document is an electronic settlement summary generated via City Touch Corporate Banking in collaboration with Earn Daily. Confidential & Audited.
+    </div>
+
+</div>
+
+<!-- ==========================================
+     LOGIC & ALGORITHM SCRIPT
 ========================================== -->
 <script>
     let generatedRecords = [];
+    let currentBatchInfo = {};
 
     function generateDistributionList() {
         const count = parseInt(document.getElementById('userCountInput').value) || 20;
         const tbody = document.getElementById('distributionTbody');
+        const printTbody = document.getElementById('printTbody');
+        
         tbody.innerHTML = '';
+        printTbody.innerHTML = '';
         generatedRecords = [];
 
         let totalAmount = 0;
         let successCount = 0;
         let failedCount = 0;
 
-        // Operator Prefixes (Teletalk kept rare)
+        // Operator Prefixes
         const gp = ['017', '013'];
         const bl = ['019', '014'];
         const rb = ['018'];
         const at = ['016'];
-        const tt = ['015']; // Teletalk (Lowest)
+        const tt = ['015']; // Teletalk (Lowest ratio, rare)
 
-        // 1. Generate Batch ID
+        // 1. Generate Batch Meta
         const batchId = "CT-" + Math.random().toString(36).substring(2, 9).toUpperCase();
-        document.getElementById('genBatchId').innerText = `Batch ID: ${batchId} | Settlement: ${new Date().toLocaleDateString()}`;
+        const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-        // 2. Loop & Generate Records
+        currentBatchInfo = { batchId, dateStr, count };
+        document.getElementById('genBatchId').innerText = `Batch ID: ${batchId} | Settlement: ${dateStr}`;
+        document.getElementById('voucherBatchId').innerText = `BATCH: ${batchId}`;
+        document.getElementById('voucherDate').innerText = `Issue Date: ${dateStr}`;
+
+        // 2. Loop & Populate
         for (let i = 1; i <= count; i++) {
             
-            // A. GATEWAY LOGIC (Maximum bKash, then Nagad, then Rocket)
+            // GATEWAY RATIO (bKash Max, Nagad Mid, Rocket Low)
             let gateway = 'bKash';
             const gwRand = Math.random() * 100;
-            if (gwRand < 62) {
-                gateway = 'bKash';        // 62% bKash
-            } else if (gwRand < 88) {
-                gateway = 'Nagad';        // 26% Nagad
-            } else {
-                gateway = 'Rocket';       // 12% Rocket
-            }
+            if (gwRand < 65) gateway = 'bKash';
+            else if (gwRand < 88) gateway = 'Nagad';
+            else gateway = 'Rocket';
 
-            // B. PHONE NUMBER LOGIC (Teletalk is kept extremely rare, ~2-3%)
+            // OPERATOR MASKED NUMBER (Teletalk kept very small ~2%)
             let prefix;
             const opRand = Math.random() * 100;
-            if (opRand < 40) prefix = gp[Math.floor(Math.random() * gp.length)];
+            if (opRand < 38) prefix = gp[Math.floor(Math.random() * gp.length)];
             else if (opRand < 68) prefix = bl[Math.floor(Math.random() * bl.length)];
             else if (opRand < 88) prefix = rb[Math.floor(Math.random() * rb.length)];
-            else if (opRand < 97) prefix = at[Math.floor(Math.random() * at.length)];
-            else prefix = tt[0]; // Teletalk (Only ~3%)
+            else if (opRand < 98) prefix = at[Math.floor(Math.random() * at.length)];
+            else prefix = tt[0];
 
-            const middleDigits = "****";
             const lastDigits = Math.floor(1000 + Math.random() * 9000);
-            const maskedNumber = `${prefix}${middleDigits}${lastDigits}`;
+            const maskedNumber = `${prefix}****${lastDigits}`;
 
-            // C. AMOUNT LOGIC (Round figure 0 or 5)
+            // AMOUNT DISTRIBUTION (Round 0 or 5)
             // - Maximum 400 to 1000 (~65%)
             // - Under 400 (~25%)
-            // - Too small 1000 to 3000 (~10%)
+            // - Small quantity 1000 to 3000 (~10%)
             let amount = 500;
             const amtRand = Math.random() * 100;
             if (amtRand < 65) {
-                // 400 to 1000
-                const raw = 400 + Math.floor(Math.random() * 121) * 5; 
-                amount = Math.min(raw, 1000);
+                amount = 400 + Math.floor(Math.random() * 121) * 5; 
+                amount = Math.min(amount, 1000);
             } else if (amtRand < 90) {
-                // Under 400 (e.g. 150 to 395)
-                amount = 150 + Math.floor(Math.random() * 50) * 5;
+                amount = 150 + Math.floor(Math.random() * 50) * 5; 
             } else {
-                // 1000 to 3000
-                amount = 1000 + Math.floor(Math.random() * 401) * 5;
+                amount = 1000 + Math.floor(Math.random() * 401) * 5; 
             }
             totalAmount += amount;
 
-            // D. STATUS LOGIC (97% - 99% Success, 2-3% Failed)
+            // STATUS (97-99% Success, 2-3% Failed)
             const isSuccess = (Math.random() * 100) >= 2.5;
             const status = isSuccess ? 'Success' : 'Failed';
             if (isSuccess) successCount++; else failedCount++;
 
-            // E. TRANSACTION ID
+            // TRXID
             let trxId;
             if(gateway === 'bKash') trxId = "BK" + Math.random().toString(36).substring(2, 10).toUpperCase();
             else if(gateway === 'Nagad') trxId = "NG" + Math.random().toString(36).substring(2, 10).toUpperCase();
             else trxId = "RK" + Math.random().toString(36).substring(2, 10).toUpperCase();
 
-            // Save record
             generatedRecords.push({ sl: i, gateway, maskedNumber, amount, trxId, status });
 
-            // Create Row
+            // UI Table Row
             const tr = document.createElement('tr');
             tr.className = "hover:bg-slate-50 transition";
             tr.innerHTML = `
                 <td class="p-3.5 text-center font-mono text-slate-400 font-bold">${i}</td>
-                <td class="p-3.5 font-bold flex items-center gap-2">
+                <td class="p-3.5 font-bold">
                     ${gateway === 'bKash' ? '<span class="text-[#E2136E] bg-pink-50 px-2 py-0.5 rounded font-black">bKash</span>' : 
                       gateway === 'Nagad' ? '<span class="text-[#F97316] bg-orange-50 px-2 py-0.5 rounded font-black">Nagad</span>' : 
                       '<span class="text-[#0284C7] bg-sky-50 px-2 py-0.5 rounded font-black">Rocket</span>'}
@@ -276,35 +381,72 @@
                 </td>
             `;
             tbody.appendChild(tr);
+
+            // Print Slip Row
+            const printTr = document.createElement('tr');
+            printTr.style.borderBottom = "1px solid #E2E8F0";
+            printTr.innerHTML = `
+                <td style="padding: 5px 8px; text-align: center; color: #64748B;">${i}</td>
+                <td style="padding: 5px 8px; font-weight: bold;">${gateway}</td>
+                <td style="padding: 5px 8px;">${maskedNumber}</td>
+                <td style="padding: 5px 8px; font-weight: bold;">৳${amount.toLocaleString()}</td>
+                <td style="padding: 5px 8px;">${trxId}</td>
+                <td style="padding: 5px 8px; text-align: center; font-weight: bold; color: ${status === 'Success' ? '#059669' : '#E11D48'};">${status.toUpperCase()}</td>
+            `;
+            printTbody.appendChild(printTr);
         }
 
         // 3. Update Summary Board
+        const ratio = ((successCount / count) * 100).toFixed(1) + "%";
         document.getElementById('sumAmount').innerText = "৳" + totalAmount.toLocaleString();
         document.getElementById('sumSuccess').innerText = successCount;
         document.getElementById('sumFailed').innerText = failedCount;
-        document.getElementById('sumRatio').innerText = ((successCount / count) * 100).toFixed(1) + "%";
+        document.getElementById('sumRatio').innerText = ratio;
+        
+        // Print Summary Meta
+        document.getElementById('vouchTotalAmount').innerText = "৳" + totalAmount.toLocaleString();
+        document.getElementById('vouchTotalUsers').innerText = count + " Recipient Accounts";
+        document.getElementById('vouchRatio').innerText = ratio;
+        document.getElementById('vouchFailed').innerText = failedCount + " Cases";
+
+        // 4. HIDE INPUT CONTROLLER & SHOW SUMMARY
+        document.getElementById('controllerCard').classList.add('hidden');
         document.getElementById('summaryBar').classList.remove('hidden');
+        document.getElementById('resetBtn').classList.remove('hidden');
     }
 
-    // Export to CSV
+    // Reset Controller to generate another batch
+    function resetBatchGenerator() {
+        document.getElementById('controllerCard').classList.remove('hidden');
+        document.getElementById('userCountInput').focus();
+    }
+
+    // Trigger Print
+    function triggerPrint() {
+        if (!generatedRecords.length) {
+            alert("আগে ডাটা জেনারেট করুন!");
+            return;
+        }
+        window.print();
+    }
+
+    // Export CSV
     function exportCSV() {
         if (!generatedRecords.length) {
             alert("আগে ডাটা জেনারেট করুন!");
             return;
         }
-
-        let csvContent = "data:text/csv;charset=utf-8,SL,Gateway,Receiver_Number,Amount_BDT,TrxID,Status\n";
+        let csv = "data:text/csv;charset=utf-8,SL,Gateway,Receiver_Number,Amount_BDT,TrxID,Status\n";
         generatedRecords.forEach(r => {
-            csvContent += `${r.sl},${r.gateway},${r.maskedNumber},${r.amount},${r.trxId},${r.status}\n`;
+            csv += `${r.sl},${r.gateway},${r.maskedNumber},${r.amount},${r.trxId},${r.status}\n`;
         });
-
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `City_Distribution_${Date.now()}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const uri = encodeURI(csv);
+        const a = document.createElement("a");
+        a.href = uri;
+        a.download = `City_Distribution_${currentBatchInfo.batchId || Date.now()}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 </script>
 
