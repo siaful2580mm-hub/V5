@@ -3203,29 +3203,41 @@ def admin_userx():
             flash(f"Error: {str(e)}", "error")
 
     return render_template('userx.html', users=users, csv_data=csv_data, f=filters, stats=stats)
-# --- USER: PAYMENT SETTINGS (ADM) ---
+    
+    # --- USER: PAYMENT SETTINGS (ADM) ---
 @app.route('/adm', methods=['GET', 'POST'])
 @login_required
 def adm_settings():
     if request.method == 'POST':
-        method = request.form.get('method')
-        number = request.form.get('number')
+        method = request.form.get('method', '').strip()
+        number = request.form.get('number', '').strip()
         
+        if not method or not number:
+            flash("❌ সঠিক মেথড এবং মোবাইল নম্বর দিন।", "error")
+            return redirect(url_for('adm_settings'))
+
         try:
-            # ডাটাবেসে আপডেট করা
-            supabase.table('profiles').update({
+            # ১. ডাটাবেসে আপডেট করা
+            update_res = supabase.table('profiles').update({
                 'wallet_method': method,
                 'wallet_number': number
             }).eq('id', session['user_id']).execute()
+
+            # ২. তাৎক্ষণিকভাবে g.user-এ ডাটা আপডেট করে দেওয়া
+            if g.user:
+                g.user['wallet_method'] = method
+                g.user['wallet_number'] = number
             
             flash("✅ পেমেন্ট মেথড সফলভাবে সেভ হয়েছে!", "success")
-            return redirect(url_for('withdraw')) # সেভ হলে উইথড্র পেজে পাঠাবে
+            return redirect(url_for('withdraw'))
             
         except Exception as e:
-            flash("Error updating settings", "error")
+            print(f"ADM Save Error: {e}")
+            flash(f"Error updating settings: {str(e)}", "error")
+            return redirect(url_for('adm_settings'))
 
     return render_template('adm.html', user=g.user)
-    # --- USER: SUBMIT TASK (WITH SMART UPLOAD & DUPLICATE CHECK) ---
+    
 @app.route('/task/submit/<int:task_id>', methods=['GET', 'POST'])
 @login_required
 def submit_task(task_id):
