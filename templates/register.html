@@ -1,14 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<!-- ThumbmarkJS for Device Fingerprinting (Security) -->
+<script src="https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js"></script>
+
 <style>
     /* ==========================================
-       EARN DAILY - MODERN SOFT LIGHT AUTH UI
+       EARN DAILY - MODERN SOFT LIGHT REGISTER UI
     ========================================== */
     .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Modern Light Card with Soft Emerald Shadow */
+    /* Auth Card */
     .auth-card {
         background: #FFFFFF;
         border: 1px solid rgba(226, 232, 240, 0.9);
@@ -18,12 +21,13 @@
         overflow: hidden;
     }
     
-    /* Clean Input Field */
-    .input-group { position: relative; margin-bottom: 20px; }
+    /* Modern Input */
+    .input-group { position: relative; margin-bottom: 16px; }
     .light-input {
         width: 100%; background: #F8FAFC; border: 1px solid #E2E8F0;
-        color: #0F172A; padding: 16px 16px 16px 46px; border-radius: 18px;
-        font-size: 14px; outline: none; transition: all 0.25s ease;
+        color: #0F172A; padding: 15px 16px 15px 46px; border-radius: 18px;
+        font-size: 13.5px; outline: none; transition: all 0.25s ease;
+        appearance: none;
     }
     .light-input:focus { 
         border-color: #10B981; 
@@ -32,19 +36,24 @@
     }
     .light-input::placeholder { color: #94A3B8; }
     
+    .light-input.error-border { 
+        border-color: #F43F5E !important; 
+        background: #FFF1F2 !important; 
+    }
+    
     .input-icon { 
         position: absolute; left: 18px; top: 50%; transform: translateY(-50%); 
-        color: #94A3B8; font-size: 15px; transition: color 0.25s ease; 
+        color: #94A3B8; font-size: 14px; transition: color 0.25s ease; 
     }
     .light-input:focus ~ .input-icon { color: #059669; }
 
-    /* Primary Emerald Gradient Button */
+    /* Button */
     .btn-emerald {
         background: linear-gradient(135deg, #059669 0%, #10B981 100%);
         color: #FFFFFF; width: 100%; padding: 16px;
-        border-radius: 18px; font-weight: 800; font-size: 14px;
+        border-radius: 18px; font-weight: 800; font-size: 13.5px;
         letter-spacing: 0.3px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex; align-items: center; justify-content: center; gap: 8px;
+        display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px;
         box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
     .btn-emerald:hover {
@@ -54,53 +63,69 @@
     .btn-emerald:active { transform: scale(0.96); }
 </style>
 
-<div class="flex flex-col items-center justify-center min-h-[80vh] py-6 px-2">
+<div class="flex flex-col items-center justify-center min-h-[85vh] py-6 px-2">
     
     <div class="w-full max-w-sm auth-card p-8 sm:p-10 fade-in-up">
-        
+
         <!-- Header -->
-        <div class="mb-8 text-center">
-            <div class="h-14 w-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg shadow-emerald-500/25">
-                <i class="fa-solid fa-fingerprint"></i>
+        <div class="mb-6 text-center">
+            <div class="h-14 w-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-white text-2xl mx-auto mb-3.5 shadow-lg shadow-emerald-500/25">
+                <i class="fa-solid fa-user-plus"></i>
             </div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-1">স্বাগতম!</h2>
-            <p class="text-xs text-slate-500 font-medium">আপনার <b class="text-emerald-600 font-bold">Earn Daily</b> একাউন্টে লগইন করুন</p>
+            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-1">একাউন্ট তৈরি করুন</h2>
+            <p class="text-xs text-slate-500 font-medium"><b class="text-emerald-600 font-bold">Earn Daily</b> নেটওয়ার্কে যোগ দিন</p>
         </div>
 
-        <!-- Login Form -->
-        <form method="POST" action="/login" id="loginForm" onsubmit="return showLoading()">
+        <!-- Security Warning Pill -->
+        <div class="bg-emerald-50/80 border border-emerald-100 p-3 mb-6 rounded-2xl text-center">
+            <p class="text-[10px] text-emerald-800 font-bold leading-tight uppercase tracking-wider">
+                <i class="fa-solid fa-shield-halved text-emerald-600 mr-1"></i> ১টি ডিভাইসে ১টির বেশি একাউন্ট নিষিদ্ধ
+            </p>
+        </div>
+
+        <!-- Register Form -->
+        <form id="registerForm" method="POST" action="/register">
             
+            <input type="hidden" name="ref_code" value="{{ ref_code if ref_code else '' }}">
+            <input type="hidden" name="device_id" id="deviceIdInput" value="">
+
+            <!-- Name -->
             <div class="input-group">
-                <input type="email" name="email" required class="light-input font-mono" placeholder="Email Address">
-                <i class="fa-regular fa-envelope input-icon"></i>
-            </div>
-            
-            <div class="input-group">
-                <input type="password" name="password" id="passwordInput" required class="light-input font-mono tracking-wider" placeholder="Password">
-                <i class="fa-solid fa-lock input-icon"></i>
-                <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition">
-                    <i id="eyeIcon" class="fa-regular fa-eye-slash text-sm"></i>
-                </button>
-            </div>
-            
-            <div class="flex justify-between items-center mb-7 px-1">
-                <label class="flex items-center gap-2 cursor-pointer group">
-                    <input type="checkbox" id="remember" class="accent-emerald-600 h-4 w-4 cursor-pointer rounded border-slate-300">
-                    <span class="text-xs font-semibold text-slate-500 group-hover:text-slate-800 transition">Remember me</span>
-                </label>
-                <a href="https://t.me/paylixofficial" target="_blank" class="text-xs font-bold text-emerald-600 hover:underline transition">Forgot?</a>
+                <input type="text" name="name" required class="light-input" placeholder="Full Name">
+                <i class="fa-regular fa-user input-icon"></i>
             </div>
 
+            <!-- Phone -->
+            <div class="input-group">
+                <input type="tel" name="phone" id="phoneInput" required class="light-input font-mono tracking-wider" placeholder="017XXXXXXXX">
+                <i class="fa-solid fa-mobile-screen input-icon"></i>
+                <p class="text-[10px] font-bold text-rose-500 mt-1 hidden" id="phoneError">সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন</p>
+            </div>
+
+            <!-- Email -->
+            <div class="input-group">
+                <input type="email" name="email" id="emailInput" required class="light-input font-mono" placeholder="yourmail@gmail.com">
+                <i class="fa-brands fa-google input-icon"></i>
+                <p class="text-[10px] font-bold text-rose-500 mt-1 hidden" id="emailError">শুধুমাত্র @gmail.com গ্রহণযোগ্য</p>
+            </div>
+            
+            <!-- Password -->
+            <div class="input-group !mb-0">
+                <input type="password" name="password" required minlength="6" class="light-input font-mono tracking-wider" placeholder="Password (Min 6 chars)">
+                <i class="fa-solid fa-lock input-icon"></i>
+            </div>
+
+            <!-- Submit Button -->
             <button type="submit" id="submitBtn" class="btn-emerald">
-                <span>লগইন করুন</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                <span>রেজিস্ট্রেশন সম্পূর্ণ করুন</span> <i class="fa-solid fa-arrow-right text-xs"></i>
             </button>
         </form>
-        
-        <!-- Footer -->
-        <div class="mt-8 text-center border-t border-slate-100 pt-5">
+
+        <!-- Footer / Login Link -->
+        <div class="mt-7 pt-5 border-t border-slate-100 text-center">
             <p class="text-xs font-medium text-slate-500">
-                একাউন্ট নেই? 
-                <a href="/register" class="text-emerald-600 font-extrabold hover:underline ml-1">নতুন একাউন্ট খুলুন</a>
+                ইতিমধ্যে একাউন্ট আছে? 
+                <a href="/login" class="text-emerald-600 font-extrabold hover:underline ml-1">লগইন করুন</a>
             </p>
         </div>
 
@@ -108,30 +133,49 @@
 </div>
 
 <script>
-    function togglePassword() {
-        const input = document.getElementById('passwordInput');
-        const icon = document.getElementById('eyeIcon');
-        if (input.type === "password") {
-            input.type = "text";
-            icon.classList.replace('fa-eye-slash', 'fa-eye');
-            icon.classList.add('text-emerald-600');
+    // Live Input Validation (Only for Email & Phone)
+    const emailInput = document.getElementById('emailInput');
+    const emailError = document.getElementById('emailError');
+    emailInput.addEventListener('input', function() {
+        if(this.value.length > 0 && !this.value.endsWith('@gmail.com')) {
+            emailError.classList.remove('hidden');
+            this.classList.add('error-border');
         } else {
-            input.type = "password";
-            icon.classList.replace('fa-eye', 'fa-eye-slash');
-            icon.classList.remove('text-emerald-600');
+            emailError.classList.add('hidden');
+            this.classList.remove('error-border');
         }
-    }
+    });
 
-    function showLoading() {
-        const form = document.getElementById('loginForm');
-        if(form.checkValidity()) {
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">প্রসেসিং...</span>';
-            btn.classList.add('opacity-80', 'cursor-not-allowed');
-            return true;
+    const phoneInput = document.getElementById('phoneInput');
+    const phoneError = document.getElementById('phoneError');
+    phoneInput.addEventListener('input', function() {
+        const regex = /^01[3-9][0-9]{8}$/;
+        if(this.value.length > 0 && !regex.test(this.value)) {
+            phoneError.classList.remove('hidden');
+            this.classList.add('error-border');
+        } else {
+            phoneError.classList.add('hidden');
+            this.classList.remove('error-border');
         }
-        return false;
-    }
+    });
+
+    // ThumbmarkJS Submit (Device Tracking)
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        
+        // Disable button with feedback
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">যাচাই করা হচ্ছে...</span>';
+        btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+        // Get Device Fingerprint & Submit
+        ThumbmarkJS.getFingerprint().then(function(fp) {
+            document.getElementById('deviceIdInput').value = fp;
+            document.getElementById('registerForm').submit();
+        }).catch(function(err) {
+            document.getElementById('registerForm').submit();
+        });
+    });
 </script>
 {% endblock %}
