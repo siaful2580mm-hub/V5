@@ -3,7 +3,7 @@
 
 <style>
     /* ==========================================
-       EARN DAILY - ADVANCED ADMIN PANEL (SOFT LIGHT)
+       EARN DAILY - ALL ADMIN ROUTES PORTAL
     ========================================== */
     .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
@@ -12,8 +12,8 @@
     .admin-card {
         background: #FFFFFF; 
         border: 1px solid #E2E8F0; 
-        border-radius: 26px;
-        padding: 22px 18px; 
+        border-radius: 24px;
+        padding: 20px 16px; 
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
         position: relative; overflow: hidden;
@@ -27,10 +27,10 @@
     }
     
     .icon-admin {
-        height: 52px; width: 52px; border-radius: 18px;
+        height: 50px; width: 50px; border-radius: 16px;
         background: #F8FAFC; color: #059669; border: 1px solid #E2E8F0;
         display: flex; align-items: center; justify-content: center;
-        font-size: 21px; margin-bottom: 12px; transition: all 0.3s ease;
+        font-size: 20px; margin-bottom: 12px; transition: all 0.3s ease;
         box-shadow: 0 4px 10px rgba(15, 23, 42, 0.02);
     }
     .admin-card:hover .icon-admin { 
@@ -39,7 +39,7 @@
         box-shadow: 0 8px 18px rgba(5, 150, 105, 0.25);
     }
 
-    /* Danger Zone Card */
+    /* Danger Card */
     .danger-card { background: #FFF1F2; border-color: #FECDD3; }
     .danger-card:hover { background: #FFE4E6; border-color: #FDA4AF; box-shadow: 0 12px 28px -5px rgba(225, 29, 72, 0.15); }
     .danger-card .icon-admin { color: #E11D48; background: #FFFFFF; border-color: #FECDD3; }
@@ -48,7 +48,7 @@
     /* Wide Banner Card */
     .wide-card {
         background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 24px;
-        padding: 20px 24px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 18px 22px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex; align-items: center; justify-content: space-between;
         box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.02);
     }
@@ -58,7 +58,7 @@
         box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.1); 
     }
 
-    /* Custom Toggle Switch (Soft Light & Emerald) */
+    /* Custom Toggle Switch */
     .toggle-checkbox:checked { right: 0; border-color: #10B981; }
     .toggle-checkbox:checked + .toggle-label { background-color: #10B981; }
     .toggle-checkbox { right: 0; z-index: 1; border-color: #CBD5E1; transition: all 0.3s; }
@@ -69,7 +69,7 @@
     /* Clean Input */
     .light-input {
         width: 100%; background: #F8FAFC; border: 1.5px solid #E2E8F0; color: #0F172A;
-        padding: 16px 16px 16px 46px; border-radius: 20px; outline: none; font-size: 13.5px; transition: all 0.25s;
+        padding: 15px 16px 15px 46px; border-radius: 20px; outline: none; font-size: 13.5px; transition: all 0.25s;
     }
     .light-input:focus { border-color: #10B981; background: #FFFFFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
 
@@ -89,7 +89,7 @@
 <div class="max-w-6xl mx-auto space-y-9 pb-12 px-1 mt-2 fade-in-up">
 
     <!-- ==========================================
-         1. ADMIN COMMAND HERO BANNER
+         1. HERO HEADER WITH STATS ENGINE
     ========================================== -->
     <div class="bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 rounded-[34px] p-8 md:p-12 text-white shadow-xl shadow-emerald-600/25 relative overflow-hidden">
         <div class="absolute top-[-20%] right-[-10%] w-72 h-72 bg-white/15 rounded-full blur-[80px] pointer-events-none"></div>
@@ -102,19 +102,17 @@
                 </div>
                 <div>
                     <span class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-white/25 mb-2.5">
-                        <span class="h-2 w-2 bg-emerald-300 rounded-full animate-ping"></span> Live Control Panel
+                        <span class="h-2 w-2 bg-emerald-300 rounded-full animate-ping"></span> Central Administration
                     </span>
-                    <h1 class="text-3xl md:text-4xl font-black tracking-tight leading-tight">Admin Portal</h1>
+                    <h1 class="text-3xl md:text-4xl font-black tracking-tight leading-tight">Admin Control Portal</h1>
                 </div>
             </div>
 
             <div class="flex items-center gap-3">
-                <!-- Analytics Button -->
                 <a href="/admin/panel-stats" class="bg-white text-emerald-900 hover:bg-emerald-50 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-wider transition shadow-lg flex items-center gap-2 active:scale-95">
-                    <i class="fa-solid fa-chart-line text-sm text-emerald-600"></i> Stats Engine
+                    <i class="fa-solid fa-chart-line text-sm text-emerald-600"></i> Panel Stats
                 </a>
                 
-                <!-- Global Users Counter -->
                 <div class="bg-white/15 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20 text-center min-w-[125px]">
                     <p class="text-[9.5px] text-emerald-100 uppercase font-black tracking-wider mb-0.5">Total Users</p>
                     <p class="text-2xl font-black text-white font-mono leading-none">{{ user_count }}</p>
@@ -124,85 +122,168 @@
     </div>
 
     <!-- ==========================================
-         2. FINANCIAL & VIP OPERATIONS
+         2. FINANCIAL, VIP & MEMBERSHIP ROUTE
     ========================================== -->
     <div>
         <h3 class="font-extrabold text-slate-800 text-sm mb-4 tracking-tight flex items-center gap-2 px-1">
-            <span class="h-2 w-2 rounded-full bg-emerald-500"></span> Financial & Membership Approvals
+            <span class="h-2 w-2 rounded-full bg-emerald-500"></span> ১. ফাইন্যান্সিয়াল ও মেম্বারশিপ ম্যানেজমেন্ট
         </h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
             <a href="/admin/activations" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-user-check"></i></div>
-                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Verify Users</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">অ্যাক্টিভেশন যাচাই</p>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Account Activation</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/activations</p>
             </a>
             <a href="/admin/withdrawals" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-money-bill-transfer"></i></div>
                 <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Withdrawals</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">পেন্ডিং ক্যাশআউট</p>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/withdrawals</p>
             </a>
             <a href="/admin/vip" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-crown text-amber-500"></i></div>
                 <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">VIP Requests</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">এলিট পাস রিকোয়েস্ট</p>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/vip</p>
             </a>
             <a href="/admin/leaders" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-user-tie text-indigo-500"></i></div>
                 <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Ambassadors</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">লিডার আবেদন তালিকা</p>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/leaders</p>
             </a>
         </div>
     </div>
 
     <!-- ==========================================
-         3. SERVICES & TASK REVIEWS
+         3. TASK QUEUES & JOB CREATION
     ========================================== -->
     <div>
         <h3 class="font-extrabold text-slate-800 text-sm mb-4 tracking-tight flex items-center gap-2 px-1">
-            <span class="h-2 w-2 rounded-full bg-teal-500"></span> Task Moderation & Services
+            <span class="h-2 w-2 rounded-full bg-teal-500"></span> ২. কাজ রিভিউ ও টাস্ক ক্রিয়েশন
         </h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
             <a href="/admin/submissions" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-clipboard-check"></i></div>
-                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Task Reviews</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">প্রুফ চেকিং কিউ</p>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Micro Submissions</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/submissions</p>
             </a>
             <a href="/admin/gmails" class="admin-card group">
                 <div class="icon-admin"><i class="fa-brands fa-google"></i></div>
                 <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Gmail Reviews</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">জিমেইল ফার্ম কিউ</p>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/gmails</p>
+            </a>
+            <a href="/admin/fb-accounts" class="admin-card group">
+                <div class="icon-admin"><i class="fa-brands fa-facebook-f text-blue-600"></i></div>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">FB Farm Reviews</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/fb-accounts</p>
+            </a>
+            <a href="/admin/ig-accounts" class="admin-card group">
+                <div class="icon-admin"><i class="fa-brands fa-instagram text-rose-500"></i></div>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">IG Farm Reviews</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/ig-accounts</p>
             </a>
             <a href="/adtask" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-folder-plus"></i></div>
                 <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Create Task</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">নতুন কাজ যোগ করুন</p>
+                <p class="text-[10px] text-slate-400 mt-0.5">/adtask</p>
+            </a>
+            <a href="/adtask/play" class="admin-card group">
+                <div class="icon-admin"><i class="fa-brands fa-google-play text-emerald-600"></i></div>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Play Store Task</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/adtask/play</p>
             </a>
             <a href="/admin/drive/manage" class="admin-card group">
-                <div class="icon-admin"><i class="fa-solid fa-wifi"></i></div>
+                <div class="icon-admin"><i class="fa-solid fa-wifi text-sky-600"></i></div>
                 <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Drive Packs</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5 font-medium">ড্রাইভ প্যাক ও অর্ডার</p>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/drive/manage</p>
             </a>
-
-            <!-- B2B / Custom Requests Wide Banner -->
-            <a href="/admin/requ" class="wide-card group col-span-2 md:col-span-4">
-                <div class="flex items-center gap-4">
-                    <div class="h-12 w-12 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-2xl flex items-center justify-center text-xl group-hover:bg-emerald-600 group-hover:text-white transition"><i class="fa-solid fa-briefcase"></i></div>
-                    <div>
-                        <h4 class="font-extrabold text-slate-800 text-sm leading-tight">Client Proposals (B2B Promotion Hub)</h4>
-                        <p class="text-xs text-slate-400 mt-0.5 font-medium">ব্যবসায়ীদের কাস্টম অর্ডার ও সার্ভিস রিকোয়েস্ট যাচাই করুন</p>
-                    </div>
-                </div>
-                <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition"></i>
+            <a href="/proofs" class="admin-card group">
+                <div class="icon-admin"><i class="fa-solid fa-images text-purple-600"></i></div>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Payment Proofs</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/proofs</p>
             </a>
         </div>
     </div>
 
     <!-- ==========================================
-         4. CORE DATABASE & FILTERS
+         4. SUB-ADMIN & SPECIAL REVIEW ROUTE
     ========================================== -->
     <div>
         <h3 class="font-extrabold text-slate-800 text-sm mb-4 tracking-tight flex items-center gap-2 px-1">
-            <span class="h-2 w-2 rounded-full bg-sky-500"></span> Core Database & Insights
+            <span class="h-2 w-2 rounded-full bg-indigo-500"></span> ৩. সাব-অ্যাডমিন ও স্পেশাল প্যানেল
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+            <a href="/aw/newbie-check" class="wide-card group">
+                <div class="flex items-center gap-3.5">
+                    <div class="h-11 w-11 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-user-graduate"></i></div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-800 text-xs">Newbie 1st/2nd Check</h4>
+                        <p class="text-[10px] text-slate-400">/aw/newbie-check</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-indigo-600 transition"></i>
+            </a>
+
+            <a href="/aw/result" class="wide-card group">
+                <div class="flex items-center gap-3.5">
+                    <div class="h-11 w-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-gift"></i></div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-800 text-xs">Special Task Panel</h4>
+                        <p class="text-[10px] text-slate-400">/aw/result (Sub-admin)</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-amber-600 transition"></i>
+            </a>
+
+            <a href="/admin/inbox" class="wide-card group">
+                <div class="flex items-center gap-3.5">
+                    <div class="h-11 w-11 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-comments"></i></div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-800 text-xs">Support Live Inbox</h4>
+                        <p class="text-[10px] text-slate-400">/admin/inbox</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-sky-600 transition"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         5. B2B, PROMOTION & REVIEWS
+    ========================================== -->
+    <div>
+        <h3 class="font-extrabold text-slate-800 text-sm mb-4 tracking-tight flex items-center gap-2 px-1">
+            <span class="h-2 w-2 rounded-full bg-amber-500"></span> ৪. ক্লায়েন্ট অর্ডার ও ইউজার ফিডব্যাক
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <a href="/admin/requ" class="wide-card group !bg-gradient-to-r !from-emerald-50/70 !to-teal-50/50 !border-emerald-200">
+                <div class="flex items-center gap-3.5">
+                    <div class="h-11 w-11 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-briefcase"></i></div>
+                    <div>
+                        <h4 class="font-black text-slate-900 text-xs">Client Proposals (B2B Promotion)</h4>
+                        <p class="text-[10px] text-emerald-800 font-semibold">/admin/requ</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-arrow-right text-xs text-emerald-600 group-hover:translate-x-1 transition"></i>
+            </a>
+
+            <a href="/reviews" class="wide-card group">
+                <div class="flex items-center gap-3.5">
+                    <div class="h-11 w-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-star"></i></div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-800 text-xs">Review Moderation</h4>
+                        <p class="text-[10px] text-slate-400">/reviews (Manage reviews)</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-amber-600 transition"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         6. CORE DATABASE, CSV EXPORTS & FILTERS
+    ========================================== -->
+    <div>
+        <h3 class="font-extrabold text-slate-800 text-sm mb-4 tracking-tight flex items-center gap-2 px-1">
+            <span class="h-2 w-2 rounded-full bg-blue-500"></span> ৫. ডেটাবেস, সিএসভি ও ইউজার ফিল্টার
         </h3>
         
         <!-- Ultimate UserX Engine -->
@@ -210,8 +291,8 @@
             <div class="flex items-center gap-4">
                 <div class="h-12 w-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-filter"></i></div>
                 <div>
-                    <h4 class="font-black text-slate-900 text-sm">UserX Advanced Filter</h4>
-                    <p class="text-xs text-emerald-800 mt-0.5 font-semibold">Ultimate Database Search & CSV Export Engine</p>
+                    <h4 class="font-black text-slate-900 text-sm">UserX Advanced Filter Engine</h4>
+                    <p class="text-xs text-emerald-800 mt-0.5 font-semibold">Complete Database Filter, Status, Balance & CSV Export (/admin/userx)</p>
                 </div>
             </div>
             <i class="fa-solid fa-arrow-right text-emerald-600 group-hover:translate-x-1 transition"></i>
@@ -220,29 +301,48 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
             <a href="/admin/users" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-users"></i></div>
-                <span class="text-xs font-bold text-slate-700 group-hover:text-emerald-700">All Users</span>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">All Users</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/users</p>
             </a>
             <a href="/admin/ref-check" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-sitemap"></i></div>
-                <span class="text-xs font-bold text-slate-700 group-hover:text-emerald-700">Refer Scanner</span>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Refer Scanner</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/ref-check</p>
+            </a>
+            <a href="/admin/user-check" class="admin-card group">
+                <div class="icon-admin"><i class="fa-solid fa-user-clock text-sky-600"></i></div>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">New User Check</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/user-check</p>
+            </a>
+            <a href="/admin/offline-users" class="admin-card group">
+                <div class="icon-admin"><i class="fa-solid fa-user-xmark text-orange-500"></i></div>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Offline Users</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/offline-users</p>
+            </a>
+            <a href="/admin/custom-filter" class="admin-card group">
+                <div class="icon-admin"><i class="fa-solid fa-sliders text-teal-600"></i></div>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">Custom Filter</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/custom-filter</p>
             </a>
             <a href="/admin/api-keys" class="admin-card group">
                 <div class="icon-admin"><i class="fa-solid fa-key"></i></div>
-                <span class="text-xs font-bold text-slate-700 group-hover:text-emerald-700">ImgBB Keys</span>
+                <h4 class="font-extrabold text-slate-800 text-xs group-hover:text-emerald-700">ImgBB API Keys</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">/admin/api-keys</p>
             </a>
-            <a href="/admin/danger-zone" class="admin-card danger-card group">
+            <a href="/admin/danger-zone" class="admin-card danger-card group md:col-span-2">
                 <div class="icon-admin"><i class="fa-solid fa-radiation"></i></div>
-                <span class="text-xs font-bold text-rose-600">Danger Zone</span>
+                <h4 class="font-extrabold text-rose-600 text-xs">Danger Zone (Factory Reset)</h4>
+                <p class="text-[10px] text-rose-400 mt-0.5">/admin/danger-zone (Mass Wipe)</p>
             </a>
         </div>
     </div>
 
     <!-- ==========================================
-         5. SITE CONFIGURATION (Toggles & Notice)
+         7. SITE CONFIGURATION (Toggles & Notice)
     ========================================== -->
     <div class="bg-white p-6 sm:p-8 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden mt-6">
         <h3 class="font-black text-slate-800 mb-6 pb-4 border-b border-slate-100 flex items-center gap-2 text-sm uppercase tracking-wider">
-            <i class="fa-solid fa-sliders text-emerald-600"></i> Global Settings & Controls
+            <i class="fa-solid fa-sliders text-emerald-600"></i> Global Settings & Controls (/admin)
         </h3>
 
         <form method="POST" action="/admin" class="space-y-6">
