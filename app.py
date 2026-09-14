@@ -1476,8 +1476,13 @@ def leader_panel():
         active_refs = 0
 
     return render_template('leader_dashboard.html', user=g.user, total_refs=total_refs, active_refs=active_refs, team_members=refs)
-    
 
+@app.route('/admin/pay', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def city_distribution():
+    return render_template('city_pay.html')
+    
 # --- 4. Leader Balance Withdraw Route ---
 @app.route('/withdraw-leader', methods=['POST'])
 @login_required
