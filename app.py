@@ -357,7 +357,7 @@ def index():
 @app.route('/support-redirect')
 def support_redirect():
 
-    help_desk_url = os.getenv("HELP_DESK_URL", "https://help.domain.com")
+    help_desk_url = os.getenv("HELP_DESK_URL", "https://help.earn-daily.site")
     shared_secret = os.getenv("SECRET_KEY", "TypeYourRandomSecretKeyHere123")
 
     if 'user_id' in session and g.user:
