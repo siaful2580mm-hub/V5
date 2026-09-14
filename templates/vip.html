@@ -3,74 +3,89 @@
 
 <style>
     /* ==========================================
-       PURE DARK THEME & ANIMATIONS
+       EARN DAILY - MODERN VIP STORE (SOFT LIGHT)
     ========================================== */
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Ultra-Premium VIP Card (Dark Theme) */
+    /* Ultra-Premium VIP Plan Card */
     .vip-store-card {
-        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 32px;
-        position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        display: flex; flex-direction: column;
+        background: #FFFFFF; 
+        border: 1px solid #E2E8F0; 
+        border-radius: 32px;
+        position: relative; 
+        overflow: hidden; 
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex; 
+        flex-direction: column;
+        box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.03);
     }
     .vip-store-card:hover {
-        transform: translateY(-8px); border-color: #333333; background: #0F0F0F;
+        transform: translateY(-6px); 
+        border-color: #6EE7B7; 
+        box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.15);
     }
 
-    /* Popular / Recommended Card */
-    .vip-card-popular { border-color: #ffffff; box-shadow: 0 10px 40px -10px rgba(255, 255, 255, 0.1); }
+    /* Popular / Recommended Card Highlight */
+    .vip-card-popular { 
+        border: 2px solid #10B981 !important; 
+        box-shadow: 0 15px 35px -5px rgba(16, 185, 129, 0.2) !important; 
+    }
 
     /* Feature List Styling */
     .feature-list li {
-        display: flex; align-items: start; gap: 12px; margin-bottom: 12px;
-        font-size: 12px; color: #AAAAAA; font-weight: 600; line-height: 1.5;
+        display: flex; align-items: start; gap: 10px; margin-bottom: 12px;
+        font-size: 12.5px; color: #475569; font-weight: 600; line-height: 1.5;
     }
-    .feature-list li i { color: #666666; font-size: 14px; margin-top: 2px; }
+    .feature-list li i { color: #10B981; font-size: 15px; margin-top: 2px; }
     
     /* Highlight feature style (Pro features) */
-    .feature-list li.pro-feature i { color: #ffffff; }
-    .feature-list li.ultra-feature i { color: #D4AF37; /* Gold for top tier */ }
+    .feature-list li.pro-feature i { color: #059669; }
+    .feature-list li.ultra-feature i { color: #D97706; /* Amber Gold for top tier */ }
     
-    /* Background Watermark */
+    /* Background Watermark Number */
     .vip-watermark {
-        position: absolute; top: -20px; right: -20px;
-        font-size: 160px; font-weight: 900; color: rgba(255, 255, 255, 0.02);
-        line-height: 1; pointer-events: none; z-index: 0; transition: transform 0.5s ease;
+        position: absolute; top: -15px; right: -15px;
+        font-size: 140px; font-weight: 900; color: rgba(16, 185, 129, 0.04);
+        line-height: 1; pointer-events: none; z-index: 0; transition: transform 0.4s ease;
     }
-    .vip-store-card:hover .vip-watermark { transform: scale(1.1) rotate(-5deg); color: rgba(255, 255, 255, 0.04); }
+    .vip-store-card:hover .vip-watermark { transform: scale(1.08) rotate(-4deg); color: rgba(16, 185, 129, 0.07); }
 
     /* Buttons */
-    .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 18px;
-        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 1px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; width: 100%; padding: 16px;
+        border-radius: 18px; font-weight: 800; font-size: 13.5px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
-    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
+    .btn-emerald:active { transform: scale(0.96); }
 
-    .btn-outline {
-        background: #111111; color: #ffffff; width: 100%; padding: 18px; border: 1px solid #333333;
-        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 1px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    .btn-light-outline {
+        background: #F8FAFC; color: #0F172A; width: 100%; padding: 16px; border: 1.5px solid #E2E8F0;
+        border-radius: 18px; font-weight: 800; font-size: 13.5px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.2s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .btn-outline:active { transform: scale(0.96); background: #0A0A0A; }
+    .btn-light-outline:hover { background: #ECFDF5; border-color: #A7F3D0; color: #059669; }
+    .btn-light-outline:active { transform: scale(0.96); }
 </style>
 
-<div class="max-w-5xl mx-auto space-y-10 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-5xl mx-auto space-y-8 fade-in-up pb-10 px-1 mt-2">
 
     <!-- ==========================================
          1. VIP HERO BANNER
     ========================================== -->
-    <div class="text-center max-w-2xl mx-auto px-4 pt-6">
-        <span class="inline-flex items-center gap-1.5 bg-[#111] text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-[#333] mb-4 shadow-sm">
-            <i class="fa-solid fa-crown text-[#D4AF37]"></i> এলিট নেটওয়ার্ক
+    <div class="text-center max-w-2xl mx-auto px-4 pt-4">
+        <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider border border-emerald-200 mb-3 shadow-sm">
+            <i class="fa-solid fa-crown text-amber-500"></i> এলিট আর্নিং ক্লাব
         </span>
-        <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight mb-4">
-            আপনার ইনকাম <br> বহুগুণ বাড়িয়ে নিন
+        <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-3">
+            প্রতিদিন নিশ্চিত অটো প্রফিট
         </h1>
-        <p class="text-sm text-[#888888] font-medium leading-relaxed">
-            কোনো রেফার বা টাস্কের ঝামেলা ছাড়াই প্রতিদিন অটোমেটিক প্রফিট ক্লেইম করুন। প্রিমিয়াম ফিচারগুলো আনলক করতে আজই এলিট প্ল্যানে যুক্ত হোন।
+        <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
+            কোনো রেফার বা জটিল কাজের ঝামেলা ছাড়াই প্রতিদিন নিশ্চিত ইনকাম ক্লেইম করুন। মাত্র ২০ টাকা হলেই বিকাশ ও নগদে সরাসরি ক্যাশআউট।
         </p>
     </div>
 
@@ -78,46 +93,46 @@
          2. MY ACTIVE PACKAGES (CLAIM AREA)
     ========================================== -->
     {% if my_vips and my_vips|length > 0 %}
-    <div class="bg-[#0A0A0A] border border-[#1C1C1E] rounded-[32px] p-6 sm:p-8 shadow-xl relative overflow-hidden">
-        <div class="absolute right-0 top-0 w-48 h-48 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-[32px] p-6 sm:p-8 text-white shadow-xl shadow-emerald-600/20 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
         
-        <h3 class="font-black text-white text-base flex items-center gap-2 uppercase tracking-widest mb-6 relative z-10">
-            <i class="fa-solid fa-layer-group text-[#666]"></i> আপনার রানিং সাবস্ক্রিপশন
+        <h3 class="font-black text-white text-base flex items-center gap-2 uppercase tracking-wider mb-5 relative z-10">
+            <i class="fa-solid fa-layer-group text-emerald-200"></i> আপনার রানিং সাবস্ক্রিপশন
         </h3>
         
         <div class="grid sm:grid-cols-2 gap-4 relative z-10">
             {% for vip in my_vips %}
-            <div class="bg-[#111111] p-5 rounded-[24px] border border-[#222222] flex flex-col justify-between group hover:border-[#444444] transition">
+            <div class="bg-white rounded-[24px] p-5 text-slate-800 flex flex-col justify-between shadow-md">
                 
                 <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-4">
-                        <div class="h-12 w-12 rounded-xl bg-white text-black flex flex-col items-center justify-center shadow-md flex-shrink-0">
-                            <span class="text-[7px] font-black uppercase tracking-widest text-[#555]">LVL</span>
-                            <span class="text-xl font-black leading-none">{{ vip.level_id }}</span>
+                    <div class="flex items-center gap-3.5">
+                        <div class="h-12 w-12 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-700 flex flex-col items-center justify-center font-black flex-shrink-0 shadow-sm">
+                            <span class="text-[8px] uppercase tracking-widest text-slate-400">LVL</span>
+                            <span class="text-xl leading-none font-mono">{{ vip.level_id }}</span>
                         </div>
                         <div>
-                            <h4 class="font-bold text-white text-sm">Level {{ vip.level_id }} Pass</h4>
-                            <p class="text-[10px] text-[#888] font-mono mt-1"><i class="fa-regular fa-clock mr-1"></i> মেয়াদ: {{ vip.expires_at[:10] }}</p>
+                            <h4 class="font-extrabold text-slate-800 text-sm">Level {{ vip.level_id }} Pass</h4>
+                            <p class="text-[11px] text-slate-400 font-mono mt-0.5"><i class="fa-regular fa-clock text-emerald-600 mr-1"></i> মেয়াদ: {{ vip.expires_at[:10] }}</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="flex items-center justify-between border-t border-[#222] pt-4 mt-auto">
+                <div class="flex items-center justify-between border-t border-slate-100 pt-3.5 mt-auto">
                     <div>
-                        <p class="text-[9px] text-[#666] uppercase font-bold tracking-widest mb-0.5">ডেইলি প্রফিট</p>
-                        <p class="text-base font-black text-white font-mono">+৳{{ vip.profit }}</p>
+                        <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">ডেইলি প্রফিট</p>
+                        <p class="text-lg font-black text-emerald-600 font-mono">+৳{{ vip.profit }}</p>
                     </div>
                     
                     {% if vip.last_claim == today_date %}
-                        <button disabled class="bg-[#050505] text-[#555] px-5 py-2.5 rounded-xl text-[10px] font-bold cursor-not-allowed border border-[#1C1C1E] flex items-center gap-1.5 uppercase tracking-wider">
-                            <i class="fa-solid fa-check"></i> ক্লেইমড
+                        <button disabled class="bg-slate-100 text-slate-400 px-5 py-2.5 rounded-xl text-xs font-bold cursor-not-allowed border border-slate-200 flex items-center gap-1.5 uppercase tracking-wider">
+                            <i class="fa-solid fa-check text-emerald-600"></i> ক্লেইমড
                         </button>
                     {% else %}
                         <form method="POST" action="/vip">
                             <input type="hidden" name="action" value="claim">
                             <input type="hidden" name="vip_id" value="{{ vip.id }}">
-                            <button type="submit" class="bg-white text-black px-5 py-2.5 rounded-xl text-[10px] font-black shadow-lg active:scale-95 transition flex items-center gap-1.5 uppercase tracking-wider">
-                                ক্লেইম করুন <i class="fa-solid fa-bolt"></i>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-xs font-black shadow-md shadow-emerald-600/25 active:scale-95 transition flex items-center gap-1.5 uppercase tracking-wider">
+                                ক্লেইম করুন <i class="fa-solid fa-bolt text-amber-300"></i>
                             </button>
                         </form>
                     {% endif %}
@@ -129,7 +144,7 @@
     {% endif %}
 
     <!-- ==========================================
-         3. ELITE PLANS STORE (Pricing Tables)
+         3. ELITE PLANS STORE (Pricing Cards)
     ========================================== -->
     <div>
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-end">
@@ -138,66 +153,59 @@
                 
                 <div class="vip-watermark">0{{ id }}</div>
 
-                <div class="relative z-10 p-6 sm:p-8 flex-grow">
-                    <!-- Header -->
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <span class="text-[9px] bg-[#111] text-[#AAAAAA] px-3 py-1 rounded-full font-black tracking-widest uppercase border border-[#333]">
-                                Level {{ id }}
-                            </span>
-                            <h3 class="text-2xl font-black text-white mt-4">{{ plan.name }}</h3>
-                        </div>
+                <div class="relative z-10 p-6 sm:p-7 flex-grow">
+                    <!-- Header Badges -->
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="text-[10px] bg-emerald-50 text-emerald-800 px-3 py-1 rounded-full font-black tracking-wider uppercase border border-emerald-100">
+                            Level {{ id }}
+                        </span>
                         {% if id == 2 %}
-                            <div class="bg-white text-black text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Popular</div>
+                            <div class="bg-emerald-600 text-white text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">Popular</div>
                         {% elif id == 3 %}
-                            <div class="bg-white text-black text-[9px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-widest">Best ROI</div>
+                            <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-black px-3 py-1 rounded-full shadow-sm uppercase tracking-wider">Best Value</div>
                         {% endif %}
                     </div>
 
-                    <!-- Price Block -->
-                    <div class="mb-6">
-                        <div class="flex items-baseline gap-1 text-white">
-                            <span class="text-2xl font-bold text-[#888]">৳</span>
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-800 mb-4">{{ plan.name }}</h3>
+
+                    <!-- Price Box -->
+                    <div class="mb-5 pb-5 border-b border-slate-100">
+                        <div class="flex items-baseline gap-1 text-slate-900">
+                            <span class="text-2xl font-bold text-emerald-600">৳</span>
                             <h2 class="text-5xl font-black font-mono tracking-tight">{{ plan.price }}</h2>
                         </div>
-                        <p class="text-[11px] text-[#666666] font-medium mt-2">এককালীন ইনভেস্ট ({{ plan.days }} দিনের জন্য)</p>
+                        <p class="text-xs text-slate-400 font-medium mt-1.5">এককালীন ফি (মেয়াদ {{ plan.days }} দিন)</p>
                     </div>
 
-                    <!-- ==========================================
-                         FEATURES LIST (Old + New Combined)
-                    ========================================== -->
-                    <ul class="feature-list mb-8 border-t border-[#1C1C1E] pt-5">
-                        
-                        <!-- Basic Features (For All) -->
+                    <!-- Features List -->
+                    <ul class="feature-list mb-6">
                         <li><i class="fa-solid fa-circle-check"></i> <span>প্রতিদিন অটোমেটিক <b>৳{{ plan.daily_profit }}</b> প্রফিট।</span></li>
-                        <li><i class="fa-solid fa-circle-check"></i> <span>টোটাল রিটার্ন: <b>৳{{ plan.daily_profit * plan.days }}</b></span></li>
-                        <li><i class="fa-solid fa-circle-check"></i> <span>উইথড্র করতে <b>কোনো রেফার লাগবে না</b>।</span></li>
+                        <li><i class="fa-solid fa-circle-check"></i> <span>মোট রিটার্ন: <b>৳{{ plan.daily_profit * plan.days }}</b></span></li>
+                        <li><i class="fa-solid fa-circle-check"></i> <span>টাকা তুলতে <b>কোনো রেফার লাগবে না</b>।</span></li>
                         <li><i class="fa-solid fa-circle-check"></i> <span>মিনিমাম উইথড্র মাত্র <b>৳২০</b>।</span></li>
                         
-                        <!-- Pro Features (Level 2 & above) -->
+                        <!-- Level 2 & Above Features -->
                         {% if id >= 2 %}
-                        <li class="pro-feature"><i class="fa-solid fa-star"></i> <span class="text-white">লক করা <b>Premium Work</b> এক্সেস।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-bolt-lightning"></i> <span class="text-white">উইথড্র রিকোয়েস্ট দিলে <b>১০ মিনিটে পেমেন্ট</b>।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-headset"></i> <span class="text-white">অ্যাডমিনের সাথে <b>VIP Live Support</b>।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-gamepad"></i> <span class="text-white">Spin ও Captcha তে <b>২ গুণ ইনকাম</b>।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-shield-halved"></i> <span class="text-white">একাউন্ট <b>সম্পূর্ণ সুরক্ষিত</b> (ব্যান হবে না)।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-wifi"></i> <span class="text-white">মোবাইল ডাটা ক্রয়ে <b>১০% এক্সট্রা ডিসকাউন্ট</b>।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-hourglass-start"></i> <span class="text-white">নতুন কাজের <b>Early Access</b> (সবার আগে পাবেন)।</span></li>
-                        <li class="pro-feature"><i class="fa-solid fa-user-shield"></i> <span class="text-white">কাজে ভুল বা লেট হলে <b>জরিমানা মওকুফ</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-star"></i> <span class="text-slate-800 font-semibold">লক করা <b>Premium Work</b> এক্সেস।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-bolt-lightning"></i> <span class="text-slate-800 font-semibold">উইথড্র রিকোয়েস্টে <b>দ্রুততম পেমেন্ট</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-headset"></i> <span class="text-slate-800 font-semibold">অ্যাডমিনের সাথে <b>VIP Live Support</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-gamepad"></i> <span class="text-slate-800 font-semibold">Spin ও Captcha তে <b>২ গুণ ইনকাম</b>।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-shield-halved"></i> <span class="text-slate-800 font-semibold">একাউন্ট <b>সম্পূর্ণ সুরক্ষিত</b> থাকবে।</span></li>
+                        <li class="pro-feature"><i class="fa-solid fa-wifi"></i> <span class="text-slate-800 font-semibold">মোবাইল রিচার্জে <b>১০% এক্সট্রা ডিসকাউন্ট</b>।</span></li>
                         {% endif %}
 
-                        <!-- Ultra Features (Level 3 & above) -->
+                        <!-- Level 3 & Above Features -->
                         {% if id >= 3 %}
-                        <li class="ultra-feature"><i class="fa-solid fa-user-plus"></i> <span class="text-white">সিস্টেম থেকে <b>Auto-Referral</b> পাওয়ার সুযোগ।</span></li>
-                        <li class="ultra-feature"><i class="fa-solid fa-hand-holding-dollar"></i> <span class="text-white">মাসে একবার <b>Advance Cash / Loan</b> সুবিধা।</span></li>
+                        <li class="ultra-feature"><i class="fa-solid fa-user-plus"></i> <span class="text-slate-800 font-bold">সিস্টেম থেকে <b>Auto-Referral</b> সুবিধা।</span></li>
+                        <li class="ultra-feature"><i class="fa-solid fa-hand-holding-dollar"></i> <span class="text-slate-800 font-bold">মাসে একবার <b>Advance Cash / Loan</b>।</span></li>
                         {% endif %}
                     </ul>
                 </div>
 
-                <!-- Buy Action Button -->
-                <div class="relative z-10 px-6 pb-6 sm:px-8 sm:pb-8 mt-auto">
-                    <a href="/vip/buy/{{ id }}" class="{{ 'btn-white' if id == 3 else 'btn-outline' }}">
-                        আপগ্রেড করুন
+                <!-- Action Button -->
+                <div class="relative z-10 px-6 pb-6 sm:px-7 sm:pb-7 mt-auto">
+                    <a href="/vip/buy/{{ id }}" class="{{ 'btn-emerald' if id == 3 else 'btn-light-outline' }}">
+                        <span>আপগ্রেড করুন</span> <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
                 </div>
             </div>
