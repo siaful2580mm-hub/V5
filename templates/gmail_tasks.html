@@ -3,69 +3,84 @@
 
 <style>
     /* ==========================================
-       PURE DARK THEME & ANIMATIONS
+       EARN DAILY - MODERN GMAIL FARM UI (SOFT LIGHT)
     ========================================== */
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Dark Cards */
-    .dark-card {
-        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
-        transition: all 0.3s ease; position: relative; overflow: hidden;
+    /* Modern Light Cards */
+    .light-card {
+        background: #FFFFFF; 
+        border: 1px solid #E2E8F0; 
+        border-radius: 28px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        position: relative; 
+        overflow: hidden;
+        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.03);
     }
-    .dark-card:hover { border-color: #333333; }
+    .light-card:hover { border-color: #A7F3D0; }
 
-    /* Data Row (Copy Section) */
+    /* One-Click Copy Data Row */
     .data-row {
         display: flex; align-items: center; justify-content: space-between;
-        padding: 16px; background: #111111; border-radius: 16px;
-        border: 1px solid #1C1C1E; margin-bottom: 8px; transition: all 0.2s ease;
+        padding: 14px 16px; background: #F8FAFC; border-radius: 18px;
+        border: 1px solid #E2E8F0; margin-bottom: 8px; transition: all 0.2s ease;
     }
-    .data-row:hover { border-color: #333333; background: #141414; }
+    .data-row:hover { border-color: #A7F3D0; background: #F0FDF4; }
 
-    /* Action Buttons */
-    .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 18px;
-        border-radius: 16px; font-weight: 800; font-size: 13px;
-        text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease;
+    /* Buttons */
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; width: 100%; padding: 16px;
+        border-radius: 18px; font-weight: 800; font-size: 13.5px;
+        text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
-    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
+    .btn-emerald:active { transform: scale(0.96); }
     
-    .btn-outline {
-        background: transparent; color: #ffffff; border: 1px solid #333333;
-        padding: 10px 16px; border-radius: 12px; font-size: 11px; font-weight: 800;
-        text-transform: uppercase; transition: all 0.2s;
+    .btn-light-outline {
+        background: #F8FAFC; color: #0F172A; border: 1.5px solid #E2E8F0;
+        padding: 10px 18px; border-radius: 14px; font-size: 11.5px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s;
     }
-    .btn-outline:active { transform: scale(0.95); background: #111111; }
+    .btn-light-outline:hover { background: #ECFDF5; border-color: #A7F3D0; color: #059669; }
+    .btn-light-outline:active { transform: scale(0.96); }
 </style>
 
-<div class="max-w-2xl mx-auto space-y-6 fade-in-up pb-8 px-2 mt-4">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. HEADER -->
-    <div class="flex items-center justify-between mb-6">
-        <a href="/work" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
-            <i class="fa-solid fa-chevron-left text-sm"></i>
-        </a>
-        <h2 class="text-lg font-bold text-white tracking-wide">জিমেইল ফার্ম</h2>
-        <div class="w-10"></div> 
+    <div class="flex items-center justify-between mb-2 px-2">
+        <div class="flex items-center gap-3">
+            <a href="/work" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </a>
+            <div>
+                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">জিমেইল ফার্মিং</h2>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">High-Paying Account Creation</p>
+            </div>
+        </div>
+        <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-black">
+            ৳৫ - ৳১০ / মেইল
+        </span>
     </div>
 
     <!-- 2. INSTRUCTION BANNER -->
-    <div class="dark-card p-6 border-l-4 border-l-white">
-        <div class="flex items-center gap-4 mb-4">
-            <div class="h-12 w-12 bg-[#111111] border border-[#222222] rounded-xl flex items-center justify-center text-xl text-white">
+    <div class="light-card p-6 border-l-4 border-l-emerald-600">
+        <div class="flex items-center gap-3.5 mb-3">
+            <div class="h-12 w-12 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-center text-2xl text-emerald-600 shadow-sm">
                 <i class="fa-brands fa-google"></i>
             </div>
             <div>
-                <h3 class="font-bold text-white text-sm">একাউন্ট তৈরি ও আয়</h3>
-                <p class="text-[10px] text-[#888888] mt-1 font-mono uppercase tracking-widest">Payout: ৳5 - ৳10</p>
+                <h3 class="font-extrabold text-slate-800 text-sm">১০০% ফ্রেশ জিমেইল তৈরির নিয়ম</h3>
+                <p class="text-xs text-slate-400 font-mono">Guaranteed Fast Approval</p>
             </div>
         </div>
-        <div class="bg-[#111111] p-4 rounded-xl border border-[#1C1C1E]">
-            <p class="text-[11px] text-[#AAAAAA] font-medium leading-relaxed">
-                প্যানেল থেকে দেওয়া নাম ও পাসওয়ার্ড দিয়ে জিমেইল খুলুন। রিকভারি মেইল বা নম্বর দেওয়া যাবে না (100% Fresh)। ভুল তথ্য দিলে ১০ টাকা জরিমানা।
+        <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100">
+            <p class="text-xs text-emerald-900 font-medium leading-relaxed">
+                প্যানেল থেকে দেওয়া নির্দিষ্ট নাম ও পাসওয়ার্ড দিয়ে জিমেইল খুলুন। কোনো রিকভারি মেইল বা নম্বর দেওয়া যাবে না। কাজ নেওয়ার পর <b>১ ঘণ্টার মধ্যে</b> সাবমিট করতে হবে।
             </p>
         </div>
     </div>
@@ -74,111 +89,120 @@
     {% if my_active %}
         {% set task = my_active[0] %}
         
-        <div class="dark-card p-6 !border-white">
-            <div class="flex justify-between items-center mb-6 pb-4 border-b border-[#1C1C1E]">
+        <div class="light-card p-6 border-2 border-emerald-500 shadow-lg shadow-emerald-500/10">
+            <div class="flex justify-between items-center mb-5 pb-3.5 border-b border-slate-100">
                 <div>
-                    <h3 class="font-bold text-white text-sm flex items-center gap-2">
-                        <span class="h-2 w-2 bg-white rounded-full animate-pulse"></span> Active Task
+                    <h3 class="font-black text-slate-900 text-sm flex items-center gap-2">
+                        <span class="h-2.5 w-2.5 bg-emerald-500 rounded-full animate-ping"></span> রানিং টাস্ক
                     </h3>
-                    <p class="text-[9px] text-[#666666] font-mono mt-1 uppercase tracking-widest">ID: #{{ task.id }}</p>
+                    <p class="text-[10px] text-slate-400 font-mono mt-0.5 uppercase tracking-wider">Task ID: #{{ task.id }}</p>
                 </div>
                 
                 {% if task.status == 'locked' %}
-                    <div class="bg-[#111111] border border-[#333333] px-3 py-1.5 rounded-lg flex items-center gap-2">
-                        <i class="fa-regular fa-clock text-[10px] text-[#888888]"></i>
-                        <span id="timer" data-locked="{{ task.locked_at }}" class="font-mono text-xs font-bold text-white">00:00</span>
+                    <div class="bg-rose-50 border border-rose-100 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm">
+                        <i class="fa-regular fa-clock text-xs text-rose-500"></i>
+                        <span id="timer" data-locked="{{ task.locked_at }}" class="font-mono text-xs font-black text-rose-600">00:00</span>
                     </div>
                 {% else %}
-                    <div class="bg-[#111111] border border-[#333333] px-3 py-1.5 rounded-lg text-[9px] font-bold text-[#888888] uppercase">
-                        In Review
+                    <div class="bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl text-xs font-bold text-amber-700 uppercase">
+                        <i class="fa-solid fa-hourglass-half mr-1"></i> ইন রিভিউ
                     </div>
                 {% endif %}
             </div>
 
-            <!-- Data Rows -->
+            <!-- Data Rows (One-click copy) -->
             <div class="mb-6 space-y-2">
+                
+                <!-- First Name -->
                 <div class="data-row">
                     <div>
-                        <p class="text-[9px] text-[#666666] uppercase tracking-widest mb-1">First Name</p>
-                        <p class="text-sm font-bold text-white" id="fName">{{ task.first_name }}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">First Name</p>
+                        <p class="text-sm font-bold text-slate-800" id="fName">{{ task.first_name }}</p>
                     </div>
-                    <button onclick="copyData('fName', this)" class="h-9 w-9 bg-[#1C1C1E] rounded-lg text-[#888888] hover:text-white transition"><i class="fa-regular fa-copy"></i></button>
+                    <button onclick="copyData('fName', this)" class="h-9 w-9 bg-white rounded-xl text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 border border-slate-200 transition shadow-sm flex items-center justify-center active:scale-90"><i class="fa-regular fa-copy"></i></button>
                 </div>
                 
+                <!-- Last Name (If exists) -->
                 {% if task.last_name and task.last_name|trim != '' %}
                 <div class="data-row">
                     <div>
-                        <p class="text-[9px] text-[#666666] uppercase tracking-widest mb-1">Last Name</p>
-                        <p class="text-sm font-bold text-white" id="lName">{{ task.last_name }}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Last Name</p>
+                        <p class="text-sm font-bold text-slate-800" id="lName">{{ task.last_name }}</p>
                     </div>
-                    <button onclick="copyData('lName', this)" class="h-9 w-9 bg-[#1C1C1E] rounded-lg text-[#888888] hover:text-white transition"><i class="fa-regular fa-copy"></i></button>
+                    <button onclick="copyData('lName', this)" class="h-9 w-9 bg-white rounded-xl text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 border border-slate-200 transition shadow-sm flex items-center justify-center active:scale-90"><i class="fa-regular fa-copy"></i></button>
                 </div>
                 {% endif %}
                 
-                <div class="data-row !bg-[#1A1A1A] !border-[#333333]">
+                <!-- Gmail Address Highlight -->
+                <div class="data-row !bg-emerald-50/80 !border-emerald-200">
                     <div class="overflow-hidden pr-2">
-                        <p class="text-[9px] text-white uppercase tracking-widest mb-1">Gmail Address</p>
-                        <p class="text-base font-bold text-white font-mono truncate" id="emailText">{{ task.email_prefix }}@gmail.com</p>
+                        <p class="text-[10px] text-emerald-800 font-extrabold uppercase tracking-wider mb-0.5">Gmail Address</p>
+                        <p class="text-sm sm:text-base font-black text-emerald-950 font-mono truncate" id="emailText">{{ task.email_prefix }}@gmail.com</p>
                     </div>
-                    <button onclick="copyData('emailText', this)" class="h-10 w-10 bg-white text-black rounded-xl font-bold transition flex-shrink-0"><i class="fa-regular fa-copy"></i></button>
+                    <button onclick="copyData('emailText', this)" class="h-10 w-10 bg-emerald-600 text-white rounded-xl font-bold transition flex-shrink-0 shadow-sm flex items-center justify-center active:scale-90"><i class="fa-regular fa-copy"></i></button>
                 </div>
                 
+                <!-- Password -->
                 <div class="data-row">
                     <div>
-                        <p class="text-[9px] text-[#666666] uppercase tracking-widest mb-1">Password</p>
-                        <p class="text-sm font-bold text-white font-mono" id="passText">{{ task.password }}</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Password</p>
+                        <p class="text-sm font-bold text-slate-800 font-mono" id="passText">{{ task.password }}</p>
                     </div>
-                    <button onclick="copyData('passText', this)" class="h-9 w-9 bg-[#1C1C1E] rounded-lg text-[#888888] hover:text-white transition"><i class="fa-regular fa-copy"></i></button>
+                    <button onclick="copyData('passText', this)" class="h-9 w-9 bg-white rounded-xl text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 border border-slate-200 transition shadow-sm flex items-center justify-center active:scale-90"><i class="fa-regular fa-copy"></i></button>
                 </div>
             </div>
 
-            <!-- Action -->
+            <!-- Action Form -->
             {% if task.status == 'locked' %}
-                <a href="/gmail-tasks/submit/{{ task.id }}" onclick="return confirm('কাজটি সম্পন্ন করেছেন?')" class="btn-white">
-                    কাজ জমা দিন <i class="fa-solid fa-paper-plane"></i>
+                <a href="/gmail-tasks/submit/{{ task.id }}" onclick="return confirm('আপনি কি এই তথ্যে জিমেইল খুলেছেন? নিশ্চিত জমা দিন।')" class="btn-emerald">
+                    <span>কাজ জমা দিন</span> <i class="fa-solid fa-paper-plane text-xs"></i>
                 </a>
             {% else %}
-                <div class="bg-[#111111] border border-[#222222] p-4 rounded-2xl text-center">
-                    <i class="fa-solid fa-shield-check text-2xl text-white mb-2"></i>
-                    <p class="text-sm font-bold text-white">রিভিউ চলছে</p>
-                    <p class="text-[10px] text-[#888888] mt-1">অ্যাডমিন চেক করার পর ব্যালেন্স যোগ হবে।</p>
+                <div class="bg-emerald-50 border border-emerald-200 p-5 rounded-2xl text-center">
+                    <i class="fa-solid fa-shield-check text-3xl text-emerald-600 mb-2"></i>
+                    <p class="text-sm font-extrabold text-slate-800">জিমেইল যাচাই চলছে</p>
+                    <p class="text-xs text-slate-500 mt-0.5 font-medium">অ্যাডমিন বা বট চেক করার সাথে সাথেই আপনার ব্যালেন্সে টাকা যোগ হয়ে যাবে।</p>
                 </div>
             {% endif %}
         </div>
 
     {% else %}
 
-    <!-- 4. AVAILABLE TASKS GRID -->
+    <!-- 4. AVAILABLE TASKS LIST -->
     <div>
-        <div class="flex items-center justify-between mb-4 px-1">
-            <h3 class="font-bold text-white text-xs uppercase tracking-widest">Available Mails</h3>
-            <span class="text-[9px] text-[#666666] font-mono">Auto Sync</span>
+        <div class="flex items-center justify-between mb-3 px-2">
+            <h3 class="font-extrabold text-slate-800 text-sm tracking-tight flex items-center gap-2">
+                <span class="h-2 w-2 rounded-full bg-emerald-500"></span> Available Mail Jobs
+            </h3>
+            <span class="text-[11px] font-bold text-slate-400 font-mono">Live Available</span>
         </div>
         
         <div class="grid sm:grid-cols-2 gap-3">
             {% for t in available %}
-            <div class="dark-card p-5 group cursor-pointer hover:bg-[#111111]" onclick="confirmTaskTake('{{ t.id }}')">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="h-10 w-10 bg-[#1C1C1E] border border-[#333333] text-white rounded-xl flex items-center justify-center text-lg">
+            <div class="light-card p-5 group cursor-pointer hover:border-emerald-300" onclick="confirmTaskTake('{{ t.id }}')">
+                <div class="flex justify-between items-start mb-5">
+                    <div class="h-11 w-11 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
                         <i class="fa-brands fa-google"></i>
                     </div>
                     <div class="text-right">
-                        <span class="text-[8px] text-[#888888] uppercase tracking-widest block mb-0.5">Payout</span>
-                        <span class="text-sm font-bold text-white font-mono">৳{{ t.reward }}</span>
+                        <span class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider block mb-0.5">Payout</span>
+                        <span class="text-lg font-black text-slate-800 font-mono">৳{{ t.reward }}</span>
                     </div>
                 </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-[10px] text-[#666666] font-mono"><i class="fa-regular fa-clock"></i> 60m</span>
-                    <button class="btn-outline group-hover:bg-white group-hover:text-black">Take Job</button>
+                <div class="flex items-center justify-between pt-1">
+                    <span class="text-xs text-slate-500 font-semibold flex items-center gap-1.5"><i class="fa-regular fa-clock text-slate-400"></i> ১ ঘণ্টা</span>
+                    <button class="btn-light-outline group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600">কাজটি নিন</button>
                 </div>
             </div>
             {% else %}
             <!-- Empty State -->
-            <div class="col-span-2 text-center py-20 bg-[#0A0A0A] rounded-[24px] border border-[#1C1C1E]">
-                <i class="fa-solid fa-inbox text-4xl text-[#333333] mb-4"></i>
-                <h3 class="text-sm font-bold text-white">কোনো কাজ নেই</h3>
-                <p class="text-[10px] text-[#666666] mt-1 mb-6">নতুন কাজ আসলে এখানে দেখতে পাবেন।</p>
-                <button onclick="location.reload()" class="bg-[#111111] text-white border border-[#333333] px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#1A1A1A] transition">
+            <div class="col-span-2 text-center py-20 bg-white rounded-[28px] border border-slate-200">
+                <div class="h-16 w-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl text-slate-400 border border-slate-100">
+                    <i class="fa-regular fa-envelope-open"></i>
+                </div>
+                <h3 class="text-sm font-bold text-slate-800">বর্তমানে কোনো কাজ খালি নেই</h3>
+                <p class="text-xs text-slate-400 mt-1 mb-6">নতুন জিমেইল টাস্ক খুব দ্রুত যুক্ত করা হবে। কিছুক্ষণ পর রিফ্রেশ দিন।</p>
+                <button onclick="location.reload()" class="bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 border border-slate-200 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition active:scale-95">
                     <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
                 </button>
             </div>
@@ -191,25 +215,23 @@
 
 <!-- SCRIPTS -->
 <script>
-    // Copy Function (Dark Theme Feedback)
+    // Copy Function with Visual Feedback
     function copyData(elementId, btn) {
         const text = document.getElementById(elementId).innerText;
         navigator.clipboard.writeText(text).then(() => {
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-            btn.classList.add('bg-white', 'text-black');
-            btn.classList.remove('bg-[#1C1C1E]', 'text-[#888888]');
+            btn.innerHTML = '<i class="fa-solid fa-check text-white"></i>';
+            btn.classList.add('bg-emerald-600', 'border-emerald-600');
             
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
-                btn.classList.remove('bg-white', 'text-black');
-                btn.classList.add('bg-[#1C1C1E]', 'text-[#888888]');
-            }, 1500);
+                btn.classList.remove('bg-emerald-600', 'border-emerald-600');
+            }, 1200);
         });
     }
 
     function confirmTaskTake(id) {
-        if(confirm('শর্ত: কাজটি ১ ঘণ্টার মধ্যে জমা না দিলে ১০ টাকা জরিমানা কাটা হবে। রাজি?')) {
+        if(confirm('শর্ত: কাজটি ১ ঘণ্টার মধ্যে সঠিকভাবে জমা দিতে হবে। আপনি কি কাজটি নিতে প্রস্তুত?')) {
             window.location.href = '/gmail-tasks/take/' + id;
         }
     }
@@ -228,13 +250,11 @@
             if (distance < 0) {
                 clearInterval(x);
                 timerElement.innerHTML = "EXPIRED";
-                timerElement.style.color = "#FF453A";
-                setTimeout(() => location.reload(), 2000);
+                setTimeout(() => location.reload(), 1500);
             } else {
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
                 timerElement.innerHTML = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-                if(minutes < 5) timerElement.style.color = "#FF453A"; // Red warning
             }
         }, 1000);
     }
