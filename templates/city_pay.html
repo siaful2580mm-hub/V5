@@ -1,14 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<!-- Google Fonts for Realistic Hand Signatures -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
 <style>
     /* ==========================================
-       CITY TOUCH CORPORATE BANKING THEME
+       C. TOUCH CORPORATE FINTECH THEME
     ========================================== */
     :root {
-        --city-red: #D71920;      /* City Bank Corporate Red */
-        --city-dark: #0F172A;     /* Deep Navy Slate */
-        --city-emerald: #059669;  /* Success Emerald */
+        --c-touch-red: #D71920;      /* Corporate Red */
+        --c-touch-dark: #0F172A;     /* Deep Navy Slate */
+        --c-touch-emerald: #059669;  /* Success Emerald */
     }
 
     .city-card {
@@ -18,7 +21,7 @@
         box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05);
     }
 
-    /* City Touch Header Gradient */
+    /* C. Touch Header Gradient */
     .city-header-gradient {
         background: linear-gradient(135deg, #991B1B 0%, #D71920 60%, #B91C1C 100%);
         border-radius: 28px;
@@ -28,6 +31,19 @@
     /* Custom Scrollbar */
     .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+
+    /* Signature Styles */
+    .sign-simanto {
+        font-family: 'Great Vibes', cursive !important;
+        font-size: 26px !important;
+        color: #047857 !important;
+        letter-spacing: 1px;
+    }
+    .sign-ctouch {
+        font-family: 'Dancing Script', cursive !important;
+        font-size: 22px !important;
+        color: #0F172A !important;
+    }
 
     /* ==========================================
        PRINT / PDF SPECIAL STYLES (A4 Slip Format)
@@ -52,7 +68,7 @@
 <div class="max-w-5xl mx-auto space-y-6 pb-16 px-1 mt-2">
 
     <!-- ==========================================
-         1. CITY TOUCH CORPORATE HEADER
+         1. C. TOUCH CORPORATE HEADER
     ========================================== -->
     <div class="city-header-gradient p-6 sm:p-8 text-white relative overflow-hidden no-print">
         <div class="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -68,12 +84,12 @@
                         <span class="h-1.5 w-1.5 bg-emerald-400 rounded-full animate-ping"></span> Live Bulk Disburser
                     </div>
                     <h1 class="text-2xl sm:text-3xl font-black tracking-tight leading-tight">City B. Distribution</h1>
-                    <p class="text-xs text-red-100 font-medium mt-0.5">Corporate Electronic Fund Settlement Portal</p>
+                    <p class="text-xs text-red-100 font-medium mt-0.5">C. Touch Corporate Electronic Fund Settlement Portal</p>
                 </div>
             </div>
 
             <div class="text-left sm:text-right bg-white/15 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/20">
-                <p class="text-[9.5px] font-black uppercase tracking-widest text-red-100 mb-0.5">Corporate Protocol</p>
+                <p class="text-[9.5px] font-black uppercase tracking-widest text-red-100 mb-0.5">C. Touch Protocol</p>
                 <p class="text-sm font-black tracking-wide font-mono">RTGS / BEFTN / MFS API</p>
             </div>
         </div>
@@ -87,7 +103,7 @@
             <h3 class="font-black text-slate-800 text-sm uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-solid fa-sliders text-[#D71920]"></i> ব্যাচ ডিস্ট্রিবিউশন কন্ট্রোলার
             </h3>
-            <span class="text-xs font-bold text-slate-400">City Touch Batch Engine</span>
+            <span class="text-xs font-bold text-slate-400">C. Touch Batch Engine</span>
         </div>
 
         <div class="grid sm:grid-cols-3 gap-4 items-end">
@@ -139,7 +155,7 @@
         <div class="p-5 bg-slate-50 border-b border-slate-200 flex flex-wrap justify-between items-center gap-3">
             <div>
                 <h3 class="font-extrabold text-slate-800 text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-file-invoice-dollar text-[#D71920]"></i> Electronic Disbursement Sheet
+                    <i class="fa-solid fa-file-invoice-dollar text-[#D71920]"></i> C. Touch Disbursement Sheet
                 </h3>
                 <p class="text-[10px] text-slate-500 font-mono mt-0.5" id="genBatchId">Batch ID: CT-DISB-XXXXXX</p>
             </div>
@@ -197,8 +213,8 @@
                 C
             </div>
             <div>
-                <h1 style="font-size: 20px; font-weight: 900; margin: 0; color: #1E293B;">THE CITY BANK LIMITED</h1>
-                <p style="font-size: 11px; font-weight: 700; color: #D71920; margin: 2px 0 0 0; text-transform: uppercase;">City Touch Bulk Disbursement Voucher</p>
+                <h1 style="font-size: 22px; font-weight: 900; margin: 0; color: #1E293B;">C. TOUCH NETWORKS</h1>
+                <p style="font-size: 11px; font-weight: 800; color: #D71920; margin: 2px 0 0 0; text-transform: uppercase;">C. Touch Bulk Disbursement Voucher</p>
                 <p style="font-size: 10px; color: #64748B; margin: 1px 0 0 0;">Corporate Client: <b>Earn Daily Network (Pvt.) Ltd.</b></p>
             </div>
         </div>
@@ -225,7 +241,7 @@
                 <th style="padding: 6px 8px;">Gateway</th>
                 <th style="padding: 6px 8px;">Beneficiary Mobile (Masked)</th>
                 <th style="padding: 6px 8px;">Disbursed (BDT)</th>
-                <th style="padding: 6px 8px;">Bank / MFS TrxID</th>
+                <th style="padding: 6px 8px;">C. Touch TrxID</th>
                 <th style="padding: 6px 8px; text-align: center;">Status</th>
             </tr>
         </thead>
@@ -239,24 +255,22 @@
     ========================================== -->
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 50px; padding: 0 20px;">
         
-        <!-- City Touch Authorized Signatory -->
+        <!-- C. Touch Authorized Signatory -->
         <div style="text-align: center; width: 220px;">
             <div style="border-bottom: 1.5px solid #64748B; padding-bottom: 8px; margin-bottom: 6px;">
-                <img src="https://api.iconify.design/fluent-emoji-flat:pen.svg" style="height: 20px; margin: 0 auto 4px; opacity: 0.7;">
-                <p style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 18px; margin: 0; color: #0F172A;">A. H. Chowdhury</p>
+                <p class="sign-ctouch" style="margin: 0; line-height: 1;">A. H. Chowdhury</p>
             </div>
             <p style="font-size: 11px; font-weight: 800; margin: 0; color: #1E293B;">Authorized Signatory</p>
-            <p style="font-size: 9.5px; color: #64748B; margin: 2px 0 0 0;">Settlement Ops, City Touch</p>
+            <p style="font-size: 9.5px; color: #64748B; margin: 2px 0 0 0;">Settlement Ops, C. Touch</p>
             <div style="border: 1.5px dashed #D71920; color: #D71920; border-radius: 6px; padding: 2px 6px; font-size: 8px; font-weight: 900; margin-top: 6px; display: inline-block;">
-                CITY BANK DISBURSED SEAL
+                C. TOUCH DISBURSED SEAL
             </div>
         </div>
 
-        <!-- Earn Daily Corporate Authority -->
+        <!-- Earn Daily Corporate Authority (Simanto Sorif) -->
         <div style="text-align: center; width: 220px;">
             <div style="border-bottom: 1.5px solid #64748B; padding-bottom: 8px; margin-bottom: 6px;">
-                <img src="https://api.iconify.design/fluent-emoji-flat:check-mark-button.svg" style="height: 20px; margin: 0 auto 4px; opacity: 0.7;">
-                <p style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 18px; margin: 0; color: #047857;">Tanvir Hasan</p>
+                <p class="sign-simanto" style="margin: 0; line-height: 1;">Simanto Sorif</p>
             </div>
             <p style="font-size: 11px; font-weight: 800; margin: 0; color: #1E293B;">Corporate Approval</p>
             <p style="font-size: 9.5px; color: #64748B; margin: 2px 0 0 0;">Managing Director, Earn Daily</p>
@@ -269,7 +283,7 @@
 
     <!-- Security Footnote -->
     <div style="text-align: center; margin-top: 40px; border-top: 1px solid #E2E8F0; padding-top: 10px; font-size: 8.5px; color: #94A3B8;">
-        This document is an electronic settlement summary generated via City Touch Corporate Banking in collaboration with Earn Daily. Confidential & Audited.
+        This document is an electronic settlement summary generated via C. Touch Corporate Banking in collaboration with Earn Daily. Confidential & Audited.
     </div>
 
 </div>
@@ -405,7 +419,7 @@
         
         // Print Summary Meta
         document.getElementById('vouchTotalAmount').innerText = "৳" + totalAmount.toLocaleString();
-        document.getElementById('vouchTotalUsers').innerText = count + " Recipient Accounts";
+        document.getElementById('vouchTotalUsers').innerText = count + " Accounts";
         document.getElementById('vouchRatio').innerText = ratio;
         document.getElementById('vouchFailed').innerText = failedCount + " Cases";
 
@@ -443,7 +457,7 @@
         const uri = encodeURI(csv);
         const a = document.createElement("a");
         a.href = uri;
-        a.download = `City_Distribution_${currentBatchInfo.batchId || Date.now()}.csv`;
+        a.download = `C_Touch_Distribution_${currentBatchInfo.batchId || Date.now()}.csv`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
