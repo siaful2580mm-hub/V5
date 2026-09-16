@@ -3,77 +3,92 @@
 
 <style>
     /* ==========================================
-       PURE DARK THEME & ANIMATIONS
+       EARN DAILY - MODERN TELECOM DRIVE STORE UI
     ========================================== */
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Hide Scrollbar for category tabs */
+    /* Hide Scrollbar */
     .hide-scroll::-webkit-scrollbar { display: none; }
     .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Telecom Offer Card (Dark Theme) */
+    /* Modern Telecom Offer Card */
     .offer-card {
-        background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 24px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
-        display: flex; flex-direction: column;
+        background: #FFFFFF; 
+        border: 1px solid #E2E8F0; 
+        border-radius: 26px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        position: relative; 
+        overflow: hidden;
+        display: flex; 
+        flex-direction: column;
+        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.02);
     }
-    .offer-card:hover { transform: translateY(-4px); border-color: #333333; background: #0F0F0F; }
+    .offer-card:hover { 
+        transform: translateY(-4px); 
+        border-color: #A7F3D0; 
+        background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%);
+        box-shadow: 0 14px 28px -6px rgba(16, 185, 129, 0.12);
+    }
 
     /* Category Buttons */
     .cat-btn {
-        padding: 10px 24px; border-radius: 14px; font-size: 11px; font-weight: 800;
-        background: #111111; color: #888888; border: 1px solid #222222;
-        transition: all 0.2s; white-space: nowrap; flex-shrink: 0; text-transform: uppercase; letter-spacing: 1px;
+        padding: 9px 20px; border-radius: 14px; font-size: 11.5px; font-weight: 800;
+        background: #FFFFFF; color: #64748B; border: 1.5px solid #E2E8F0;
+        transition: all 0.2s ease; white-space: nowrap; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.5px;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
     }
-    .cat-btn:hover { background: #1C1C1E; color: #ffffff; }
-    .cat-btn.active { background: #ffffff; color: #000000; border-color: #ffffff; }
+    .cat-btn:hover { background: #F8FAFC; color: #059669; border-color: #A7F3D0; }
+    .cat-btn.active { 
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%); 
+        color: #FFFFFF; border-color: #059669;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
 </style>
 
-<div class="max-w-5xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-5xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
     <!-- ==========================================
          1. HERO HEADER
     ========================================== -->
-    <div class="bg-gradient-to-br from-slate-900 to-black rounded-[32px] p-6 sm:p-8 text-white relative overflow-hidden border border-[#1C1C1E] shadow-2xl">
-        <div class="absolute top-0 right-0 w-48 h-48 bg-white opacity-[0.02] rounded-bl-full pointer-events-none"></div>
-        <i class="fa-solid fa-wifi absolute right-6 top-1/2 transform -translate-y-1/2 text-8xl opacity-[0.02] pointer-events-none -rotate-12"></i>
+    <div class="bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 rounded-[32px] p-6 sm:p-8 text-white relative overflow-hidden shadow-xl shadow-emerald-600/20">
+        <div class="absolute top-0 right-0 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+        <i class="fa-solid fa-wifi absolute right-6 top-1/2 transform -translate-y-1/2 text-9xl opacity-10 pointer-events-none -rotate-12"></i>
         
         <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div>
-                <div class="inline-flex items-center gap-1.5 bg-[#111111] text-white px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.15em] border border-[#222222] mb-4">
-                    <i class="fa-solid fa-bolt text-[#888888]"></i> Mega Sale Active
+                <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-white/20 mb-3 shadow-sm">
+                    <i class="fa-solid fa-bolt text-amber-300"></i> ৩০% পর্যন্ত মেগা ক্যাশব্যাক
                 </div>
-                <h2 class="text-3xl sm:text-4xl font-black tracking-tight leading-tight mb-2">Telecom Offers</h2>
-                <p class="text-xs sm:text-sm text-[#888888] font-medium max-w-sm leading-relaxed">সকল অপারেটরের ইন্টারনেট, মিনিট ও কম্বো প্যাকে ৩০% পর্যন্ত স্পেশাল ডিসকাউন্ট!</p>
+                <h2 class="text-3xl sm:text-4xl font-black tracking-tight leading-tight mb-1.5">টেলিকম ড্রাইভ প্যাক</h2>
+                <p class="text-xs sm:text-sm text-emerald-100 font-medium max-w-sm leading-relaxed">সকল অপারেটরের ইন্টারনেট, মিনিট ও কম্বো প্যাকে সবচেয়ে সাশ্রয়ী মূল্য ও দ্রুত রিচার্জ।</p>
             </div>
             
-            <a href="/drive/history" class="bg-white text-black px-6 py-3.5 rounded-[16px] text-xs font-bold transition flex items-center justify-center gap-2 w-full sm:w-auto shadow-sm active:scale-95 uppercase tracking-widest">
-                <i class="fa-solid fa-clock-rotate-left"></i> My Orders
+            <a href="/drive/history" class="bg-white text-emerald-900 hover:bg-emerald-50 px-6 py-3.5 rounded-2xl text-xs font-black transition flex items-center justify-center gap-2 w-full sm:w-auto shadow-md active:scale-95 uppercase tracking-wider">
+                <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i> আমার অর্ডার হিস্টোরি
             </a>
         </div>
     </div>
 
     <!-- ==========================================
-         2. CATEGORY TABS (Scrollable on mobile)
+         2. CATEGORY FILTER TABS
     ========================================== -->
-    <div class="flex gap-2 overflow-x-auto pb-2 hide-scroll px-1 mt-2">
-        <button class="cat-btn active">All Offers</button>
+    <div class="flex gap-2 overflow-x-auto pb-1 hide-scroll px-1">
+        <button class="cat-btn active">All Packs</button>
         <button class="cat-btn">Internet</button>
         <button class="cat-btn">Minutes</button>
         <button class="cat-btn">Combo</button>
     </div>
 
     <!-- ==========================================
-         3. OFFERS GRID
+         3. PACKS GRID
     ========================================== -->
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-2">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {% for pack in packs %}
         <div class="offer-card group h-full">
             
             <!-- Discount Badge -->
-            <div class="absolute top-0 right-0 bg-white text-black text-[9px] font-black px-4 py-1.5 rounded-bl-[16px] shadow-md uppercase tracking-widest z-10">
+            <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[9.5px] font-black px-3.5 py-1 rounded-bl-2xl shadow-sm uppercase tracking-wider z-10">
                 Save {{ pack.commission }}
             </div>
 
@@ -81,40 +96,40 @@
             <div class="p-6 flex flex-col flex-grow">
                 
                 <!-- Operator Info -->
-                <div class="flex items-start gap-4 mb-5">
-                    <div class="h-12 w-12 rounded-[14px] flex items-center justify-center text-white font-black text-sm shadow-md flex-shrink-0 group-hover:scale-110 transition-transform bg-[#111111] border border-[#222222]">
+                <div class="flex items-start gap-3.5 mb-4">
+                    <div class="h-12 w-12 rounded-2xl flex items-center justify-center text-white font-black text-sm shadow-md flex-shrink-0 group-hover:scale-105 transition-transform bg-gradient-to-tr from-emerald-600 to-teal-500">
                         {{ pack.operator[:2] | upper }}
                     </div>
                     
-                    <div class="pr-10">
-                        <p class="text-[9px] text-[#666666] font-bold uppercase tracking-widest mb-0.5">{{ pack.operator }}</p>
-                        <h3 class="font-black text-white text-base leading-tight">{{ pack.title }}</h3>
+                    <div class="pr-12">
+                        <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-0.5">{{ pack.operator }}</p>
+                        <h3 class="font-extrabold text-slate-900 text-base leading-tight">{{ pack.title }}</h3>
                     </div>
                 </div>
 
                 <!-- Tags Row -->
                 <div class="flex items-center gap-2 mb-6">
-                    <span class="bg-[#111111] text-[#AAAAAA] border border-[#222222] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5">
-                        <i class="fa-regular fa-clock"></i> {{ pack.validity }}
+                    <span class="bg-slate-100 text-slate-600 border border-slate-200 px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                        <i class="fa-regular fa-clock text-slate-400"></i> {{ pack.validity }}
                     </span>
-                    <span class="bg-[#111111] text-[#AAAAAA] border border-[#222222] px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider">
+                    <span class="bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider">
                         {{ pack.category }}
                     </span>
                 </div>
 
                 <div class="flex-grow"></div>
 
-                <!-- Price & Action Row -->
-                <div class="border-t border-[#1C1C1E] pt-4 mt-2 flex items-center justify-between">
+                <!-- Price & Checkout Action -->
+                <div class="border-t border-slate-100 pt-4 flex items-center justify-between">
                     <div>
-                        <p class="text-[9px] text-[#666666] font-bold uppercase tracking-[0.1em] mb-0.5">Offer Price</p>
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-2xl font-black text-white font-mono tracking-tight leading-none">৳{{ pack.offer_price }}</span>
-                            <span class="text-xs text-[#555555] line-through font-mono font-bold leading-none">৳{{ pack.regular_price }}</span>
+                        <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider mb-0.5">অফার প্রাইস</p>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-2xl font-black text-slate-900 font-mono tracking-tight leading-none">৳{{ pack.offer_price }}</span>
+                            <span class="text-xs text-slate-400 line-through font-mono font-bold leading-none">৳{{ pack.regular_price }}</span>
                         </div>
                     </div>
 
-                    <a href="/drive/buy/{{ pack.id }}" class="h-10 w-10 bg-white text-black rounded-[12px] flex items-center justify-center hover:bg-[#E5E5E5] transition-colors group-hover:scale-105 active:scale-95 duration-200 flex-shrink-0">
+                    <a href="/drive/buy/{{ pack.id }}" class="h-11 w-11 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl flex items-center justify-center transition shadow-md shadow-emerald-600/25 group-hover:scale-105 active:scale-95 flex-shrink-0">
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>
@@ -123,14 +138,14 @@
         </div>
         {% else %}
         <!-- Empty State -->
-        <div class="col-span-full text-center py-20 bg-[#0A0A0A] rounded-[32px] border border-[#1C1C1E] shadow-sm mt-4">
-            <div class="h-20 w-20 bg-[#111111] rounded-[20px] flex items-center justify-center mx-auto mb-4 text-4xl text-[#333333] border border-[#222222]">
-                <i class="fa-solid fa-box-open"></i>
+        <div class="col-span-full text-center py-20 bg-white rounded-[32px] border border-slate-200 shadow-sm">
+            <div class="h-16 w-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-3xl text-slate-300 border border-slate-100">
+                <i class="fa-solid fa-wifi"></i>
             </div>
-            <h3 class="text-base font-bold text-white">No Offers Available</h3>
-            <p class="text-[11px] text-[#666666] mt-1 font-medium max-w-sm mx-auto leading-relaxed">অ্যাডমিন শীঘ্রই নতুন অফার যুক্ত করবেন। কিছুক্ষণ পর আবার চেক করুন।</p>
-            <button onclick="location.reload()" class="mt-6 text-xs font-bold text-white bg-[#111111] px-6 py-3 rounded-xl border border-[#333333] hover:bg-[#1C1C1E] transition flex items-center gap-2 mx-auto active:scale-95 uppercase tracking-widest">
-                <i class="fa-solid fa-rotate-right"></i> Refresh
+            <h3 class="text-base font-bold text-slate-800">বর্তমানে কোনো অফার খালি নেই</h3>
+            <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto leading-relaxed">অ্যাডমিন শীঘ্রই নতুন ড্রাইভ প্যাক যুক্ত করবেন। কিছুক্ষণ পর আবার চেক করুন।</p>
+            <button onclick="location.reload()" class="mt-5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 px-6 py-2.5 rounded-xl border border-slate-200 transition active:scale-95 uppercase tracking-wider">
+                <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
             </button>
         </div>
         {% endfor %}
