@@ -53,7 +53,7 @@
         transform: translateY(-3px);
     }
     
-    /* List Rows (App Reviews, etc.) */
+    /* List Rows */
     .list-row {
         display: flex; align-items: center; justify-content: space-between;
         padding: 16px 20px; background: #FFFFFF; border: 1px solid #E2E8F0;
@@ -67,7 +67,7 @@
         box-shadow: 0 8px 18px rgba(16, 185, 129, 0.08);
     }
 
-    /* Drive/Telecom Promo Ticket */
+    /* Drive Promo Ticket */
     .drive-promo {
         background: #FFFFFF; border: 1.5px dashed #CBD5E1; border-radius: 24px;
         padding: 22px; display: flex; align-items: center; justify-content: space-between;
@@ -88,18 +88,6 @@
         content: ''; position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
         width: 20px; height: 20px; background: #F8FAFC; border-radius: 50%; border-left: 1.5px dashed #CBD5E1;
     }
-
-    /* Mini Games Pills */
-    .game-pill {
-        background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 100px;
-        padding: 14px 18px; display: flex; align-items: center; justify-content: center; gap: 8px;
-        transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
-    }
-    .game-pill:hover { 
-        border-color: #A7F3D0; background: #F0FDF4; 
-        transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.08); 
-    }
-    .game-pill:active { transform: scale(0.96); }
 
     /* Section Titles */
     .sec-title {
@@ -232,19 +220,19 @@
             <a href="/fb-task" class="btn-emerald-outline w-max mt-auto">Open Task <i class="fa-solid fa-arrow-right ml-1"></i></a>
         </div>
 
-        <!-- Special Task -->
+        <!-- Special Task (Locked) -->
         <div class="swipe-card bg-gradient-to-tr from-amber-500/10 to-orange-500/5 border-amber-200">
             <div class="flex justify-between items-start">
                 <div class="h-12 w-12 bg-amber-500 text-white rounded-2xl flex items-center justify-center text-2xl shadow-md shadow-amber-500/20">
-                    <i class="fa-solid fa-bolt"></i>
+                    <i class="fa-solid fa-lock"></i>
                 </div>
-                <span class="bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider">Mega Bounty</span>
+                <span class="bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider">Special Bounty</span>
             </div>
             <div>
                 <h4 class="font-extrabold text-slate-800 text-lg leading-tight">Special Bounty</h4>
-                <p class="text-xs text-slate-600 font-medium leading-relaxed mt-1">এডমিন প্রদত্ত স্পেশাল হাই-পেইং ৯০ টাকার টাস্ক।</p>
+                <p class="text-xs text-slate-600 font-medium leading-relaxed mt-1">এডমিন প্রদত্ত স্পেশাল হাই-পেইং ৯০ টাকার হিডেন টাস্ক।</p>
             </div>
-            <a href="/special-task" class="btn-emerald-outline !bg-amber-500 !text-white !border-amber-500 w-max mt-auto">Explore <i class="fa-solid fa-arrow-right ml-1"></i></a>
+            <a href="/special-task" class="btn-emerald-outline !bg-amber-500 !text-white !border-amber-500 w-max mt-auto">Details <i class="fa-solid fa-arrow-right ml-1"></i></a>
         </div>
 
     </div>
@@ -268,7 +256,25 @@
     </div>
 
     <!-- ==========================================
-         5. DRIVE PACKS CTA
+         5. REFERRAL NETWORK SECTION (New)
+    ========================================== -->
+    <div class="mt-3">
+        <a href="/referrals" class="list-row group !bg-gradient-to-r !from-emerald-50/70 !to-teal-50/50 !border-emerald-200">
+            <div class="flex items-center gap-3.5">
+                <div class="h-11 w-11 bg-emerald-600 text-white rounded-2xl flex items-center justify-center text-lg shadow-sm">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <h4 class="font-black text-slate-900 text-sm leading-tight">রেফারেল প্রোগ্রাম (Cash Bounty)</h4>
+                    <p class="text-[11px] text-emerald-800 mt-0.5 font-semibold">লাইফটাইম কমিশন + ৫০ থেকে ১,০০০ রেফারে মেগা বোনাস</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-arrow-right text-emerald-600 group-hover:translate-x-1 transition"></i>
+        </a>
+    </div>
+
+    <!-- ==========================================
+         6. DRIVE PACKS CTA
     ========================================== -->
     <div class="mt-3">
         <a href="/drive" class="drive-promo group block">
@@ -288,36 +294,43 @@
     </div>
 
     <!-- ==========================================
-         6. MINI GAMES (Pill Design)
+         7. LUCKY SPIN ONLY
     ========================================== -->
-    <h3 class="sec-title px-2"><i class="fa-solid fa-gamepad text-emerald-600"></i> ডেইলি বোনাস গেমস</h3>
+    <h3 class="sec-title px-2"><i class="fa-solid fa-gamepad text-emerald-600"></i> ডেইলি ফ্রি গেম</h3>
     
-    <div class="grid grid-cols-2 gap-2.5">
-        <a href="/spin" class="game-pill group">
-            <i class="fa-solid fa-dharmachakra text-emerald-600 text-lg group-hover:rotate-45 transition-transform"></i>
-            <span class="text-xs font-bold text-slate-700">Spin Wheel</span>
-        </a>
-        <a href="/captcha" class="game-pill group">
-            <i class="fa-solid fa-keyboard text-emerald-600 text-lg"></i>
-            <span class="text-xs font-bold text-slate-700">Captcha</span>
-        </a>
-        <a href="/skatch" class="game-pill col-span-2 group">
-            <i class="fa-solid fa-ticket text-emerald-600 text-lg"></i>
-            <span class="text-xs font-bold text-slate-700">Scratch Card (কার্ড ঘষুন)</span>
+    <div>
+        <a href="/spin" class="list-row group">
+            <div class="flex items-center gap-3.5">
+                <div class="h-11 w-11 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-xl border border-amber-100">
+                    <i class="fa-solid fa-dharmachakra group-hover:rotate-45 transition-transform"></i>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-slate-800 text-sm leading-tight">Lucky Spin Wheel</h4>
+                    <p class="text-[11px] text-slate-400 mt-0.5">প্রতিদিন ১ বার ফ্রিতে ভাগ্যের চাকা ঘুরিয়ে আয় করুন</p>
+                </div>
+            </div>
+            <span class="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">ফ্রি স্পিন</span>
         </a>
     </div>
 
     <!-- ==========================================
-         7. BOTTOM CTA (Leadership)
+         8. BOTTOM CTA (OFFICIAL AGENT PROGRAM)
     ========================================== -->
     <div class="mt-8">
         <a href="/apply-leader" class="block bg-gradient-to-r from-slate-900 to-slate-800 p-6 rounded-[28px] text-center text-white shadow-xl shadow-slate-900/10 hover:shadow-2xl transition duration-300">
             <div class="h-12 w-12 bg-white/10 text-emerald-400 rounded-2xl flex items-center justify-center text-xl mx-auto mb-3 border border-white/10">
-                <i class="fa-solid fa-user-tie"></i>
+                <i class="fa-solid fa-user-shield"></i>
             </div>
-            <h3 class="font-black text-lg mb-1">অ্যাম্বাসেডর হোন!</h3>
-            <p class="text-xs text-slate-300 font-medium leading-relaxed mb-4 max-w-xs mx-auto">আমাদের লিডারশিপ প্রোগ্রামে যোগ দিন এবং প্রতি ১৫ দিনে ৮,০০০ টাকা নিশ্চিত স্যালারি আয় করুন।</p>
-            <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider inline-block shadow-md">Apply Now</span>
+            <div class="inline-block bg-emerald-500/20 text-emerald-300 px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest border border-emerald-400/30 mb-2">
+                Official Agency Recruitment
+            </div>
+            <h3 class="font-black text-xl mb-1">Earn Daily এজেন্ট হোন!</h3>
+            <p class="text-xs text-slate-300 font-medium leading-relaxed mb-4 max-w-xs mx-auto">
+                আমাদের অফিশিয়াল এজেন্ট হিসেবে যোগ দিন এবং প্রতি ১৫ দিনে <b>৬,০০০ টাকা ফিক্সড স্যালারি + ৫০% লাইফটাইম কমিশন + বিশেষ বোনাস</b> আয় করুন।
+            </p>
+            <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-7 py-3 rounded-full text-xs font-black uppercase tracking-wider inline-block shadow-md">
+                এজেন্ট হিসেবে আবেদন করুন <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+            </span>
         </a>
     </div>
 
