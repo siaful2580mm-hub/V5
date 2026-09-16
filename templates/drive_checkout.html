@@ -2,191 +2,244 @@
 {% block content %}
 
 <style>
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    /* ==========================================
+       EARN DAILY - MODERN CHECKOUT UI (SOFT LIGHT)
+    ========================================== */
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Modern Light Cards */
+    .light-card {
+        background: #FFFFFF; 
+        border: 1px solid #E2E8F0; 
+        border-radius: 28px;
+        padding: 24px; 
+        position: relative; 
+        overflow: hidden;
+        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.03);
+    }
 
     /* Inputs */
     .input-group { position: relative; }
-    .dark-input {
-        width: 100%; background: #111111; border: 1px solid #222222; color: #ffffff;
-        padding: 16px 16px 16px 46px; border-radius: 16px; outline: none; font-size: 13px; transition: border 0.3s;
+    .light-input {
+        width: 100%; background: #F8FAFC; border: 1.5px solid #E2E8F0; color: #0F172A;
+        padding: 15px 16px 15px 46px; border-radius: 18px; outline: none; font-size: 13.5px; transition: all 0.25s ease;
     }
-    .dark-input:focus { border-color: #ffffff; background: #000000; }
-    .dark-input::placeholder { color: #555555; }
+    .light-input:focus { border-color: #10B981; background: #FFFFFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+    .light-input::placeholder { color: #94A3B8; }
     
-    .input-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #666666; font-size: 14px; transition: color 0.3s ease; }
-    .dark-input:focus ~ .input-icon { color: #ffffff; }
+    .input-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94A3B8; font-size: 14px; transition: color 0.25s ease; }
+    .light-input:focus ~ .input-icon { color: #059669; }
 
-    /* Payment Cards */
+    /* Payment Option Select Cards */
     .payment-card {
-        border: 1px solid #222222; background: #111111; border-radius: 16px;
-        transition: all 0.3s ease; cursor: pointer; position: relative; overflow: hidden;
+        border: 2px solid #E2E8F0; background: #F8FAFC; border-radius: 18px;
+        transition: all 0.25s ease; cursor: pointer; position: relative; overflow: hidden;
     }
-    .payment-card:hover { border-color: #444444; background: #1A1A1A; }
+    .payment-card:hover { border-color: #A7F3D0; background: #F0FDF4; }
     
-    input[type="radio"]:checked + .payment-card { border-color: #ffffff; background: #ffffff; color: #000000; }
-    input[type="radio"]:checked + .payment-card span { color: #000000; }
+    input[type="radio"]:checked + .payment-card { 
+        border-color: #10B981; 
+        background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%); 
+        box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.15);
+    }
+    input[type="radio"]:checked + .payment-card span { color: #065F46; font-weight: 900; }
     input[type="radio"]:checked + .payment-card::before {
         content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
-        position: absolute; top: 8px; right: 8px; font-size: 12px; color: #000000;
+        position: absolute; top: 8px; right: 8px; font-size: 10px; color: #059669;
     }
 
-    /* Button */
-    .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 18px;
-        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    /* Buttons */
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; width: 100%; padding: 16px;
+        border-radius: 18px; font-weight: 800; font-size: 14px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
-    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
-    .btn-white:disabled { background: #333333; color: #888888; cursor: not-allowed; transform: none; }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
+    .btn-emerald:active { transform: scale(0.96); }
+    .btn-emerald:disabled { background: #E2E8F0 !important; color: #94A3B8 !important; box-shadow: none !important; cursor: not-allowed; transform: none !important; }
 </style>
 
-<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. HEADER -->
-    <div class="flex items-center gap-4 mb-6">
-        <a href="/drive" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+    <div class="flex items-center gap-3 mb-2 px-2">
+        <a href="/drive" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
             <i class="fa-solid fa-chevron-left text-sm"></i>
         </a>
         <div>
-            <h2 class="text-xl font-bold text-white tracking-wide leading-none">Checkout</h2>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-[#666] mt-1">Complete your order</p>
+            <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">চেকআউট ও পেমেন্ট</h2>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Confirm Drive Pack Order</p>
         </div>
     </div>
 
     <!-- 2. ORDER SUMMARY CARD -->
-    <div class="bg-[#0A0A0A] p-6 rounded-[24px] border border-[#1C1C1E] relative overflow-hidden">
-        <i class="fa-solid fa-receipt absolute right-4 top-1/2 transform -translate-y-1/2 text-7xl opacity-[0.03] pointer-events-none rotate-12"></i>
-
-        <div class="flex items-start gap-4 mb-5 relative z-10">
-            <div class="h-14 w-14 rounded-[16px] bg-[#111111] border border-[#222222] flex items-center justify-center text-white font-black text-lg flex-shrink-0">
+    <div class="light-card">
+        <div class="flex items-start gap-4 mb-4">
+            <div class="h-14 w-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-black text-lg flex-shrink-0 shadow-md shadow-emerald-500/15">
                 {{ pack.operator[:2] | upper }}
             </div>
             <div class="flex-grow">
-                <h3 class="font-black text-white text-lg leading-tight mb-1">{{ pack.title }}</h3>
-                <div class="flex flex-wrap items-center gap-2 mt-1.5">
-                    <span class="bg-[#1C1C1E] text-[#888888] px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">{{ pack.operator }}</span>
-                    <span class="bg-[#1C1C1E] text-[#888888] px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider flex items-center gap-1"><i class="fa-regular fa-clock"></i> {{ pack.validity }}</span>
+                <h3 class="font-extrabold text-slate-800 text-lg leading-tight mb-1">{{ pack.title }}</h3>
+                <div class="flex flex-wrap items-center gap-2 mt-1">
+                    <span class="bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider border border-slate-200">{{ pack.operator }}</span>
+                    <span class="bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider border border-emerald-100 flex items-center gap-1"><i class="fa-regular fa-clock"></i> {{ pack.validity }}</span>
                 </div>
             </div>
         </div>
 
-        <div class="bg-[#111111] rounded-[16px] p-4 border border-[#222222] flex items-center justify-between relative z-10">
+        <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 flex items-center justify-between">
             <div>
-                <p class="text-[9px] font-black uppercase tracking-[0.1em] text-[#666666] mb-0.5">Total Payable</p>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-2xl font-black text-white font-mono tracking-tight leading-none">৳{{ pack.offer_price }}</span>
-                    <span class="text-xs text-[#555] font-bold line-through">৳{{ pack.regular_price }}</span>
+                <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-0.5">মোট প্রদেয় অর্থ</p>
+                <div class="flex items-baseline gap-1.5">
+                    <span class="text-3xl font-black text-slate-900 font-mono tracking-tight leading-none">৳{{ pack.offer_price }}</span>
+                    <span class="text-xs text-slate-400 font-bold line-through font-mono">৳{{ pack.regular_price }}</span>
                 </div>
             </div>
-            <div class="bg-white text-black px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest text-right">
-                <span class="block text-[8px] opacity-70 mb-0.5">You Save</span>
-                {{ pack.commission }}
+            <div class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-xl text-right">
+                <span class="block text-[8px] font-extrabold uppercase tracking-widest text-slate-400">ডিসকাউন্ট</span>
+                <span class="font-black text-xs font-mono">Save {{ pack.commission }}</span>
             </div>
         </div>
     </div>
 
     <!-- 3. PAYMENT INSTRUCTIONS -->
-    <div class="bg-[#0A0A0A] p-6 rounded-[24px] border border-[#1C1C1E]">
-        <h3 class="font-bold text-white text-sm mb-4 flex items-center gap-2 uppercase tracking-widest">
-            <i class="fa-solid fa-building-columns text-[#888]"></i> Payment Protocol
+    <div class="light-card space-y-4">
+        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
+            <i class="fa-solid fa-money-bill-transfer text-emerald-600"></i> পেমেন্ট মেথড নির্বাচন ও নম্বর
         </h3>
 
-        <div class="bg-[#111111] border border-[#222222] p-4 rounded-[16px] flex items-center justify-between mb-4 group">
-            <div>
-                <p class="text-[9px] text-[#666666] font-bold uppercase tracking-[0.1em] mb-1">Official Number</p>
-                <p class="text-xl font-black text-white font-mono tracking-widest select-all" id="payNumber">01912107604</p>
+        <!-- Method Selection (Radio Buttons) -->
+        <div>
+            <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2 ml-1">পেমেন্ট গেটওয়ে বেছে নিন</label>
+            <div class="grid grid-cols-2 gap-3">
+                <label class="cursor-pointer relative">
+                    <input type="radio" name="method_select" value="bKash" class="peer sr-only" checked onchange="switchPaymentInfo('bKash')">
+                    <div class="payment-card p-3.5 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bolt text-[#E2136E]"></i>
+                        <span class="text-xs font-bold text-slate-700">bKash</span>
+                    </div>
+                </label>
+                <label class="cursor-pointer relative">
+                    <input type="radio" name="method_select" value="Nagad" class="peer sr-only" onchange="switchPaymentInfo('Nagad')">
+                    <div class="payment-card p-3.5 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-fire-flame-curved text-[#F97316]"></i>
+                        <span class="text-xs font-bold text-slate-700">Nagad</span>
+                    </div>
+                </label>
             </div>
-            <button type="button" onclick="copyAdminNumber(this)" class="h-10 w-10 bg-[#1C1C1E] border border-[#333] rounded-xl text-[#888] hover:text-white transition active:scale-95 flex items-center justify-center flex-shrink-0">
+        </div>
+
+        <!-- Dynamic Official Number Box -->
+        <div class="bg-emerald-50/70 border border-emerald-100 p-4 rounded-2xl flex items-center justify-between group">
+            <div>
+                <p class="text-[10px] text-emerald-800 font-extrabold uppercase tracking-wider mb-1" id="gatewayTitle">
+                    bKash Send Money নম্বর
+                </p>
+                <p class="text-xl font-black text-emerald-950 font-mono tracking-wider select-all" id="payNumber">
+                    01618-897806
+                </p>
+            </div>
+            <button type="button" onclick="copyAdminNumber(this)" class="h-10 w-10 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-600 hover:text-white rounded-xl transition shadow-sm active:scale-95 flex items-center justify-center flex-shrink-0" title="Copy Number">
                 <i class="fa-regular fa-copy text-sm"></i>
             </button>
         </div>
 
-        <p class="text-xs text-[#888] font-medium leading-relaxed bg-[#111] p-3 rounded-xl border border-[#222]">
-            <i class="fa-solid fa-circle-info text-white mr-1"></i> উপরের নম্বরে <b>৳{{ pack.offer_price }}</b> Send Money করুন এবং নিচের ফর্মে তথ্য দিয়ে অর্ডার কনফার্ম করুন।
+        <p class="text-xs text-slate-500 font-medium leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+            <i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i> উপরের নম্বরে <b>৳{{ pack.offer_price }}</b> টাকা <b>Send Money</b> করুন এবং নিচের ফর্মে অফার পাওয়ার নম্বর ও ট্রানজেকশন তথ্য পূরণ করুন।
         </p>
     </div>
 
     <!-- 4. CHECKOUT FORM -->
-    <form id="driveBuyForm" method="POST" class="bg-[#0A0A0A] p-6 rounded-[24px] border border-[#1C1C1E] space-y-6" onsubmit="return preventDoubleSubmit()">
+    <form id="driveBuyForm" method="POST" action="/drive/buy/{{ pack.id }}" class="light-card space-y-5" onsubmit="return preventDoubleSubmit()">
         
+        <!-- Hidden input storing chosen method -->
+        <input type="hidden" name="method" id="selectedMethodInput" value="bKash">
+
+        <!-- 1. Offer Receiver Mobile -->
         <div>
-            <label class="block text-[10px] font-black text-[#666] uppercase tracking-widest mb-2 ml-1">১. অফারের নাম্বার</label>
+            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5 ml-1">১. যে নম্বরে অফারটি নেবেন</label>
             <div class="input-group">
-                <input type="tel" name="mobile" required pattern="01[3-9][0-9]{8}" placeholder="017XXXXXXXX" class="dark-input font-mono tracking-widest">
+                <input type="tel" name="mobile" required pattern="01[3-9][0-9]{8}" placeholder="017XXXXXXXX" class="light-input font-mono tracking-wider">
                 <i class="fa-solid fa-mobile-screen input-icon"></i>
             </div>
         </div>
 
+        <!-- 2. Sender Mobile -->
         <div>
-            <label class="block text-[10px] font-black text-[#666] uppercase tracking-widest mb-3 ml-1">২. পেমেন্ট মেথড</label>
-            <div class="grid grid-cols-3 gap-3">
-                <label class="cursor-pointer relative">
-                    <input type="radio" name="method" value="bKash" class="peer sr-only" required>
-                    <div class="payment-card p-3 flex flex-col items-center justify-center"><span class="text-xs font-black text-[#888] uppercase tracking-widest">bKash</span></div>
-                </label>
-                <label class="cursor-pointer relative">
-                    <input type="radio" name="method" value="Nagad" class="peer sr-only" required>
-                    <div class="payment-card p-3 flex flex-col items-center justify-center"><span class="text-xs font-black text-[#888] uppercase tracking-widest">Nagad</span></div>
-                </label>
-                <label class="cursor-pointer relative">
-                    <input type="radio" name="method" value="Rocket" class="peer sr-only" required>
-                    <div class="payment-card p-3 flex flex-col items-center justify-center"><span class="text-xs font-black text-[#888] uppercase tracking-widest">Rocket</span></div>
-                </label>
+            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5 ml-1">২. যে নম্বর থেকে টাকা পাঠিয়েছেন (Sender)</label>
+            <div class="input-group">
+                <input type="tel" name="sender" required pattern="01[3-9][0-9]{8}" placeholder="01XXXXXXXXX" class="light-input font-mono tracking-wider">
+                <i class="fa-solid fa-phone input-icon"></i>
             </div>
         </div>
 
-        <div class="grid sm:grid-cols-2 gap-5">
-            <div>
-                <label class="block text-[10px] font-black text-[#666] uppercase tracking-widest mb-2 ml-1">৩. সেন্ডার নাম্বার</label>
-                <div class="input-group">
-                    <input type="tel" name="sender" required pattern="01[3-9][0-9]{8}" placeholder="Sender No" class="dark-input font-mono tracking-widest">
-                    <i class="fa-solid fa-phone input-icon"></i>
-                </div>
-            </div>
-            <div>
-                <label class="block text-[10px] font-black text-[#666] uppercase tracking-widest mb-2 ml-1">৪. TrxID</label>
-                <div class="input-group">
-                    <input type="text" name="trx_id" required placeholder="8X7H9F..." class="dark-input font-mono uppercase tracking-[0.15em]">
-                    <i class="fa-solid fa-hashtag input-icon"></i>
-                </div>
+        <!-- 3. TrxID -->
+        <div>
+            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5 ml-1">৩. ট্রানজেকশন আইডি (TrxID)</label>
+            <div class="input-group">
+                <input type="text" name="trx_id" required placeholder="Ex: 8X7H9F..." class="light-input font-mono uppercase tracking-wider">
+                <i class="fa-solid fa-hashtag input-icon"></i>
             </div>
         </div>
 
-        <button type="submit" id="submitBtn" class="btn-white mt-4">
-            <span>Place Order</span> <i class="fa-solid fa-check"></i>
+        <button type="submit" id="submitBtn" class="btn-emerald mt-2">
+            <span>অর্ডার কনফার্ম করুন</span> <i class="fa-solid fa-check text-xs"></i>
         </button>
+
     </form>
 
-    <div class="text-center opacity-40 pb-4 pt-2">
-        <p class="text-[9px] font-mono font-bold text-[#888] tracking-widest uppercase flex items-center justify-center gap-1.5">
-            <i class="fa-solid fa-lock text-[8px]"></i> End-to-End Encrypted Checkout
+    <div class="text-center opacity-70 pb-4 pt-1">
+        <p class="text-[10px] font-mono font-bold text-slate-400 tracking-wider uppercase flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-shield-check text-emerald-600 text-xs"></i> 100% Secure & Automated Telecom Settlement
         </p>
     </div>
 
 </div>
 
 <script>
+    // Switch Gateway Information Dynamically
+    function switchPaymentInfo(method) {
+        const title = document.getElementById("gatewayTitle");
+        const number = document.getElementById("payNumber");
+        const hiddenInput = document.getElementById("selectedMethodInput");
+
+        hiddenInput.value = method;
+
+        if (method === 'bKash') {
+            title.innerText = "bKash Send Money নম্বর";
+            number.innerText = "01618-897806";
+        } else if (method === 'Nagad') {
+            title.innerText = "Nagad Send Money নম্বর";
+            number.innerText = "01912107604";
+        }
+    }
+
+    // Copy Admin Number Logic
     function copyAdminNumber(btn) {
-        const num = document.getElementById("payNumber").innerText;
-        navigator.clipboard.writeText(num).then(() => {
+        const rawNum = document.getElementById("payNumber").innerText.replace(/[^0-9]/g, '');
+        navigator.clipboard.writeText(rawNum).then(() => {
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check text-black"></i>';
-            btn.classList.add('bg-white'); btn.classList.remove('bg-[#1C1C1E]', 'text-[#888]');
+            btn.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
+            btn.classList.add('bg-emerald-50');
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
-                btn.classList.remove('bg-white'); btn.classList.add('bg-[#1C1C1E]', 'text-[#888]');
-            }, 2000);
+                btn.classList.remove('bg-emerald-50');
+            }, 1500);
         });
     }
 
+    // Submit Button Double Click Prevention
     function preventDoubleSubmit() {
         const form = document.getElementById('driveBuyForm');
         if (form.checkValidity()) {
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="tracking-widest">Processing</span>';
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">অর্ডার প্রসেস হচ্ছে...</span>';
+            btn.classList.add('opacity-80');
             return true;
         }
         return false;
