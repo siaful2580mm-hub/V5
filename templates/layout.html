@@ -37,7 +37,7 @@
         }
 
         /* ==========================================
-           1. MODERN HEADER (Ultra Glassmorphism)
+           1. MODERN CLEAN HEADER
         ========================================== */
         .top-header {
             background: rgba(255, 255, 255, 0.85);
@@ -49,25 +49,12 @@
         }
 
         .avatar-mini {
-            width: 38px; height: 38px; border-radius: 50%;
+            width: 40px; height: 40px; border-radius: 50%;
             background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
             display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: 800; color: #059669; object-fit: cover;
+            font-size: 15px; font-weight: 800; color: #059669; object-fit: cover;
             border: 2px solid #FFFFFF;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
-        }
-
-        /* Header AI Pill */
-        .header-ai-pill {
-            background: linear-gradient(135deg, #ECFDF5 0%, #E6FFFA 100%);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.12);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .header-ai-pill:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
-            background: #FFFFFF;
         }
 
         /* ==========================================
@@ -109,21 +96,21 @@
         .nav-item.active .indicator-dot { opacity: 1; transform: scale(1.2); }
 
         /* ==========================================
-           3. TOGGLE SIDEBAR
+           3. AWESOME MODERN TOGGLE SIDEBAR
         ========================================== */
         #sidebarOverlay {
             position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45);
-            backdrop-filter: blur(6px); z-index: 60;
+            backdrop-filter: blur(8px); z-index: 60;
             opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         #sidebarOverlay.show { opacity: 1; pointer-events: auto; }
 
         #sidebar {
             position: fixed; top: 0; left: 0; height: 100vh;
-            width: 295px; max-width: 85vw;
+            width: 300px; max-width: 85vw;
             background: #FFFFFF;
             border-right: 1px solid #E2E8F0;
-            border-radius: 0 32px 32px 0;
+            border-radius: 0 36px 36px 0;
             z-index: 70;
             transform: translateX(-100%);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -137,58 +124,40 @@
 
         .side-menu-item {
             display: flex; align-items: center; gap: 14px;
-            padding: 12px 18px; border-radius: 16px;
+            padding: 13px 18px; border-radius: 18px;
             color: #475569; font-size: 14px; font-weight: 600;
             transition: all 0.2s ease; margin-bottom: 3px;
         }
-        .side-menu-item i { width: 22px; text-align: center; font-size: 16px; color: #94A3B8; }
+        .side-menu-item i { width: 22px; text-align: center; font-size: 16px; color: #94A3B8; transition: color 0.2s; }
         .side-menu-item:hover, .side-menu-item.active {
-            background: #ECFDF5; color: #047857;
+            background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%); 
+            color: #047857;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.06);
         }
         .side-menu-item:hover i, .side-menu-item.active i { color: #059669; }
 
         /* ==========================================
-           4. FLOATING SUPPORT WIDGET (AI & TG ONLY)
+           4. FLOATING TELEGRAM BUTTON (DIRECT LINK)
         ========================================== */
         #support-widget { pointer-events: none; }
         .support-fab {
             pointer-events: auto;
             height: 52px; width: 52px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 22px; cursor: pointer;
+            color: white; font-size: 24px; cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 3px solid #FFFFFF;
             animation: floatGlow 3s infinite alternate ease-in-out;
-        }
-        .support-fab:hover { transform: scale(1.1) translateY(-4px); }
-        .support-fab:active { transform: scale(0.92); }
-        
-        .fab-ai { 
-            background: linear-gradient(135deg, #059669 0%, #10B981 100%); 
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35); 
-        }
-        .fab-tg { 
             background: linear-gradient(135deg, #0284C7 0%, #38BDF8 100%); 
             box-shadow: 0 8px 25px rgba(2, 132, 199, 0.35); 
         }
+        .support-fab:hover { transform: scale(1.1) translateY(-4px); }
+        .support-fab:active { transform: scale(0.92); }
 
         @keyframes floatGlow {
-            0% { transform: translateY(0); filter: drop-shadow(0 4px 8px rgba(16, 185, 129, 0.15)); }
-            100% { transform: translateY(-6px); filter: drop-shadow(0 12px 20px rgba(16, 185, 129, 0.25)); }
+            0% { transform: translateY(0); filter: drop-shadow(0 4px 8px rgba(2, 132, 199, 0.15)); }
+            100% { transform: translateY(-6px); filter: drop-shadow(0 12px 20px rgba(2, 132, 199, 0.25)); }
         }
-
-        /* Modal Animation */
-        #tgModal {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 9999;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-        }
-        #tgModal.show { opacity: 1; pointer-events: auto; }
-        .tg-modal-content {
-            transform: scale(0.92) translateY(15px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        #tgModal.show .tg-modal-content { transform: scale(1) translateY(0); }
 
         .toast-enter { animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
@@ -197,42 +166,32 @@
 <body>
 
     <!-- ==========================================
-         1. MODERN HEADER (With AI Widget)
+         1. CLEAN MODERN HEADER
     ========================================== -->
     <nav class="top-header fixed top-0 w-full h-[74px]">
         <div class="max-w-7xl mx-auto px-4 h-full flex justify-between items-center">
             
-            <!-- Left: Toggle Sidebar -->
-            <button onclick="toggleSidebar()" class="h-10 w-10 flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 rounded-xl transition text-lg active:scale-95">
+            <!-- Left: Toggle Sidebar Button -->
+            <button onclick="toggleSidebar()" class="h-11 w-11 flex items-center justify-center text-slate-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-2xl transition text-lg active:scale-95 border border-slate-200/60 shadow-sm bg-white">
                 <i class="fa-solid fa-bars-staggered"></i>
             </button>
             
             <!-- Middle: Brand Logo -->
             <a href="/" class="flex items-center gap-2 text-slate-900 font-black text-xl tracking-tight absolute left-1/2 transform -translate-x-1/2">
-                <div class="h-8 w-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
                     <i class="fa-solid fa-bangladeshi-taka-sign text-sm"></i>
                 </div>
                 <span>Earn<span class="text-emerald-600">Daily</span></span>
             </a>
 
-            <!-- Right: AI Desk, Notifications & Avatar -->
-            <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Right: Notification & Avatar -->
+            <div class="flex items-center gap-2.5 sm:gap-3">
                 
-                <!-- TOP AI SUPPORT WIDGET -->
-                <a href="/support-redirect" class="header-ai-pill hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-emerald-700 font-bold text-xs active:scale-95">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    <i class="fa-solid fa-headset text-emerald-600 text-sm"></i>
-                    <span>AI Support</span>
-                </a>
-
                 <!-- Notification Bell -->
-                <a href="/notice" class="h-10 w-10 flex items-center justify-center rounded-xl hover:bg-emerald-50 text-slate-600 hover:text-emerald-600 transition relative text-lg">
+                <a href="/notice" class="h-11 w-11 flex items-center justify-center rounded-2xl bg-white border border-slate-200/60 hover:bg-emerald-50 text-slate-700 hover:text-emerald-600 transition relative text-lg shadow-sm">
                     <i class="fa-regular fa-bell"></i>
                     {% if settings and settings.notice_text %}
-                    <span class="absolute top-2 right-2 h-2.5 w-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
+                    <span class="absolute top-2.5 right-2.5 h-2.5 w-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
                     {% endif %}
                 </a>
                 
@@ -245,7 +204,7 @@
                             <div class="avatar-mini">{{ user.email[0] | upper }}</div>
                         {% endif %}
                     {% else %}
-                        <div class="avatar-mini"><i class="fa-solid fa-user text-xs"></i></div>
+                        <div class="avatar-mini"><i class="fa-solid fa-user text-xs text-emerald-700"></i></div>
                     {% endif %}
                 </a>
             </div>
@@ -253,31 +212,44 @@
     </nav>
 
     <!-- ==========================================
-         2. SIDEBAR (Toggle Menu)
+         2. MODERN SIDEBAR (Awesome Design)
     ========================================== -->
     <div id="sidebarOverlay" onclick="toggleSidebar()"></div>
     
     <div id="sidebar">
-        <!-- Profile Area -->
-        <div class="p-6 relative pt-8 bg-gradient-to-b from-emerald-50/70 to-transparent border-b border-slate-100">
-            <button onclick="toggleSidebar()" class="absolute top-4 right-4 h-8 w-8 bg-white border border-slate-200 text-slate-400 hover:text-slate-700 rounded-full flex items-center justify-center text-sm shadow-sm transition">
+        <!-- Profile & Identity Card -->
+        <div class="p-6 relative pt-8 bg-gradient-to-br from-emerald-50/90 via-teal-50/40 to-transparent border-b border-slate-100">
+            <button onclick="toggleSidebar()" class="absolute top-4 right-4 h-8 w-8 bg-white border border-slate-200 text-slate-400 hover:text-slate-700 rounded-full flex items-center justify-center text-xs shadow-sm transition">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             
             <div class="mt-2 flex flex-col">
                 {% if session.get('user_id') and user %}
-                    {% if user.profile_pic %}
-                        <img src="{{ user.profile_pic }}" class="w-14 h-14 rounded-2xl object-cover border-2 border-white shadow-md shadow-emerald-500/10 mb-3">
-                    {% else %}
-                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 border-2 border-white flex items-center justify-center text-xl font-bold text-white shadow-md shadow-emerald-500/15 mb-3">
-                            {{ user.email[0] | upper }}
+                    <div class="flex items-center gap-3.5 mb-3">
+                        {% if user.profile_pic %}
+                            <img src="{{ user.profile_pic }}" class="w-14 h-14 rounded-2xl object-cover border-2 border-white shadow-md shadow-emerald-500/15">
+                        {% else %}
+                            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 border-2 border-white flex items-center justify-center text-xl font-black text-white shadow-md shadow-emerald-500/15">
+                                {{ user.email[0] | upper }}
+                            </div>
+                        {% endif %}
+                        <div>
+                            <span class="text-[9px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100/70 border border-emerald-200 px-2 py-0.5 rounded">Verified User</span>
+                            <h2 class="text-base font-extrabold text-slate-800 leading-tight mt-1">{{ user.full_name or user.email.split('@')[0] | title }}</h2>
                         </div>
-                    {% endif %}
-                    <h2 class="text-base font-bold text-slate-800 leading-tight">{{ user.full_name or user.email.split('@')[0] | title }}</h2>
-                    <p class="text-slate-400 text-xs font-mono mt-0.5 font-medium">ID: <span class="text-emerald-600 font-bold">{{ user.referral_code or 'user' }}</span></p>
+                    </div>
+                    <div class="bg-white/80 backdrop-blur-sm border border-slate-200/80 p-2.5 rounded-xl flex items-center justify-between shadow-sm">
+                        <span class="text-[11px] text-slate-500 font-medium">User ID (Ref)</span>
+                        <span class="text-xs font-mono font-bold text-emerald-700 select-all">{{ user.referral_code or 'user' }}</span>
+                    </div>
                 {% else %}
-                    <div class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-xl text-slate-400 mb-3"><i class="fa-solid fa-user"></i></div>
-                    <h2 class="text-base font-bold text-slate-800">Guest User</h2>
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-xl text-slate-400"><i class="fa-solid fa-user"></i></div>
+                        <div>
+                            <h2 class="text-base font-bold text-slate-800">Guest User</h2>
+                            <a href="/login" class="text-xs text-emerald-600 font-bold hover:underline">লগইন করুন</a>
+                        </div>
+                    </div>
                 {% endif %}
             </div>
         </div>
@@ -287,50 +259,47 @@
             <a href="/dashboard" class="side-menu-item {{ 'active' if request.endpoint == 'dashboard' }}">
                 <i class="fa-solid fa-house"></i> Dashboard
             </a>
-            <a href="/support-redirect" class="side-menu-item text-emerald-700 bg-emerald-50/60 font-bold">
-                <i class="fa-solid fa-headset text-emerald-600"></i> AI Live Support
-            </a>
             <a href="/tasks" class="side-menu-item {{ 'active' if request.endpoint == 'tasks' }}">
-                <i class="fa-solid fa-list-check"></i> Task
+                <i class="fa-solid fa-list-check"></i> Task Board
             </a>
             <a href="/work" class="side-menu-item {{ 'active' if request.endpoint == 'work' }}">
-                <i class="fa-solid fa-briefcase"></i> সকল কাজ
+                <i class="fa-solid fa-briefcase"></i> সকল কাজ (Work Hub)
             </a>
             <a href="/gmail-tasks" class="side-menu-item {{ 'active' if request.endpoint == 'gmail_tasks' }}">
-                <i class="fa-brands fa-google"></i> জিমেইল টাস্ক
+                <i class="fa-brands fa-google"></i> জিমেইল ফার্ম
             </a>
             <a href="/withdraw" class="side-menu-item {{ 'active' if request.endpoint == 'withdraw' }}">
-                <i class="fa-solid fa-wallet"></i> উইথড্র
+                <i class="fa-solid fa-wallet"></i> উত্তোলন (Cashout)
             </a>
             <a href="/account" class="side-menu-item {{ 'active' if request.endpoint == 'account' }}">
-                <i class="fa-solid fa-user-gear"></i> একাউন্ট
+                <i class="fa-solid fa-user-gear"></i> একাউন্ট সেটিংস
             </a>
             <a href="/drive" class="side-menu-item {{ 'active' if request.endpoint == 'drive_store' }}">
-                <i class="fa-solid fa-wifi"></i> ড্রাইভ
+                <i class="fa-solid fa-wifi"></i> ড্রাইভ প্যাক
             </a>
             <a href="/hire-us" class="side-menu-item {{ 'active' if request.endpoint == 'hire_us' }}">
-                <i class="fa-solid fa-bullhorn"></i> Promotion
+                <i class="fa-solid fa-bullhorn"></i> Promotion (B2B)
             </a>
             <a href="/notice" class="side-menu-item {{ 'active' if request.endpoint == 'notice' }}">
-                <i class="fa-regular fa-bell"></i> নোটিশ
+                <i class="fa-regular fa-bell"></i> নোটিশ বোর্ড
             </a>
             <a href="/reviews" class="side-menu-item {{ 'active' if request.endpoint == 'reviews' }}">
-                <i class="fa-solid fa-star"></i> Review
+                <i class="fa-solid fa-star"></i> ইউজার রিভিউ
             </a>
             <a href="/menu" class="side-menu-item {{ 'active' if request.endpoint == 'menu' }}">
-                <i class="fa-solid fa-bars"></i> Menu
+                <i class="fa-solid fa-bars"></i> অল মেনু
             </a>
             
             {% if user and user.role == 'admin' %}
             <div class="border-t border-slate-100 my-2 mx-2"></div>
-            <a href="/admin" class="side-menu-item text-indigo-600 hover:bg-indigo-50">
+            <a href="/admin" class="side-menu-item text-indigo-600 hover:bg-indigo-50 font-bold">
                 <i class="fa-solid fa-shield-halved text-indigo-500"></i> Admin Panel
             </a>
             {% endif %}
 
             {% if session.get('user_id') %}
             <div class="border-t border-slate-100 my-2 mx-2"></div>
-            <a href="/logout" class="side-menu-item text-rose-500 hover:text-rose-600 hover:bg-rose-50">
+            <a href="/logout" class="side-menu-item text-rose-500 hover:text-rose-600 hover:bg-rose-50 font-bold">
                 <i class="fa-solid fa-arrow-right-from-bracket text-rose-400"></i> Logout
             </a>
             {% endif %}
@@ -338,72 +307,22 @@
     </div>
 
     <!-- ==========================================
-         3. SMART SUPPORT WIDGETS (AI & TELEGRAM ONLY)
+         3. DIRECT FLOATING TELEGRAM BUTTON (NO POPUP)
     ========================================== -->
     <div id="support-widget" class="fixed right-4 bottom-[95px] z-40 flex flex-col gap-3">
-        
-        <!-- 1. AI LIVE DESK BUTTON -->
-        <div class="relative group">
-            <div class="absolute right-14 top-2 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition duration-200 shadow-xl whitespace-nowrap pointer-events-none">
-                AI Live Desk (Fast Reply)
-            </div>
-            <a href="/support-redirect" class="support-fab fab-ai">
-                <i class="fa-solid fa-headset"></i>
-            </a>
-        </div>
-
-        <!-- 2. TELEGRAM BUTTON (Triggers Popup) -->
         <div class="relative group">
             <div class="absolute right-14 top-2 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition duration-200 shadow-xl whitespace-nowrap pointer-events-none">
                 Telegram Support
             </div>
-            <div onclick="openTelegramModal()" class="support-fab fab-tg">
+            <!-- Direct Click to Telegram -->
+            <div onclick="goToTelegram()" class="support-fab">
                 <i class="fa-brands fa-telegram"></i>
             </div>
-        </div>
-
-    </div>
-
-    <!-- ==========================================
-         4. TELEGRAM WARNING & CHOICE MODAL
-    ========================================== -->
-    <div id="tgModal" class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="absolute inset-0" onclick="closeTelegramModal()"></div>
-        
-        <div class="tg-modal-content bg-white border border-slate-100 rounded-[28px] p-6 sm:p-8 w-full max-w-sm relative z-10 shadow-2xl text-center">
-            
-            <div class="h-16 w-16 bg-gradient-to-tr from-sky-500 to-blue-600 text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-lg shadow-sky-500/20">
-                <i class="fa-brands fa-telegram"></i>
-            </div>
-            
-            <h3 class="text-lg font-black text-slate-900 mb-2">সাপোর্ট অপশন বেছে নিন</h3>
-            
-            <p class="text-xs text-slate-500 leading-relaxed font-medium mb-6">
-                আপনি যদি <b>দ্রুত সমাধান ও ইনস্ট্যান্ট রিপ্লাই</b> চান, তবে আমাদের <b>Web Support (AI Desk)</b>-এ মেসেজ দিন। আর যদি না বোঝেন, তবে সরাসরি টেলিগ্রামে যেতে পারেন।
-            </p>
-            
-            <div class="space-y-3">
-                <!-- Priority 1: Web Support -->
-                <a href="/support-redirect" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider active:scale-95 transition shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-bolt"></i>
-                    <span>Web Support এ যান (ইনস্ট্যান্ট)</span>
-                </a>
-
-                <!-- Priority 2: Continue to Telegram -->
-                <button onclick="goToTelegram()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs uppercase tracking-wider active:scale-95 transition flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-telegram text-sky-500 text-sm"></i>
-                    <span>Continue Telegram</span>
-                </button>
-            </div>
-
-            <button onclick="closeTelegramModal()" class="mt-4 text-[11px] font-bold text-slate-400 hover:text-slate-600 uppercase tracking-widest">
-                ফিরে যান
-            </button>
         </div>
     </div>
 
     <!-- ==========================================
-         5. TOAST NOTIFICATIONS
+         4. TOAST NOTIFICATIONS
     ========================================== -->
     <div class="fixed top-[85px] left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4 flex flex-col gap-2 pointer-events-none" id="toastContainer">
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -421,14 +340,14 @@
     </div>
 
     <!-- ==========================================
-         6. MAIN CONTENT AREA
+         5. MAIN CONTENT AREA
     ========================================== -->
     <main class="flex-grow w-full max-w-2xl mx-auto px-4 relative z-10">
         {% block content %}{% endblock %}
     </main>
 
     <!-- ==========================================
-         7. PREMIUM BOTTOM NAVIGATION
+         6. PREMIUM BOTTOM NAVIGATION
     ========================================== -->
     {% if session.get('user_id') %}
     <div class="premium-bottom-nav fixed bottom-0 left-0 w-full">
@@ -484,17 +403,7 @@
             }
         }
 
-        // --- 2. Telegram Modal Logic ---
-        const tgModal = document.getElementById('tgModal');
-        
-        function openTelegramModal() {
-            tgModal.classList.add('show');
-        }
-        
-        function closeTelegramModal() {
-            tgModal.classList.remove('show');
-        }
-
+        // --- 2. Direct Telegram Navigation (No Popup) ---
         function goToTelegram() {
             const uName = "{{ user.full_name or (user.email.split('@')[0] if user and user.email else 'Guest') }}";
             const uId = "{{ user.referral_code if user else 'N/A' }}";
@@ -502,7 +411,6 @@
             const encodedMessage = encodeURIComponent(rawMessage);
             const tgLink = `https://t.me/Pay_lix?text=${encodedMessage}`;
             
-            closeTelegramModal();
             window.open(tgLink, '_blank');
         }
 
