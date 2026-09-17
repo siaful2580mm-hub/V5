@@ -76,13 +76,15 @@ AD_LINKS = [
 ]
 
 # --- VIP LEVEL CONFIGURATION ---
+# --- VIP LEVEL CONFIGURATION ---
 VIP_PLANS = {
-    1: {'name': 'PayLix Pass', 'price': 100, 'daily_profit': 15, 'days': 15, 'min_withdraw': 200},
-    2: {'name': 'Fast Pass', 'price': 200, 'daily_profit': 25, 'days': 19, 'min_withdraw': 200},
-    3: {'name': 'Elite Pass', 'price': 500, 'daily_profit': 40, 'days': 50, 'min_withdraw': 200},
-    4: {'name': 'Pro Pass', 'price': 1000, 'daily_profit': 70, 'days': 60, 'min_withdraw': 200},
-    5: {'name': 'Agency Pass', 'price': 5000, 'daily_profit': 370, 'days': 100, 'min_withdraw': 200}
+    1: {'name': 'Earn Starter', 'price': 100, 'daily_profit': 15, 'days': 15, 'min_withdraw': 20},
+    2: {'name': 'Daily Booster', 'price': 200, 'daily_profit': 25, 'days': 19, 'min_withdraw': 20},
+    3: {'name': 'Smart Earner', 'price': 500, 'daily_profit': 40, 'days': 50, 'min_withdraw': 20},
+    4: {'name': 'Pro Master', 'price': 1000, 'daily_profit': 70, 'days': 60, 'min_withdraw': 20},
+    5: {'name': 'Business Elite', 'price': 5000, 'daily_profit': 370, 'days': 100, 'min_withdraw': 20}
 }
+
 # -------------------------------------------------------------------
 # 3. HELPER DECORATORS
 # -------------------------------------------------------------------
