@@ -50,7 +50,7 @@
             background-attachment: fixed;
         }
 
-        /* Perfectly Adjusted Main Spacing */
+        /* Adjusted Main Spacing */
         main {
             padding-top: 76px !important;
             padding-bottom: 110px !important; 
@@ -66,7 +66,7 @@
             border-bottom: 1px solid rgba(226, 232, 240, 0.9);
             box-shadow: 0 4px 20px -5px rgba(16, 185, 129, 0.06);
             z-index: 50;
-            height: 64px !important; /* Fixed Perfect Height */
+            height: 64px !important;
         }
 
         .avatar-mini {
@@ -178,8 +178,43 @@
             100% { transform: translateY(-6px); filter: drop-shadow(0 12px 20px rgba(2, 132, 199, 0.25)); }
         }
 
-        .toast-enter { animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes toastIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        /* ==========================================
+           5. ANIMATED TOP-RIGHT FLOATING NOTIFICATION WIDGET
+        ========================================== */
+        .toast-widget {
+            animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-left: 4px solid #10B981;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.12), 0 0 1px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .toast-widget.toast-error {
+            border-left-color: #F43F5E;
+        }
+
+        /* Progress Bar inside Toast */
+        .toast-progress {
+            position: absolute; bottom: 0; left: 0; height: 3px; width: 100%;
+            background: #10B981;
+            animation: toastCountdown 4s linear forwards;
+        }
+        .toast-error .toast-progress { background: #F43F5E; }
+
+        @keyframes toastCountdown { from { width: 100%; } to { width: 0%; } }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px) scale(0.95); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        .toast-leave {
+            opacity: 0 !important;
+            transform: translateX(120px) scale(0.9) !important;
+            transition: all 0.35s ease-in !important;
+        }
     </style>
 </head>
 <body>
@@ -208,7 +243,7 @@
                 <a href="/notice" class="h-10 w-10 flex items-center justify-center rounded-xl bg-white border border-slate-200/80 hover:bg-emerald-50 text-slate-700 hover:text-emerald-600 transition relative text-base shadow-sm">
                     <i class="fa-regular fa-bell"></i>
                     {% if settings and settings.notice_text %}
-                    <span class="absolute top-2 right-2 h-2 w-2 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
+                    <span class="absolute top-2.5 right-2.5 h-2 w-2 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
                     {% endif %}
                 </a>
                 
@@ -324,13 +359,14 @@
     </div>
 
     <!-- ==========================================
-         3. DIRECT FLOATING TELEGRAM BUTTON
+         3. DIRECT FLOATING TELEGRAM BUTTON (@earn_daily_site)
     ========================================== -->
     <div id="support-widget" class="fixed right-4 bottom-[90px] z-40 flex flex-col gap-3">
         <div class="relative group">
             <div class="absolute right-14 top-2 bg-slate-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition duration-200 shadow-xl whitespace-nowrap pointer-events-none">
                 Telegram Support
             </div>
+            <!-- Direct Click to Telegram @earn_daily_site -->
             <div onclick="goToTelegram()" class="support-fab">
                 <i class="fa-brands fa-telegram"></i>
             </div>
@@ -338,17 +374,34 @@
     </div>
 
     <!-- ==========================================
-         4. TOAST NOTIFICATIONS
+         4. TOP-RIGHT ANIMATED NOTIFICATION WIDGET
     ========================================== -->
-    <div class="fixed top-[74px] left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm px-4 flex flex-col gap-2 pointer-events-none" id="toastContainer">
+    <div class="fixed top-5 right-4 z-[9999] flex flex-col gap-3 pointer-events-none max-w-sm w-[90vw]" id="toastWidgetContainer">
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div class="bg-white text-slate-800 p-4 rounded-2xl shadow-xl border border-slate-100 toast-enter flex items-center gap-3 pointer-events-auto shadow-emerald-500/5">
-                <div class="h-8 w-8 rounded-xl flex items-center justify-center flex-shrink-0 {{ 'bg-rose-50 text-rose-500 border border-rose-100' if category == 'error' else 'bg-emerald-50 text-emerald-600 border border-emerald-100' }}">
-                    <i class="fa-solid {{ 'fa-xmark' if category == 'error' else 'fa-check' }}"></i>
+              <div class="toast-widget p-4 pointer-events-auto flex items-start gap-3.5 {{ 'toast-error' if category == 'error' else '' }}">
+                
+                <!-- Icon -->
+                <div class="h-9 w-9 rounded-xl flex items-center justify-center flex-shrink-0 {{ 'bg-rose-50 text-rose-500 border border-rose-100' if category == 'error' else 'bg-emerald-50 text-emerald-600 border border-emerald-100' }}">
+                    <i class="fa-solid {{ 'fa-circle-xmark' if category == 'error' else 'fa-circle-check' }} text-base"></i>
                 </div>
-                <p class="text-sm font-semibold">{{ message }}</p>
+                
+                <!-- Content -->
+                <div class="flex-grow pr-2">
+                    <p class="text-[10px] font-extrabold uppercase tracking-wider {{ 'text-rose-500' if category == 'error' else 'text-emerald-700' }}">
+                        {{ 'Alert Notice' if category == 'error' else 'Notification' }}
+                    </p>
+                    <p class="text-xs font-bold text-slate-800 leading-snug mt-0.5">{{ message }}</p>
+                </div>
+
+                <!-- Close Button -->
+                <button onclick="closeToast(this)" class="h-6 w-6 text-slate-400 hover:text-slate-700 rounded-md flex items-center justify-center transition flex-shrink-0">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+
+                <!-- Animated Countdown Line -->
+                <div class="toast-progress"></div>
               </div>
             {% endfor %}
           {% endif %}
@@ -405,7 +458,7 @@
 
     <!-- ================= SCRIPTS ================= -->
     <script>
-        // Sidebar Logic
+        // --- 1. Sidebar Logic ---
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
         
@@ -419,26 +472,33 @@
             }
         }
 
-        // Direct Telegram
+        // --- 2. Direct Telegram (@earn_daily_site) ---
         function goToTelegram() {
             const uName = "{{ user.full_name or (user.email.split('@')[0] if user and user.email else 'Guest') }}";
             const uId = "{{ user.referral_code if user else 'N/A' }}";
             const rawMessage = `Hlw Earn Daily, আমি ${uName} 🤗\nআমার ID : ${uId},\n\nআমার সমস্যাগুলো দেখুন!`;
             const encodedMessage = encodeURIComponent(rawMessage);
-            const tgLink = `https://t.me/Pay_lix?text=${encodedMessage}`;
+            
+            // Updated Official Telegram Username
+            const tgLink = `https://t.me/earn_daily_site?text=${encodedMessage}`;
             
             window.open(tgLink, '_blank');
         }
 
-        // Toast Auto Hide
+        // --- 3. Top-Right Toast Dismiss Logic ---
+        function closeToast(btn) {
+            const toast = btn.closest('.toast-widget');
+            toast.classList.add('toast-leave');
+            setTimeout(() => toast.remove(), 350);
+        }
+
+        // Auto Dismiss after 4 seconds
         setTimeout(() => {
-            document.querySelectorAll('.toast-enter').forEach(alert => {
-                alert.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-                alert.style.opacity = '0';
-                alert.style.transform = 'translateY(-20px) scale(0.95)';
-                setTimeout(() => alert.remove(), 400);
+            document.querySelectorAll('.toast-widget').forEach(toast => {
+                toast.classList.add('toast-leave');
+                setTimeout(() => toast.remove(), 350);
             });
-        }, 3500);
+        }, 4000);
     </script>
 </body>
 </html>
