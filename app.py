@@ -4080,22 +4080,35 @@ def admin_panel():
 
     return render_template('admin.html', user=g.user, settings=g.settings, user_count=user_count)
 
-
+# ==========================================
+# 📱 PWA MANIFEST & ICONS
+# ==========================================
 @app.route('/manifest.json')
 def manifest():
+    app_icon = "https://i.ibb.co.com/dJww5SQv/file-00000000db808230b0dce4b43fb08a5d.png"
     return jsonify({
-        "name": "PayLix App",
-        "short_name": "PayLix",
+        "name": "Earn Daily",
+        "short_name": "EarnDaily",
         "start_url": "/",
         "display": "standalone",
-        "background_color": "#F3F4F6",
-        "theme_color": "#4F46E5",
-        "icons":[{
-            "src": "https://i.ibb.co.com/qYgbs2R4/Add-Text-06-18-04-31-09.jpg", # Default App Icon
-            "sizes": "512x512",
-            "type": "image/png"
-        }]
+        "background_color": "#F8FAFC",
+        "theme_color": "#059669",
+        "icons": [
+            {
+                "src": app_icon,
+                "sizes": "192x192",
+                "type": "image/png",
+                "purpose": "any maskable"
+            },
+            {
+                "src": app_icon,
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable"
+            }
+        ]
     })
+    
 
 @app.route('/sw.js')
 def service_worker():
