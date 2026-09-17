@@ -3,180 +3,212 @@
 
 <style>
     /* ==========================================
-       PURE DARK THEME & ANIMATIONS
+       EARN DAILY - MODERN VIP CHECKOUT UI
     ========================================== */
-    body { background-color: #000000 !important; color: #ffffff !important; }
-    .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Custom Payment Select Cards */
+    /* Modern Light Cards */
+    .light-card {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 28px;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.03);
+    }
+
+    /* Payment Gateway Selection Cards */
     .payment-card {
-        border: 1px solid #222222;
-        background: #111111;
-        border-radius: 16px;
-        transition: all 0.3s ease;
+        border: 2px solid #E2E8F0;
+        background: #F8FAFC;
+        border-radius: 18px;
+        transition: all 0.25s ease;
         cursor: pointer;
         position: relative;
         overflow: hidden;
+        padding: 16px;
+        text-align: center;
     }
     .payment-card:hover {
-        border-color: #444444; 
-        background: #1A1A1A;
+        border-color: #A7F3D0; 
+        background: #F0FDF4;
     }
     
     /* Checked State */
     input[type="radio"]:checked + .payment-card { 
-        border-color: #ffffff; background: #ffffff; color: #000000; 
+        border-color: #10B981; 
+        background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%); 
+        box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.15);
     }
-    input[type="radio"]:checked + .payment-card span { color: #000000; }
-    
+    input[type="radio"]:checked + .payment-card span { color: #065F46; font-weight: 900; }
     input[type="radio"]:checked + .payment-card::before {
         content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
-        position: absolute; top: 8px; right: 8px; font-size: 12px; color: #000000;
+        position: absolute; top: 8px; right: 8px; font-size: 10px; color: #059669;
     }
 
-    /* Dark Input */
+    /* Inputs */
     .input-group { position: relative; }
-    .dark-input {
-        width: 100%; background: #111111; border: 1px solid #222222; color: #ffffff;
-        padding: 16px 16px 16px 46px; border-radius: 16px; outline: none; font-size: 13px; transition: border 0.3s;
+    .light-input {
+        width: 100%; background: #F8FAFC; border: 1.5px solid #E2E8F0; color: #0F172A;
+        padding: 15px 16px 15px 46px; border-radius: 18px; outline: none; font-size: 13.5px; transition: all 0.25s;
     }
-    .dark-input:focus { border-color: #ffffff; background: #000000; }
-    .dark-input::placeholder { color: #555555; }
+    .light-input:focus { border-color: #10B981; background: #FFFFFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+    .light-input::placeholder { color: #94A3B8; }
     
-    .input-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #666666; font-size: 14px; transition: color 0.3s ease; }
-    .dark-input:focus ~ .input-icon { color: #ffffff; }
+    .input-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94A3B8; font-size: 14px; transition: color 0.25s ease; }
+    .light-input:focus ~ .input-icon { color: #059669; }
 
-    /* Button */
-    .btn-white {
-        background: #ffffff; color: #000000; width: 100%; padding: 18px;
-        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;
+    /* Buttons */
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; width: 100%; padding: 16px;
+        border-radius: 18px; font-weight: 800; font-size: 14px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
     }
-    .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
-    .btn-white:disabled { background: #333333; color: #888888; cursor: not-allowed; }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
+    .btn-emerald:active { transform: scale(0.96); }
+    .btn-emerald:disabled { background: #E2E8F0 !important; color: #94A3B8 !important; box-shadow: none !important; cursor: not-allowed; transform: none !important; }
 </style>
 
-<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-10 px-2 mt-4">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. HEADER -->
-    <div class="flex items-center gap-4 mb-6">
-        <a href="/vip" class="h-10 w-10 bg-[#111111] rounded-full flex items-center justify-center text-white hover:bg-[#1A1A1A] transition border border-[#1C1C1E]">
+    <div class="flex items-center gap-3 mb-2 px-2">
+        <a href="/vip" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
             <i class="fa-solid fa-chevron-left text-sm"></i>
         </a>
         <div>
-            <h2 class="text-xl font-bold text-white tracking-wide leading-none">Checkout</h2>
-            <p class="text-[10px] font-bold uppercase tracking-widest text-[#666] mt-1">Secure Gateway</p>
+            <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">ভিআইপি পাস চেকআউট</h2>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Upgrade Elite Membership</p>
         </div>
     </div>
 
     <!-- 2. ORDER SUMMARY CARD -->
-    <div class="bg-[#0A0A0A] rounded-[28px] p-6 text-white relative overflow-hidden border border-[#1C1C1E]">
-        <i class="fa-solid fa-gem absolute right-6 top-1/2 transform -translate-y-1/2 text-7xl opacity-[0.03] pointer-events-none rotate-12"></i>
-        
-        <div class="relative z-10">
-            <p class="text-[9px] font-black text-[#666666] uppercase tracking-[0.2em] mb-4">Order Summary</p>
-            
-            <div class="flex items-center gap-4 mb-5">
-                <div class="h-14 w-14 rounded-[16px] bg-white flex flex-col items-center justify-center text-black flex-shrink-0">
-                    <span class="text-[8px] font-black uppercase tracking-widest leading-none text-[#666]">LVL</span>
-                    <span class="text-xl font-black leading-none">{{ plan.name[-1] if plan.name[-1].isdigit() else 'V' }}</span>
+    <div class="light-card">
+        <div class="flex justify-between items-start mb-4">
+            <div class="flex items-center gap-4">
+                <div class="h-14 w-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex flex-col items-center justify-center flex-shrink-0 shadow-md shadow-emerald-500/15">
+                    <span class="text-[8px] font-black uppercase tracking-widest leading-none opacity-80">LVL</span>
+                    <span class="text-2xl font-black leading-none font-mono">{{ plan.name[-1] if plan.name[-1].isdigit() else 'V' }}</span>
                 </div>
                 <div>
-                    <h3 class="text-xl font-black text-white leading-tight">{{ plan.name }} Pass</h3>
-                    <p class="text-[11px] text-[#AAAAAA] font-mono mt-0.5">+৳{{ plan.daily_profit }}/Day ({{ plan.days }} Days)</p>
+                    <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">Official Pass</span>
+                    <h3 class="text-xl font-black text-slate-900 leading-tight mt-1">{{ plan.name }}</h3>
+                    <p class="text-xs text-slate-500 font-medium mt-0.5">প্রতিদিন +৳{{ plan.daily_profit }} (মেয়াদ {{ plan.days }} দিন)</p>
                 </div>
             </div>
-            
-            <div class="border-t border-[#222222] pt-4 mt-2 flex justify-between items-end">
-                <p class="text-[10px] font-bold text-[#888888] uppercase tracking-widest">Total Payable</p>
-                <div class="text-right">
-                    <span class="text-3xl font-black text-white font-mono tracking-tight leading-none">৳{{ plan.price }}</span>
+        </div>
+        
+        <div class="border-t border-slate-100 pt-3.5 flex justify-between items-end">
+            <div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">মোট প্রদেয় অর্থ</p>
+                <div class="flex items-baseline gap-1 text-slate-900">
+                    <span class="text-xl font-bold text-emerald-600">৳</span>
+                    <span class="text-3xl font-black font-mono tracking-tight">{{ plan.price }}</span>
                 </div>
             </div>
+            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-xl">
+                গ্যারান্টেড রিটার্ন: ৳{{ plan.daily_profit * plan.days }}
+            </span>
         </div>
     </div>
 
-    <!-- 3. CHECKOUT FORM WITH DYNAMIC INFO -->
-    <form id="vipBuyForm" method="POST" class="bg-[#0A0A0A] p-6 sm:p-8 rounded-[28px] border border-[#1C1C1E] space-y-6" onsubmit="return preventDoubleSubmit()">
-        
-        <h3 class="font-bold text-white text-sm mb-4 uppercase tracking-widest">Payment Details</h3>
+    <!-- 3. PAYMENT INSTRUCTIONS & SELECTION -->
+    <div class="light-card space-y-4">
+        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-3">
+            <i class="fa-solid fa-money-bill-transfer text-emerald-600"></i> পেমেন্ট মেথড নির্বাচন ও নম্বর
+        </h3>
 
-        <!-- Instruction Steps -->
-        <div class="space-y-4 mb-5 border-b border-[#222222] pb-5">
-            <div class="flex items-start gap-3">
-                <div class="h-6 w-6 rounded-full bg-[#111] border border-[#333] text-white flex items-center justify-center text-xs font-black flex-shrink-0">1</div>
-                <p class="text-[11px] text-[#AAAAAA] font-medium leading-relaxed pt-0.5">নিচ থেকে আপনার পছন্দের মেথড (bKash/Nagad) সিলেক্ট করুন।</p>
-            </div>
-            <div class="flex items-start gap-3">
-                <div class="h-6 w-6 rounded-full bg-[#111] border border-[#333] text-white flex items-center justify-center text-xs font-black flex-shrink-0">2</div>
-                <p class="text-[11px] text-[#AAAAAA] font-medium leading-relaxed pt-0.5">বক্সে দেওয়া নম্বরে <b>৳{{ plan.price }}</b> টাকা <b>Send Money</b> করে তথ্য পূরণ করুন।</p>
-            </div>
-        </div>
-
-        <!-- Field 1: Gateway Selection -->
+        <!-- Gateway Selection (Radio Buttons) -->
         <div>
-            <label class="block text-[10px] font-bold text-[#666666] uppercase tracking-widest mb-3 ml-1">1. Select Method</label>
-            <div class="grid grid-cols-2 gap-4">
+            <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2 ml-1">১. পেমেন্ট গেটওয়ে বেছে নিন</label>
+            <div class="grid grid-cols-2 gap-3">
                 <label class="cursor-pointer relative">
-                    <input type="radio" name="method" value="bKash" class="peer sr-only" required onchange="changeNumberInfo('bKash')">
-                    <div class="payment-card py-4 text-center">
-                        <span class="block text-xs font-black text-[#888888] tracking-wide uppercase transition-colors">bKash</span>
+                    <input type="radio" name="method_option" value="bKash" class="peer sr-only" checked onchange="switchVipPaymentInfo('bKash')">
+                    <div class="payment-card flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-bolt text-[#E2136E]"></i>
+                        <span class="text-xs font-bold text-slate-700">bKash</span>
                     </div>
                 </label>
                 <label class="cursor-pointer relative">
-                    <input type="radio" name="method" value="Nagad" class="peer sr-only" required onchange="changeNumberInfo('Nagad')">
-                    <div class="payment-card py-4 text-center">
-                        <span class="block text-xs font-black text-[#888888] tracking-wide uppercase transition-colors">Nagad</span>
+                    <input type="radio" name="method_option" value="Nagad" class="peer sr-only" onchange="switchVipPaymentInfo('Nagad')">
+                    <div class="payment-card flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-fire-flame-curved text-[#F97316]"></i>
+                        <span class="text-xs font-bold text-slate-700">Nagad</span>
                     </div>
                 </label>
             </div>
         </div>
 
-        <!-- Dynamic Official Number Box -->
-        <div id="numberInfoBox" class="hidden bg-[#111111] border border-[#222222] p-4 rounded-2xl flex items-center justify-between transition-all">
+        <!-- Dynamic Official Number Box (Updated Numbers) -->
+        <div class="bg-emerald-50/70 border border-emerald-100 p-4 rounded-2xl flex items-center justify-between group">
             <div>
-                <p class="text-[9px] text-[#666666] font-bold uppercase tracking-[0.1em] mb-1">
-                    Send Money To <span id="methodLabel" class="text-white"></span>
+                <p class="text-[10px] text-emerald-800 font-extrabold uppercase tracking-wider mb-1" id="gatewayTitle">
+                    bKash Send Money নম্বর
                 </p>
-                <p class="text-lg sm:text-xl font-black text-white font-mono tracking-widest select-all" id="payNumber"></p>
+                <p class="text-xl font-black text-emerald-950 font-mono tracking-wider select-all" id="payNumber">
+                    01618-897806
+                </p>
             </div>
-            <button type="button" onclick="copyAdminNumber(this)" class="h-10 w-10 bg-[#1C1C1E] border border-[#333333] rounded-xl text-[#888888] hover:text-white transition active:scale-95 flex items-center justify-center flex-shrink-0">
+            <button type="button" onclick="copyAdminNumber(this)" class="h-10 w-10 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-600 hover:text-white rounded-xl transition shadow-sm active:scale-95 flex items-center justify-center flex-shrink-0" title="Copy Number">
                 <i class="fa-regular fa-copy text-sm"></i>
             </button>
         </div>
+
+        <p class="text-xs text-slate-500 font-medium leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+            <i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i> উপরের নম্বরে <b>৳{{ plan.price }}</b> টাকা <b>Send Money</b> করুন এবং নিচের ফর্মে আপনার তথ্য দিয়ে অর্ডার সাবমিট করুন।
+        </p>
+    </div>
+
+    <!-- 4. CHECKOUT SUBMISSION FORM -->
+    <form id="vipBuyForm" method="POST" action="/vip/buy/{{ plan.level_id or plan.id or 1 }}" class="light-card space-y-5" onsubmit="return preventDoubleSubmit()">
         
-        <div class="grid sm:grid-cols-2 gap-5 mt-6">
-            <!-- Field 2: Sender Number -->
+        <!-- Hidden input storing chosen method -->
+        <input type="hidden" name="method" id="selectedMethodInput" value="bKash">
+
+        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider mb-2">২. পেমেন্ট ভেরিফিকেশন তথ্য দিন</h3>
+
+        <!-- Sender Mobile -->
+        <div>
+            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5 ml-1">যে নম্বর থেকে টাকা পাঠিয়েছেন (Sender)</label>
             <div class="input-group">
-                <input type="tel" name="sender" required pattern="01[3-9][0-9]{8}" class="dark-input font-mono tracking-widest" placeholder="Sender No">
+                <input type="tel" name="sender" required pattern="01[3-9][0-9]{8}" class="light-input font-mono tracking-wider" placeholder="01XXXXXXXXX">
                 <i class="fa-solid fa-phone input-icon"></i>
             </div>
-            
-            <!-- Field 3: Transaction ID -->
+        </div>
+        
+        <!-- TrxID -->
+        <div>
+            <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5 ml-1">ট্রানজেকশন আইডি (TrxID)</label>
             <div class="input-group">
-                <input type="text" name="trx_id" required class="dark-input font-mono uppercase tracking-widest" placeholder="TrxID (Ex: 8X7H9F)">
+                <input type="text" name="trx_id" required class="light-input font-mono uppercase tracking-wider" placeholder="Ex: 8X7H9F...">
                 <i class="fa-solid fa-hashtag input-icon"></i>
             </div>
         </div>
         
         <!-- Warning Notice -->
-        <div class="p-4 rounded-2xl bg-[#111111] border border-[#222222] flex items-start gap-2.5 mt-4">
-            <i class="fa-solid fa-triangle-exclamation text-[#666] text-[10px] mt-0.5"></i>
-            <p class="text-[9px] text-[#888] font-bold uppercase tracking-wider leading-relaxed">সতর্কতা: ভুয়া ট্রানজেকশন আইডি দিলে একাউন্ট ব্যান করা হবে।</p>
+        <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200/70 flex items-start gap-2.5">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xs mt-0.5"></i>
+            <p class="text-[11px] text-amber-900 font-semibold leading-relaxed">
+                সতর্কতা: ভুল বা ফেক ট্রানজেকশন আইডি দিলে আপনার একাউন্ট স্থায়ীভাবে ব্যান করা হতে পারে।
+            </p>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" id="submitBtn" class="btn-white mt-4">
-            <span>Confirm Order</span> <i class="fa-solid fa-check"></i>
+        <button type="submit" id="submitBtn" class="btn-emerald mt-2">
+            <span>কনফার্ম ও সাবমিট করুন</span> <i class="fa-solid fa-check text-xs"></i>
         </button>
 
     </form>
 
     <!-- Security Footer -->
-    <div class="text-center pb-4 pt-2">
-        <p class="text-[9px] font-mono font-bold text-[#444] tracking-widest uppercase flex items-center justify-center gap-1.5">
-            <i class="fa-solid fa-lock text-[8px]"></i> End-to-End Encrypted Gateway
+    <div class="text-center pb-4 pt-1">
+        <p class="text-[10px] font-mono font-bold text-slate-400 tracking-wider uppercase flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-shield-check text-emerald-600 text-xs"></i> 100% Encrypted & Fast VIP Verification
         </p>
     </div>
 
@@ -184,48 +216,45 @@
 
 <!-- Scripts -->
 <script>
-    // Smart Method Switcher Logic
-    function changeNumberInfo(method) {
-        const infoBox = document.getElementById("numberInfoBox");
-        const methodLabel = document.getElementById("methodLabel");
-        const payNumber = document.getElementById("payNumber");
+    // Switch Gateway Information Dynamically
+    function switchVipPaymentInfo(method) {
+        const title = document.getElementById("gatewayTitle");
+        const number = document.getElementById("payNumber");
+        const hiddenInput = document.getElementById("selectedMethodInput");
+
+        hiddenInput.value = method;
 
         if (method === 'bKash') {
-            methodLabel.innerText = '(bKash)';
-            payNumber.innerText = '+880 1624-175616';
+            title.innerText = "bKash Send Money নম্বর";
+            number.innerText = "01618-897806";
         } else if (method === 'Nagad') {
-            methodLabel.innerText = '(Nagad)';
-            payNumber.innerText = '01912107604';
+            title.innerText = "Nagad Send Money নম্বর";
+            number.innerText = "01912107604";
         }
-
-        infoBox.classList.remove("hidden");
     }
 
     // Copy Admin Number
     function copyAdminNumber(btn) {
-        const num = document.getElementById("payNumber").innerText;
-        navigator.clipboard.writeText(num).then(() => {
+        const rawNum = document.getElementById("payNumber").innerText.replace(/[^0-9]/g, '');
+        navigator.clipboard.writeText(rawNum).then(() => {
             const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check text-black"></i>';
-            btn.classList.add('bg-white', 'text-black');
-            btn.classList.remove('bg-[#1C1C1E]', 'text-[#888888]');
-            
+            btn.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
+            btn.classList.add('bg-emerald-50');
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
-                btn.classList.remove('bg-white', 'text-black');
-                btn.classList.add('bg-[#1C1C1E]', 'text-[#888888]');
-            }, 2000);
+                btn.classList.remove('bg-emerald-50');
+            }, 1500);
         });
     }
 
-    // Submit Loader
+    // Double Submit Prevention
     function preventDoubleSubmit() {
         const form = document.getElementById('vipBuyForm');
         if(form.checkValidity()) {
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i>';
-            btn.style.background = "#222222"; btn.style.color = "#ffffff";
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">যাচাই করা হচ্ছে...</span>';
+            btn.classList.add('opacity-80');
             return true;
         }
         return false;
