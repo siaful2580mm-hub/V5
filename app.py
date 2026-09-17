@@ -376,7 +376,43 @@ def support_redirect():
     else:
         # গেস্ট ইউজার
         return redirect(help_desk_url)
+
+
+# ==========================================
+# 📡 WEBHOOK: RECEIVE SUPPORT REPLIES FROM HELP DESK
+# ==========================================
+@app.route('/api/webhook/support-reply', methods=['POST'])
+def support_webhook():
+    # সিকিউরিটির জন্য একটি সিক্রেট টোকেন যাচাই করা
+    auth_header = request.headers.get('Authorization', '')
+    expected_secret = os.getenv("SECRET_KEY", "TypeYourRandomSecretKeyHere123")
+    
+    if auth_header != f"Bearer {expected_secret}":
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    data = request.get_json()
+    user_id = data.get('user_id')          # domain.com এর User UUID
+    sender = data.get('sender', 'Support') # 'AI Assistant' or 'Admin'
+    reply_text = data.get('message', '')
+    
+    if not user_id or not reply_text:
+        return jsonify({'error': 'Missing data'}), 400
+
+    try:
+        # নোটিফিকেশন টেবিলে সেভ করা
+        supabase.table('user_notifications').insert({
+            'user_id': user_id,
+            'title': f"{sender} থেকে নতুন রিপ্লাই",
+            'message': reply_text,
+            'is_read': False
+        }).execute()
         
+        return jsonify({'success': True, 'message': 'Notification queued'}), 200
+    except Exception as e:
+        print(f"Webhook Save Error: {e}")
+        return jsonify({'error': str(e)}), 500
+        
+
 # ==========================================
 # ⭐ REVIEW & RATING SYSTEM (Shadow Ban Logic)
 # ==========================================
