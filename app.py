@@ -3350,7 +3350,7 @@ def submit_task(task_id):
                     'status': 'pending'
                 }).execute()
                 
-                flash("✅ কাজ সফলভাবে জমা হয়েছে! এডমিন চেক করে পেমেন্ট দিবে।", "success")
+                flash("আপনার টাস্কটি সাবমিট হয়েছে, ১-৩ ঘন্টার মধ্যে টাস্কটি এপ্রুব হয়ে যাবে 🎉🔥", "success")
                 return redirect(url_for('tasks'))
             else:
                 # 🔴 আপলোড ফেইল হলে
