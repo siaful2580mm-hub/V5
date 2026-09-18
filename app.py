@@ -33,13 +33,13 @@ except Exception as e:
 
 # test
 
-TELEGRAM_BOT_TOKEN = "8861243663:AAFUEVpqLqGC8reEvuohu_IetngHpKETlgM"
-TELEGRAM_CHANNEL_ID = "@paylixofficial"
+TELEGRAM_BOT_TOKEN = "8328944739:AAHKC5c-FbafcP6f3KyHXqmU-NxbQoy4n34"
+TELEGRAM_CHANNEL_ID = "@earn_daily_on"
 
 def send_to_telegram_channel(title, content, image_url=None):
     try:
         # টেলিগ্রাম মেসেজ ফরম্যাট (HTML)
-        tg_msg = f"✨ <b>{content}\n\n🌐 <i>— PayLix</i>"
+        tg_msg = f"✨ <b>{content}\n\n🌐 <i>Team — Earn Daily</i>"
         
         if image_url:
             url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendPhoto"
