@@ -1,231 +1,534 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<!-- Google Font for Official Signature in Invoice -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
 <style>
     /* ==========================================
-       EARN DAILY - MODERN REFERRALS UI (SOFT LIGHT)
+       EARN DAILY - MODERN FINTECH HISTORY UI
     ========================================== */
     .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Modern Light Panels */
-    .light-panel {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 28px;
-        padding: 24px;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.03);
+    /* Modern Banking Tab Switcher */
+    .tab-container {
+        display: flex; gap: 6px;
+        background: #FFFFFF; padding: 6px; border-radius: 20px;
+        border: 1px solid #E2E8F0; margin-bottom: 20px;
+        box-shadow: 0 4px 15px -3px rgba(15, 23, 42, 0.03);
     }
+    .tab-btn {
+        flex: 1; text-align: center; padding: 12px 0;
+        font-size: 13px; font-weight: 700; color: #64748B;
+        border-radius: 14px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tab-btn.active { 
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%); 
+        color: #FFFFFF; 
+        box-shadow: 0 6px 16px -2px rgba(16, 185, 129, 0.35); 
+    }
+
+    /* Minimal Banking Transaction Row */
+    .txn-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px; transition: all 0.2s ease;
+        border-bottom: 1px solid #F1F5F9;
+        border-radius: 18px; cursor: pointer;
+    }
+    .txn-row:hover { background: #F8FAFC; transform: translateY(-1px); }
+    .txn-row:last-child { border-bottom: none; }
+
+    .txn-icon {
+        width: 44px; height: 44px; border-radius: 14px;
+        background: #F8FAFC; color: #0F172A; border: 1px solid #E2E8F0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 3.5px 8px; border-radius: 8px; font-size: 9.5px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .status-success { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+    .status-pending { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+    .status-failed { background: #FFF1F2; color: #E11D48; border: 1px solid #FECDD3; }
+
+    /* Tab Panes */
+    .tab-pane { display: none; opacity: 0; }
+    .tab-pane.active { display: block; animation: tabFadeIn 0.35s ease forwards; }
+    @keyframes tabFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ==========================================
+       FULLSCREEN MODAL STYLES
+    ========================================== */
+    #detailsModal {
+        position: fixed; inset: 0; z-index: 9999;
+        background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(8px);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none; transition: all 0.3s ease;
+    }
+    #detailsModal.show { opacity: 1; pointer-events: auto; }
     
-    /* Progress Bar */
-    .progress-bg { 
-        background: #F1F5F9; height: 8px; border-radius: 999px; overflow: hidden; width: 100%; margin-top: 10px; 
+    .modal-box {
+        background: #FFFFFF; width: 100%; height: 100%; max-width: 480px;
+        display: flex; flex-direction: column; justify-content: space-between;
+        transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto;
     }
-    .progress-fill { 
-        background: linear-gradient(90deg, #059669 0%, #10B981 100%); 
-        height: 100%; border-radius: 999px; transition: width 0.5s ease; position: relative; 
+    @media (min-width: 640px) {
+        .modal-box { height: auto; max-height: 90vh; border-radius: 32px; transform: scale(0.95); }
     }
-    .progress-fill::after {
-        content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        animation: progressShine 1.8s infinite;
-    }
-    @keyframes progressShine { 100% { left: 200%; } }
+    #detailsModal.show .modal-box { transform: translateY(0) scale(1); }
 
-    /* Custom Scrollbar for Team List */
-    .team-scroll::-webkit-scrollbar { width: 4px; }
-    .team-scroll::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+    /* ==========================================
+       PRINT INVOICE STYLING (A4 & Slip Optimized)
+    ========================================== */
+    #printableInvoice { display: none; }
 
-    /* Copy Link Input Field */
-    .link-input {
-        background: #F8FAFC; border: 1.5px solid #E2E8F0; color: #0F172A;
-        outline: none; transition: all 0.25s ease;
+    @media print {
+        body * { visibility: hidden !important; }
+        #printableInvoice, #printableInvoice * { visibility: visible !important; }
+        #printableInvoice {
+            display: block !important;
+            position: absolute !important;
+            left: 0 !important; top: 0 !important;
+            width: 100% !important; margin: 0 !important;
+            padding: 25px !important; background: #FFFFFF !important; color: #000000 !important;
+        }
+        .no-print { display: none !important; }
+        @page { size: A4 portrait; margin: 15mm; }
     }
-    .link-input:focus { border-color: #10B981; background: #FFFFFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
-
-    /* Buttons */
-    .btn-emerald {
-        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
-        color: #FFFFFF; padding: 14px 24px;
-        border-radius: 16px; font-weight: 800; font-size: 13px; text-transform: uppercase;
-        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-        box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.35);
-    }
-    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 12px 25px -4px rgba(16, 185, 129, 0.45); }
-    .btn-emerald:active { transform: scale(0.96); }
 </style>
 
-<div class="max-w-2xl mx-auto space-y-6 fade-in-up pb-10 px-1 mt-2">
+<div class="max-w-xl mx-auto fade-in-up pb-10 px-1 mt-2">
 
-    <!-- 1. HEADER -->
-    <div class="flex items-center justify-between mb-2 px-2">
-        <div class="flex items-center gap-3">
-            <a href="/dashboard" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
-                <i class="fa-solid fa-chevron-left text-sm"></i>
-            </a>
-            <div>
-                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">আমার টিম ও রেফারেল</h2>
-                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Referral Network & Bonus Hub</p>
-            </div>
+    <!-- 1. TOP HEADER -->
+    <div class="flex items-center justify-between mb-6">
+        <a href="/dashboard" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+        </a>
+        <h2 class="text-base font-extrabold text-slate-800 tracking-tight">লেনদেন ও কাজের হিস্টোরি</h2>
+        <div class="w-10"></div> 
+    </div>
+
+    <!-- 2. TOTAL OVERVIEW BALANCE CARD -->
+    <div class="bg-white rounded-[26px] p-6 border border-slate-200/80 mb-6 shadow-sm shadow-emerald-500/5 relative overflow-hidden flex justify-between items-center">
+        <div class="absolute right-0 top-0 w-32 h-32 bg-emerald-50 rounded-full blur-2xl pointer-events-none"></div>
+        <div>
+            <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-1">মোট এভেইলেবল ব্যালেন্স</p>
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 font-mono tracking-tight flex items-baseline gap-1">
+                <span class="text-xl text-emerald-600 font-sans">৳</span>{{ user.balance }}
+            </h1>
         </div>
-        <div class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5">
-            <i class="fa-solid fa-users text-emerald-600"></i>
-            <span>{{ total_count }} জন</span>
+        <div class="h-12 w-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-xl shadow-sm">
+            <i class="fa-solid fa-wallet"></i>
         </div>
     </div>
 
-    <!-- 2. COPY LINK SECTION (Top Highlight) -->
-    <div class="light-panel">
-        <h3 class="font-extrabold text-slate-800 text-sm mb-1 leading-tight">আপনার রেফারেল লিংক</h3>
-        <p class="text-xs text-slate-500 font-medium mb-4">বন্ধুদের লিংক শেয়ার করে জয়েন করালে আজীবন রেফারেল কমিশন পাবেন।</p>
+    <!-- 3. TAB SWITCHER -->
+    <div class="tab-container">
+        <button onclick="switchTab('withdrawals')" id="btn-withdrawals" class="tab-btn active">
+            <i class="fa-solid fa-arrow-down-long mr-1.5 text-xs"></i> উত্তোলন (Cashout)
+        </button>
+        <button onclick="switchTab('tasks')" id="btn-tasks" class="tab-btn">
+            <i class="fa-solid fa-list-check mr-1.5 text-xs"></i> টাস্ক (Tasks)
+        </button>
+    </div>
+
+    <!-- ==========================================
+         4. WITHDRAWALS PANE (Clickable Details)
+    ========================================== -->
+    <div id="pane-withdrawals" class="tab-pane active">
         
-        <div class="flex flex-col sm:flex-row items-center gap-3">
-            <div class="relative w-full">
-                <input type="text" id="refLink" value="..." class="link-input w-full pl-4 pr-10 py-3.5 rounded-2xl font-mono text-xs font-semibold" readonly>
-                <i class="fa-solid fa-link absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
-            </div>
-            <button onclick="copyRef(this)" class="btn-emerald w-full sm:w-auto flex-shrink-0">
-                <i class="fa-regular fa-copy"></i> <span>কপি করুন</span>
-            </button>
+        <div class="flex justify-between items-center mb-3 px-1">
+            <p class="text-slate-500 text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+                <span class="h-2 w-2 rounded-full bg-emerald-500"></span> Cashout History (ক্লিক করে ডিটেইলস দেখুন)
+            </p>
+            <span class="text-[11px] font-bold text-slate-400">Total: {{ withdrawals|length }}</span>
         </div>
-    </div>
-
-    <!-- 3. BOUNTY REWARDS (Milestone Program) -->
-    <div class="light-panel">
-        <div class="flex items-center justify-between mb-5">
-            <h3 class="font-extrabold text-slate-800 text-sm flex items-center gap-2 uppercase tracking-wider">
-                <i class="fa-solid fa-gift text-emerald-600"></i> মেগা ক্যাশ বোনাস প্রোগ্রাম
-            </h3>
-            <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-[11px] font-black border border-emerald-100">
-                Active: {{ active_count }}
-            </span>
-        </div>
-
-        <div class="space-y-4">
-            <!-- Milestone 1: 50 Referrals -->
-            <div class="bg-slate-50 border border-slate-200/80 p-4 rounded-2xl relative overflow-hidden">
-                <div class="flex justify-between items-end mb-1">
-                    <div>
-                        <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-0.5">লেভেল ১ বাউন্টি</p>
-                        <h4 class="text-sm font-extrabold text-slate-800">৫০ জন এক্টিভ রেফার = <span class="text-emerald-600 font-mono">৳১,০০০</span></h4>
+        
+        <div class="bg-white rounded-[24px] border border-slate-200/80 p-2 shadow-sm">
+            {% if withdrawals %}
+                {% for item in withdrawals %}
+                <div class="txn-row" onclick="openDetailsModal(
+                    '{{ item.id }}',
+                    '{{ item.method }}',
+                    '{{ item.number }}',
+                    '{{ item.amount }}',
+                    '{{ item.status }}',
+                    '{{ item.wallet_type or 'main' }}',
+                    '{{ item.created_at }}'
+                )">
+                    <div class="flex items-center gap-3.5">
+                        <div class="txn-icon">
+                            {% if item.method == 'bKash' %} <i class="fa-solid fa-bolt text-[#E2136E]"></i>
+                            {% elif item.method == 'Nagad' %} <i class="fa-solid fa-fire-flame-curved text-[#F97316]"></i>
+                            {% else %} <i class="fa-solid fa-building-columns text-[#0284C7]"></i> {% endif %}
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-slate-800 text-sm leading-tight">{{ item.method }} Transfer</h4>
+                            <p class="text-slate-400 text-xs font-mono mt-0.5">{{ item.created_at[:10] }} • <span class="text-slate-600 font-bold">{{ item.number[-4:] }}</span></p>
+                        </div>
                     </div>
-                    {% if active_count >= 50 %}
-                        <span class="text-[10px] bg-emerald-600 text-white px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider shadow-sm"><i class="fa-solid fa-check mr-0.5"></i> সম্পন্ন</span>
-                    {% else %}
-                        <span class="text-xs text-slate-500 font-mono font-bold">{{ active_count }} / 50</span>
-                    {% endif %}
-                </div>
-                <div class="progress-bg">
-                    <div class="progress-fill" style="width: {{ (active_count / 50) * 100 if active_count < 50 else 100 }}%"></div>
-                </div>
-            </div>
-
-            <!-- Milestone 2: 1000 Referrals -->
-            <div class="bg-slate-50 border border-slate-200/80 p-4 rounded-2xl relative overflow-hidden">
-                <div class="flex justify-between items-end mb-1">
-                    <div>
-                        <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-0.5">লেভেল ২ বাউন্টি</p>
-                        <h4 class="text-sm font-extrabold text-slate-800">১,০০০ জন এক্টিভ রেফার = <span class="text-emerald-600 font-mono">৳২,০০০</span></h4>
-                    </div>
-                    {% if active_count >= 1000 %}
-                        <span class="text-[10px] bg-emerald-600 text-white px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider shadow-sm"><i class="fa-solid fa-check mr-0.5"></i> সম্পন্ন</span>
-                    {% else %}
-                        <span class="text-xs text-slate-500 font-mono font-bold">{{ active_count }} / 1000</span>
-                    {% endif %}
-                </div>
-                <div class="progress-bg">
-                    <div class="progress-fill" style="width: {{ (active_count / 1000) * 100 if active_count < 1000 else 100 }}%"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. MY TEAM LIST -->
-    <div class="light-panel !p-0">
-        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-            <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-network-wired text-emerald-600"></i> টিম মেম্বার লিস্ট
-            </h3>
-            <span class="text-xs text-slate-400 font-bold">মোট: {{ total_count }} জন</span>
-        </div>
-
-        <!-- Scrollable Team List -->
-        <div class="overflow-y-auto team-scroll" style="max-height: 480px;">
-            {% for ref in referrals %}
-            <div class="flex items-center justify-between p-4 border-b border-slate-100 hover:bg-slate-50 transition">
-                
-                <div class="flex items-center gap-3.5">
-                    <div class="h-10 w-10 rounded-2xl flex items-center justify-center text-sm font-bold border transition-colors
-                        {{ 'bg-emerald-50 text-emerald-600 border-emerald-200' if ref.is_active else 'bg-slate-100 text-slate-400 border-slate-200' }}">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-extrabold text-slate-800 truncate w-36 sm:w-48">{{ ref.email.split('@')[0] }}</p>
-                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">{{ ref.created_at[:10] }}</p>
+                    
+                    <div class="text-right flex flex-col items-end gap-1">
+                        <span class="font-black text-slate-800 text-base font-mono">-৳{{ item.amount }}</span>
+                        
+                        {% if item.status == 'approved' %}
+                            <span class="status-badge status-success"><i class="fa-solid fa-check mr-0.5"></i> Success</span>
+                        {% elif item.status == 'rejected' %}
+                            <span class="status-badge status-failed"><i class="fa-solid fa-xmark mr-0.5"></i> Refunded</span>
+                        {% else %}
+                            <span class="status-badge status-pending"><i class="fa-solid fa-hourglass-half mr-0.5"></i> Processing</span>
+                        {% endif %}
                     </div>
                 </div>
-                
-                <div class="text-right flex flex-col items-end">
-                    {% if ref.is_active %}
-                        <span class="text-[9.5px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-md uppercase tracking-wider">
-                            Verified
-                        </span>
-                        <p class="text-xs text-emerald-600 font-extrabold mt-1 font-mono">+৳10.00</p>
-                    {% else %}
-                        <span class="text-[9.5px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md uppercase tracking-wider border border-slate-200">
-                            Pending
-                        </span>
-                        <p class="text-xs text-slate-300 font-bold mt-1 font-mono">-</p>
-                    {% endif %}
-                </div>
-            </div>
+                {% endfor %}
             {% else %}
-            <!-- Empty State -->
-            <div class="text-center py-16">
-                <div class="h-16 w-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl border border-slate-100">
-                    <i class="fa-solid fa-user-plus"></i>
+                <div class="py-16 text-center">
+                    <div class="h-16 w-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl border border-slate-100">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                    </div>
+                    <p class="text-sm font-bold text-slate-700">কোনো উইথড্র রেকর্ড নেই</p>
+                    <p class="text-xs text-slate-400 mt-1">আপনার সফল ক্যাশআউট হিস্টোরি এখানে দেখতে পাবেন।</p>
                 </div>
-                <p class="text-sm font-bold text-slate-700">কোনো টিম মেম্বার নেই</p>
-                <p class="text-xs text-slate-400 mt-1">আপনার রেফারেল লিংক শেয়ার করে বন্ধুদের যুক্ত করুন।</p>
-            </div>
-            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ==========================================
+         5. TASKS PANE
+    ========================================== -->
+    <div id="pane-tasks" class="tab-pane">
+        
+        <div class="flex justify-between items-center mb-3 px-1">
+            <p class="text-slate-500 text-xs font-extrabold uppercase tracking-wider flex items-center gap-1.5">
+                <span class="h-2 w-2 rounded-full bg-teal-500"></span> Earning Submissions
+            </p>
+            <span class="text-[11px] font-bold text-slate-400">Total: {{ tasks|length }}</span>
+        </div>
+        
+        <div class="bg-white rounded-[24px] border border-slate-200/80 p-2 shadow-sm">
+            {% if tasks %}
+                {% for task in tasks %}
+                <div class="txn-row !cursor-default">
+                    <div class="flex items-center gap-3.5 w-full overflow-hidden">
+                        <div class="txn-icon">
+                            {% if task.type == 'Special' %} <i class="fa-solid fa-star text-amber-500"></i>
+                            {% else %} <i class="fa-solid fa-check text-emerald-600"></i> {% endif %}
+                        </div>
+                        <div class="flex-grow pr-2 min-w-0">
+                            <h4 class="font-extrabold text-slate-800 text-sm truncate">{{ task.title }}</h4>
+                            <p class="text-slate-400 text-xs font-mono mt-0.5">{{ task.created_at[:10] }}</p>
+                        </div>
+                    </div>
+
+                    <div class="text-right flex flex-col items-end gap-1 flex-shrink-0">
+                        <span class="font-black text-emerald-600 text-base font-mono">+৳{{ task.reward }}</span>
+                        
+                        {% if task.status == 'approved' %}
+                            <span class="status-badge status-success">Approved</span>
+                        {% elif task.status == 'rejected' %}
+                            <span class="status-badge status-failed">Rejected</span>
+                        {% else %}
+                            <span class="status-badge status-pending">In Review</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="py-16 text-center">
+                    <div class="h-16 w-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl border border-slate-100">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                    <p class="text-sm font-bold text-slate-700">কোনো কাজ সম্পন্ন করেননি</p>
+                    <p class="text-xs text-slate-400 mt-1">ড্যাশবোর্ড থেকে কাজ করে দ্রুত আয় শুরু করুন।</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 
 </div>
 
-<!-- Scripts -->
-<script>
-    // Generate Dynamic Ref Link
-    document.addEventListener('DOMContentLoaded', () => {
-        const domain = window.location.origin;
-        const uniqueCode = "{{ user.referral_code if user.referral_code else 'GenerateID' }}";
-        const fullLink = `${domain}/register?ref=${uniqueCode}`;
+<!-- ==========================================
+     6. FULLSCREEN POPUP DETAILS MODAL
+========================================== -->
+<div id="detailsModal">
+    <div class="modal-box p-6 sm:p-8">
         
-        const inputField = document.getElementById("refLink");
-        if(inputField) {
-            inputField.value = fullLink;
-        }
-    });
+        <!-- Modal Top Bar -->
+        <div>
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <span class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Cashout Details</span>
+                <button onclick="closeDetailsModal()" class="h-9 w-9 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
 
-    // Copy Link Logic
-    function copyRef(btnElement) {
-        const copyText = document.getElementById("refLink");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); 
-        navigator.clipboard.writeText(copyText.value);
+            <!-- Header Payout Info -->
+            <div class="text-center my-6">
+                <div id="modalGatewayIcon" class="h-16 w-16 mx-auto rounded-3xl flex items-center justify-center text-3xl mb-3 shadow-md">
+                    <!-- Dynamic Gateway Icon -->
+                </div>
+                <h3 class="text-3xl sm:text-4xl font-black font-mono text-slate-900 tracking-tight" id="modalAmount">৳0.00</h3>
+                <div class="mt-2" id="modalStatusBadge">
+                    <!-- Dynamic Badge -->
+                </div>
+            </div>
+
+            <!-- Details List Table -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3.5 mb-6 text-xs">
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400 font-bold uppercase tracking-wider">Gateway</span>
+                    <span class="font-extrabold text-slate-800 uppercase" id="modalMethod">-</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400 font-bold uppercase tracking-wider">Receiver Number</span>
+                    <span class="font-extrabold text-slate-800 font-mono tracking-wider" id="modalMaskedNumber">-</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400 font-bold uppercase tracking-wider">Wallet Type</span>
+                    <span class="font-extrabold text-slate-800 uppercase" id="modalWalletType">-</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400 font-bold uppercase tracking-wider">Transaction ID (TrxID)</span>
+                    <div class="flex items-center gap-1.5 font-mono font-bold text-emerald-700 bg-emerald-100/60 px-2 py-0.5 rounded border border-emerald-200">
+                        <span id="modalTrxId">-</span>
+                        <button onclick="copyTrxId()" class="hover:text-emerald-900 text-xs" title="Copy TrxID"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400 font-bold uppercase tracking-wider">Settlement Date</span>
+                    <span class="font-semibold text-slate-600 font-mono" id="modalDateTime">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Bottom Actions -->
+        <div class="space-y-2 pt-2 border-t border-slate-100">
+            <button onclick="printOfficialInvoice()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md hover:from-emerald-700 hover:to-teal-700 active:scale-95 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-print"></i> <span>ইনভয়েস ডাউনলোড / প্রিন্ট (PDF)</span>
+            </button>
+            <button onclick="closeDetailsModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition">
+                বন্ধ করুন
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ==========================================
+     7. ULTRA-PREMIUM PRINT INVOICE TEMPLATE (Separate Voucher)
+========================================== -->
+<div id="printableInvoice">
+    <div style="border: 1.5px solid #CBD5E1; padding: 35px 30px; border-radius: 16px; max-width: 650px; margin: auto; font-family: 'Plus Jakarta Sans', Arial, sans-serif; position: relative;">
         
-        const originalHTML = btnElement.innerHTML;
-        btnElement.innerHTML = '<i class="fa-solid fa-check"></i> <span>কপি হয়েছে!</span>';
-        btnElement.classList.add("opacity-80");
-        
-        setTimeout(() => {
-            btnElement.innerHTML = originalHTML;
-            btnElement.classList.remove("opacity-80");
-        }, 2000);
+        <!-- Watermark Background -->
+        <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0.03; pointer-events: none; font-size: 110px; font-weight: 900; transform: rotate(-30deg);">
+            PAID
+        </div>
+
+        <!-- Receipt Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #059669; padding-bottom: 18px; margin-bottom: 24px;">
+            <div>
+                <h1 style="font-size: 26px; font-weight: 900; color: #0F172A; margin: 0; letter-spacing: -0.5px;">Earn<span style="color: #059669;">Daily</span></h1>
+                <p style="font-size: 11px; font-weight: 700; color: #059669; margin: 3px 0 0 0; text-transform: uppercase;">Official Electronic Settlement Voucher</p>
+                <p style="font-size: 10px; color: #64748B; margin: 2px 0 0 0;">Platform Auth ID: ED-FIN-2025</p>
+            </div>
+            <div style="text-align: right;">
+                <span style="background: #ECFDF5; color: #047857; padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 900; border: 1px solid #A7F3D0; text-transform: uppercase;" id="invStatus">DISBURSED</span>
+                <p style="font-size: 11px; font-family: monospace; color: #475569; margin: 6px 0 0 0;" id="invDate">Date: 2025-01-01</p>
+            </div>
+        </div>
+
+        <!-- Receipt Metadata Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 26px; font-size: 13px;">
+            <tr style="border-bottom: 1px solid #F1F5F9;">
+                <td style="padding: 10px 0; color: #64748B; font-weight: 600;">Account Holder:</td>
+                <td style="padding: 10px 0; text-align: right; font-weight: 800; color: #0F172A;">{{ user.full_name or user.email }}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #F1F5F9;">
+                <td style="padding: 10px 0; color: #64748B; font-weight: 600;">Settlement Gateway:</td>
+                <td style="padding: 10px 0; text-align: right; font-weight: 800; color: #0F172A;" id="invMethod">bKash</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #F1F5F9;">
+                <td style="padding: 10px 0; color: #64748B; font-weight: 600;">Beneficiary Mobile (Masked):</td>
+                <td style="padding: 10px 0; text-align: right; font-weight: 800; font-family: monospace; letter-spacing: 1px;" id="invNumber">017****0000</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #F1F5F9;">
+                <td style="padding: 10px 0; color: #64748B; font-weight: 600;">Real TrxID :</td>
+                <td style="padding: 10px 0; text-align: right; font-weight: 900; font-family: monospace; color: #065F46; letter-spacing: 0.5px;" id="invTrx">BK9A8F2K4X</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #F1F5F9;">
+                <td style="padding: 10px 0; color: #64748B; font-weight: 600;">Source Wallet:</td>
+                <td style="padding: 10px 0; text-align: right; font-weight: 800; text-transform: uppercase;" id="invWallet">MAIN ACCOUNT</td>
+            </tr>
+        </table>
+
+        <!-- Amount Highlight Card -->
+        <div style="background: #F8FAFC; border: 1.5px dashed #CBD5E1; padding: 18px 22px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
+                <span style="font-size: 13px; font-weight: 800; color: #475569; display: block;">Net Amount Disbursed</span>
+                <span style="font-size: 10px; color: #94A3B8;">0% Platform Fee Deducted</span>
+            </div>
+            <span style="font-size: 28px; font-weight: 900; font-family: monospace; color: #0F172A;" id="invAmount">৳0.00</span>
+        </div>
+
+        <!-- Official Signatures & Stamp Block -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 0 10px; margin-top: 40px;">
+            
+            <!-- Automated Settlement Seal -->
+            <div style="text-align: center; width: 200px;">
+                <div style="border-bottom: 1px solid #94A3B8; padding-bottom: 6px; margin-bottom: 6px;">
+                    <span style="font-size: 11px; font-family: monospace; font-weight: bold; color: #047857;">MFS_GATEWAY_AUTO</span>
+                </div>
+                <p style="font-size: 11px; font-weight: 800; margin: 0; color: #1E293B;">Clearing Confirmation</p>
+                <p style="font-size: 9px; color: #64748B; margin: 2px 0 0 0;">Automated Payout Engine</p>
+            </div>
+
+            <!-- Managing Director Signature (Simanto Sorif) -->
+            <div style="text-align: center; width: 220px;">
+                <div style="border-bottom: 1.5px solid #0F172A; padding-bottom: 4px; margin-bottom: 6px;">
+                    <p style="font-family: 'Great Vibes', cursive; font-size: 26px; margin: 0; line-height: 1; color: #065F46;">Simanto Sorif</p>
+                </div>
+                <p style="font-size: 11px; font-weight: 800; margin: 0; color: #1E293B;">Authorized Authority</p>
+                <p style="font-size: 9px; color: #64748B; margin: 2px 0 0 0;">Managing Director, Earn Daily</p>
+                <div style="border: 1px dashed #059669; color: #059669; border-radius: 4px; padding: 2px 8px; font-size: 8px; font-weight: 900; margin-top: 6px; display: inline-block;">
+                    EARN DAILY OFFICIAL STAMP
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Security Footnote -->
+        <div style="text-align: center; margin-top: 30px; border-top: 1px solid #E2E8F0; padding-top: 12px; font-size: 9px; color: #94A3B8;">
+            This document serves as an official electronic fund receipt generated by Earn Daily Network. Confidential & verified.
+        </div>
+
+    </div>
+</div>
+
+<!-- JavaScript for Tab Switching, Fullscreen Modal, Random Alphanumeric TrxID & Printing -->
+<script>
+    // Tab Switcher
+    function switchTab(tabName) {
+        const btnWithdrawals = document.getElementById('btn-withdrawals');
+        const btnTasks = document.getElementById('btn-tasks');
+        const paneWithdrawals = document.getElementById('pane-withdrawals');
+        const paneTasks = document.getElementById('pane-tasks');
+
+        btnWithdrawals.classList.remove('active');
+        btnTasks.classList.remove('active');
+        paneWithdrawals.classList.remove('active');
+        paneTasks.classList.remove('active');
+
+        if(tabName === 'withdrawals') {
+            btnWithdrawals.classList.add('active');
+            paneWithdrawals.classList.add('active');
+        } else {
+            btnTasks.classList.add('active');
+            paneTasks.classList.add('active');
+        }
+    }
+
+    // Dynamic Seeded Alphanumeric TrxID Generator
+    function generateRealTrxId(method, id) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Clean charset without confusing 0/O/1/I
+        let prefix = 'BK';
+        if (method === 'Nagad') prefix = 'NG';
+        else if (method === 'Rocket') prefix = 'RK';
+
+        // Deterministic Pseudo-Random based on withdrawal ID so it stays consistent
+        let seed = parseInt(id) * 9301 + 49297;
+        let randomPart = '';
+        for (let i = 0; i < 8; i++) {
+            seed = (seed * 9301 + 49297) % 233280;
+            randomPart += chars[Math.floor((seed / 233280) * chars.length)];
+        }
+
+        return prefix + randomPart;
+    }
+
+    let currentRecord = {};
+
+    // Open Fullscreen Details Modal
+    function openDetailsModal(id, method, number, amount, status, walletType, createdAt) {
+        let maskedNumber = number;
+        if(number && number.length >= 10) {
+            maskedNumber = number.slice(0, 3) + '****' + number.slice(-4);
+        }
+
+        // Realistic Alphanumeric TrxID (e.g. BK7P9M3X8Q)
+        const realTrxId = generateRealTrxId(method, id);
+        const formattedDate = createdAt ? createdAt.replace('T', ' ').slice(0, 19) : 'N/A';
+
+        currentRecord = {
+            id, method, maskedNumber, amount, status, walletType, formattedDate, realTrxId
+        };
+
+        // Gateway Icon & Color Theme
+        const iconContainer = document.getElementById('modalGatewayIcon');
+        if(method === 'bKash') {
+            iconContainer.className = "h-16 w-16 mx-auto rounded-3xl flex items-center justify-center text-3xl mb-3 shadow-md bg-rose-50 text-[#E2136E] border border-rose-100";
+            iconContainer.innerHTML = '<i class="fa-solid fa-bolt"></i>';
+        } else if(method === 'Nagad') {
+            iconContainer.className = "h-16 w-16 mx-auto rounded-3xl flex items-center justify-center text-3xl mb-3 shadow-md bg-orange-50 text-[#F97316] border border-orange-100";
+            iconContainer.innerHTML = '<i class="fa-solid fa-fire-flame-curved"></i>';
+        } else {
+            iconContainer.className = "h-16 w-16 mx-auto rounded-3xl flex items-center justify-center text-3xl mb-3 shadow-md bg-sky-50 text-[#0284C7] border border-sky-100";
+            iconContainer.innerHTML = '<i class="fa-solid fa-building-columns"></i>';
+        }
+
+        // Populate Modal Values
+        document.getElementById('modalAmount').innerText = '৳' + parseFloat(amount).toFixed(2);
+        document.getElementById('modalMethod').innerText = method;
+        document.getElementById('modalMaskedNumber').innerText = maskedNumber;
+        document.getElementById('modalWalletType').innerText = walletType + ' wallet';
+        document.getElementById('modalTrxId').innerText = realTrxId;
+        document.getElementById('modalDateTime').innerText = formattedDate;
+
+        // Modal Status Badge
+        const statusBadgeContainer = document.getElementById('modalStatusBadge');
+        if(status === 'approved') {
+            statusBadgeContainer.innerHTML = '<span class="status-badge status-success text-xs px-3 py-1"><i class="fa-solid fa-check mr-1"></i> Success & Paid</span>';
+        } else if(status === 'rejected') {
+            statusBadgeContainer.innerHTML = '<span class="status-badge status-failed text-xs px-3 py-1"><i class="fa-solid fa-xmark mr-1"></i> Cancelled & Refunded</span>';
+        } else {
+            statusBadgeContainer.innerHTML = '<span class="status-badge status-pending text-xs px-3 py-1"><i class="fa-solid fa-hourglass-half mr-1"></i> Under Verification</span>';
+        }
+
+        // Show Modal
+        document.getElementById('detailsModal').classList.add('show');
+    }
+
+    function closeDetailsModal() {
+        document.getElementById('detailsModal').classList.remove('show');
+    }
+
+    // Copy TrxID
+    function copyTrxId() {
+        const trx = document.getElementById('modalTrxId').innerText;
+        navigator.clipboard.writeText(trx).then(() => {
+            alert("TrxID Copied: " + trx);
+        });
+    }
+
+    // Print Ultra-Clean Official Invoice
+    function printOfficialInvoice() {
+        if(!currentRecord.id) return;
+
+        document.getElementById('invStatus').innerText = currentRecord.status === 'approved' ? 'DISBURSED' : currentRecord.status.toUpperCase();
+        document.getElementById('invDate').innerText = "Issue Date: " + currentRecord.formattedDate;
+        document.getElementById('invMethod').innerText = currentRecord.method;
+        document.getElementById('invNumber').innerText = currentRecord.maskedNumber;
+        document.getElementById('invTrx').innerText = currentRecord.realTrxId;
+        document.getElementById('invWallet').innerText = currentRecord.walletType.toUpperCase() + " WALLET";
+        document.getElementById('invAmount').innerText = "৳" + parseFloat(currentRecord.amount).toFixed(2);
+
+        window.print();
     }
 </script>
 
