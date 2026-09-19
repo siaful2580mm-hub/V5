@@ -13,6 +13,7 @@
         background: #FFFFFF; 
         border: 1px solid #E2E8F0; 
         border-radius: 28px;
+        padding: 24px; 
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
         position: relative; 
         overflow: hidden;
@@ -78,10 +79,16 @@
                 <p class="text-xs text-slate-400 font-mono">Guaranteed Fast Approval</p>
             </div>
         </div>
-        <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100">
-            <p class="text-xs text-emerald-900 font-medium leading-relaxed">
-                প্যানেল থেকে দেওয়া নির্দিষ্ট নাম ও পাসওয়ার্ড দিয়ে জিমেইল খুলুন। কোনো রিকভারি মেইল বা নম্বর দেওয়া যাবে না। কাজ নেওয়ার পর <b>১ ঘণ্টার মধ্যে</b> সাবমিট করতে হবে।
+        
+        <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100 space-y-2">
+            <p class="text-xs text-emerald-950 font-medium leading-relaxed">
+                প্যানেলে দেওয়া নির্দিষ্ট নাম ও পাসওয়ার্ড দিয়ে জিমেইল খুলবেন। কোনো রিকভারি মেইল বা নম্বর দেওয়া যাবে না। কাজ নেওয়ার পর <b>১ ঘণ্টার মধ্যে</b> সাবমিট করতে হবে।
             </p>
+            <!-- Highlighted Birth Year Warning -->
+            <div class="flex items-center gap-2 bg-rose-50 border border-rose-200 p-2.5 rounded-xl text-rose-800 text-xs font-black">
+                <i class="fa-solid fa-triangle-exclamation text-rose-600 text-sm flex-shrink-0"></i>
+                <span>বাধ্যতামূলক শর্ত: জন্মতারিখ সাল অবশ্যই ২০০০ (Year: 2000) দিতে হবে!</span>
+            </div>
         </div>
     </div>
 
@@ -90,7 +97,7 @@
         {% set task = my_active[0] %}
         
         <div class="light-card p-6 border-2 border-emerald-500 shadow-lg shadow-emerald-500/10">
-            <div class="flex justify-between items-center mb-5 pb-3.5 border-b border-slate-100">
+            <div class="flex justify-between items-center mb-4 pb-3.5 border-b border-slate-100">
                 <div>
                     <h3 class="font-black text-slate-900 text-sm flex items-center gap-2">
                         <span class="h-2.5 w-2.5 bg-emerald-500 rounded-full animate-ping"></span> রানিং টাস্ক
@@ -108,6 +115,19 @@
                         <i class="fa-solid fa-hourglass-half mr-1"></i> ইন রিভিউ
                     </div>
                 {% endif %}
+            </div>
+
+            <!-- CRUCIAL ALERT: BIRTH YEAR 2000 -->
+            <div class="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 p-3.5 rounded-2xl mb-5 flex items-start gap-3 shadow-sm">
+                <div class="h-8 w-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm font-black flex-shrink-0 mt-0.5">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-black text-amber-950 uppercase tracking-wider">জন্মতারিখ সতর্কতা:</h4>
+                    <p class="text-xs text-amber-900 font-bold leading-relaxed mt-0.5">
+                        জিমেইল অ্যাকাউন্ট তৈরির সময় <b>Year (বছর) অবশ্যই ২০০০ সাল</b> দিবেন। দিন ও মাস যেকোনো কিছু দিতে পারেন। ২০০০ সাল না দিলে কাজ রিজেক্ট হতে পারে!
+                    </p>
+                </div>
             </div>
 
             <!-- Data Rows (One-click copy) -->
@@ -132,6 +152,15 @@
                     <button onclick="copyData('lName', this)" class="h-9 w-9 bg-white rounded-xl text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 border border-slate-200 transition shadow-sm flex items-center justify-center active:scale-90"><i class="fa-regular fa-copy"></i></button>
                 </div>
                 {% endif %}
+
+                <!-- Mandatory Birth Year Notice in Data Section -->
+                <div class="data-row !bg-amber-50/60 !border-amber-200">
+                    <div>
+                        <p class="text-[10px] text-amber-800 font-black uppercase tracking-wider mb-0.5">Date of Birth (Year)</p>
+                        <p class="text-sm font-black text-amber-950 font-mono">2000 (২০০০ সাল ফিক্সড)</p>
+                    </div>
+                    <span class="text-[10px] bg-amber-200 text-amber-900 px-2 py-1 rounded-md font-extrabold uppercase">বাধ্যতামূলক</span>
+                </div>
                 
                 <!-- Gmail Address Highlight -->
                 <div class="data-row !bg-emerald-50/80 !border-emerald-200">
@@ -154,7 +183,7 @@
 
             <!-- Action Form -->
             {% if task.status == 'locked' %}
-                <a href="/gmail-tasks/submit/{{ task.id }}" onclick="return confirm('আপনি কি এই তথ্যে জিমেইল খুলেছেন? নিশ্চিত জমা দিন।')" class="btn-emerald">
+                <a href="/gmail-tasks/submit/{{ task.id }}" onclick="return confirm('আপনি কি ২০০০ সাল জন্মতারিখ দিয়ে জিমেইল খুলেছেন? নিশ্চিত জমা দিন।')" class="btn-emerald">
                     <span>কাজ জমা দিন</span> <i class="fa-solid fa-paper-plane text-xs"></i>
                 </a>
             {% else %}
@@ -231,7 +260,7 @@
     }
 
     function confirmTaskTake(id) {
-        if(confirm('শর্ত: কাজটি ১ ঘণ্টার মধ্যে সঠিকভাবে জমা দিতে হবে। আপনি কি কাজটি নিতে প্রস্তুত?')) {
+        if(confirm('শর্ত:\n১. কাজটি ১ ঘণ্টার মধ্যে সঠিকভাবে জমা দিতে হবে।\n২. জন্মতারিখের সাল অবশ্যই ২০০০ দিতে হবে।\n\nআপনি কি কাজটি নিতে প্রস্তুত?')) {
             window.location.href = '/gmail-tasks/take/' + id;
         }
     }
