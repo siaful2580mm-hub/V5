@@ -3,122 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#000000">
-    <title>Access Denied | PayLix</title>
+    <meta name="theme-color" content="#FFF1F2">
+    <title>Access Denied (Account Suspended) | Earn Daily</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================
-           PURE DARK THEME (PAYLIX SECURITY)
+           EARN DAILY - MODERN SUSPENSION LIGHT UI
         ========================================== */
         body { 
-            background-color: #000000; color: #ffffff; 
-            font-family: 'Inter', 'Hind Siliguri', sans-serif; 
-            display: flex; align-items: center; justify-content: center; 
-            min-height: 100vh; margin: 0; overflow: hidden; 
+            font-family: 'Plus Jakarta Sans', 'Hind Siliguri', sans-serif; 
+            background-color: #FFF1F2; 
+            color: #0F172A; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            margin: 0; 
+            overflow-x: hidden;
+            background-image: radial-gradient(at 50% 0%, rgba(244, 63, 94, 0.08) 0px, transparent 60%);
         }
 
-        .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+        .fade-in-up { 
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            opacity: 0; transform: translateY(20px); 
+        }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* Dark Security Card */
+        /* Modern Security Card */
         .banned-card { 
-            background: #0A0A0A; border: 1px solid #1C1C1E; border-radius: 32px; 
-            position: relative; z-index: 10; box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
+            background: #FFFFFF; 
+            border: 1px solid #FECDD3; 
+            border-radius: 36px; 
+            position: relative; 
+            z-index: 10; 
+            box-shadow: 0 25px 50px -12px rgba(225, 29, 72, 0.15), 0 4px 15px rgba(0,0,0,0.02); 
             overflow: hidden;
         }
 
-        /* Ambient Red Glow */
-        .red-glow { 
-            position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); 
-            width: 250px; height: 250px; background: radial-gradient(circle, rgba(255, 69, 58, 0.15) 0%, transparent 60%); 
-            border-radius: 50%; z-index: 0; pointer-events: none;
+        /* Violation Logs Box */
+        .log-box { 
+            background: #FFF5F5; 
+            border: 1.5px dashed #FECDD3; 
+            border-radius: 22px; 
+            padding: 18px; 
         }
 
-        /* Scanner Line Effect */
-        .scan-line { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 2px; 
-            background: linear-gradient(90deg, transparent, rgba(255, 69, 58, 0.8), transparent); 
-            opacity: 0.5; animation: scan 3s linear infinite; z-index: 20; pointer-events: none; 
+        /* Buttons */
+        .btn-rose { 
+            background: linear-gradient(135deg, #E11D48 0%, #F43F5E 100%); 
+            color: #FFFFFF; width: 100%; padding: 16px; 
+            border-radius: 18px; font-weight: 800; font-size: 13.5px; text-transform: uppercase; 
+            letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+            display: flex; align-items: center; justify-content: center; gap: 8px; 
+            box-shadow: 0 10px 25px -5px rgba(225, 29, 72, 0.4);
         }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
-
-        /* Terminal Log Box */
-        .log-box { background: #111111; border: 1px solid #222222; border-radius: 20px; padding: 20px; }
-
-        /* Button */
-        .btn-white { 
-            background: #ffffff; color: #000000; width: 100%; padding: 18px; 
-            border-radius: 16px; font-weight: 900; font-size: 13px; text-transform: uppercase; 
-            letter-spacing: 1px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; 
-        }
-        .btn-white:active { transform: scale(0.96); background: #e5e5e5; }
+        .btn-rose:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(225, 29, 72, 0.5); }
+        .btn-rose:active { transform: scale(0.96); }
     </style>
 </head>
 <body class="p-4">
 
     <div class="w-full max-w-md fade-in-up">
-        <div class="banned-card p-8 sm:p-10 text-center">
+        <div class="banned-card p-8 sm:p-9 text-center">
             
-            <div class="scan-line"></div>
-            <div class="red-glow"></div>
-            
-            <div class="relative z-10">
-                <!-- Warning Icon -->
-                <div class="h-20 w-20 bg-[#1A0505] text-[#FF453A] border border-[#330000] rounded-[20px] flex items-center justify-center text-4xl mx-auto mb-6 shadow-[0_0_30px_rgba(255,69,58,0.15)]">
-                    <i class="fa-solid fa-user-lock"></i>
-                </div>
-                
-                <span class="inline-block bg-[#111111] text-[#AAAAAA] border border-[#333333] px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] mb-4 shadow-sm">
-                    Access Denied
-                </span>
-
-                <h1 class="text-2xl font-black text-white mb-2 tracking-tight">একাউন্ট সাসপেন্ড</h1>
-                <p class="text-xs text-[#888888] font-medium leading-relaxed mb-8">
-                    <span class="text-white font-mono">{{ user.email }}</span><br>
-                    নিরাপত্তা নীতি লঙ্ঘনের কারণে আপনার এক্সেস স্থায়ীভাবে বাতিল করা হয়েছে।
-                </p>
-
-                <!-- Server Logs Box -->
-                <div class="log-box text-left mb-8">
-                    <h3 class="text-[9px] font-black text-[#666666] uppercase tracking-[0.15em] mb-3 border-b border-[#222222] pb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-terminal text-[#FF453A]"></i> Violation Logs
-                    </h3>
-                    <ul class="text-[11px] text-[#AAAAAA] space-y-3 font-medium">
-                        <li class="flex items-start gap-2.5">
-                            <i class="fa-solid fa-xmark text-[#FF453A] mt-0.5"></i> 
-                            <span>একাধিক একাউন্ট ব্যবহার করা।</span>
-                        </li>
-                        <li class="flex items-start gap-2.5">
-                            <i class="fa-solid fa-xmark text-[#FF453A] mt-0.5"></i> 
-                            <span>ভিপিএন (VPN) বা প্রক্সি সার্ভার ব্যবহার।</span>
-                        </li>
-                        <li class="flex items-start gap-2.5">
-                            <i class="fa-solid fa-xmark text-[#FF453A] mt-0.5"></i> 
-                            <span>কাজে ভুয়া তথ্য বা ফেক প্রুফ দেওয়া।</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Exit Button -->
-                <a href="/logout" class="btn-white">
-                    সিস্টেম থেকে বের হোন <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                </a>
-
-                <!-- Footer System Info -->
-                <div class="mt-8 pt-5 border-t border-[#1C1C1E]">
-                    <p class="text-[9px] font-mono text-[#555555] uppercase tracking-widest">
-                        UID: {{ user.referral_code if user else 'UNKNOWN' }}
-                    </p>
-                    <p class="text-[8px] font-bold text-[#333333] uppercase tracking-widest mt-1.5">
-                        PayLix Security Protocol Active
-                    </p>
-                </div>
-                
+            <!-- Warning Security Icon -->
+            <div class="h-20 w-20 bg-rose-50 text-rose-600 border border-rose-200 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-5 shadow-md shadow-rose-500/10">
+                <i class="fa-solid fa-user-lock"></i>
             </div>
+            
+            <span class="inline-block bg-rose-100 text-rose-800 border border-rose-200 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mb-3">
+                Security Protocol • Access Revoked
+            </span>
+
+            <h1 class="text-2xl font-black text-slate-900 mb-1 tracking-tight">অ্যাকাউন্ট স্থগিত করা হয়েছে</h1>
+            <p class="text-xs text-slate-500 font-medium leading-relaxed mb-6">
+                ইউজার: <span class="text-rose-600 font-mono font-bold">{{ user.email }}</span><br>
+                নিরাপত্তা নীতিমালা লঙ্ঘনের কারণে আপনার অ্যাকাউন্ট অ্যাক্সেস সাময়িকভাবে বন্ধ করা হয়েছে।
+            </p>
+
+            <!-- Violation Rules Box -->
+            <div class="log-box text-left mb-6">
+                <h3 class="text-[11px] font-extrabold text-rose-800 uppercase tracking-wider mb-2.5 flex items-center gap-1.5 border-b border-rose-200/80 pb-2">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-600"></i> লঙ্ঘনের সম্ভাব্য কারণসমূহ:
+                </h3>
+                <ul class="text-xs text-slate-600 space-y-2 font-medium">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-xmark text-rose-500 text-[11px] mt-1 flex-shrink-0"></i> 
+                        <span>একই ডিভাইসে একাধিক আইডি ব্যবহার করা।</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-xmark text-rose-500 text-[11px] mt-1 flex-shrink-0"></i> 
+                        <span>ভিপিএন (VPN) বা প্রক্সি ব্যবহার করে কাজ করা।</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-xmark text-rose-500 text-[11px] mt-1 flex-shrink-0"></i> 
+                        <span>টাস্কে ফেক বা ভুয়া স্ক্রিনশট প্রুফ দেওয়া।</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Exit / Logout Button -->
+            <a href="/logout" class="btn-rose">
+                <span>লগআউট করে বের হোন</span> <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
+            </a>
+
+            <!-- System Verification Meta -->
+            <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[10px] font-mono text-slate-400 font-bold uppercase">
+                <span>UID: {{ user.referral_code if user else 'UNKNOWN' }}</span>
+                <span class="text-emerald-700 flex items-center gap-1"><i class="fa-solid fa-shield-check"></i> Earn Daily AI</span>
+            </div>
+            
         </div>
     </div>
 
