@@ -3,50 +3,54 @@
 
 <style>
     /* ==========================================
-       EARN DAILY - MODERN GAS FEE & COMBO UI
+       EARN DAILY - ULTRA MODERN GAS FEE UI
     ========================================== */
     .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* Modern Light Cards */
-    .light-card {
+    /* Modern Glass Cards */
+    .modern-card {
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
         border-radius: 28px;
         padding: 24px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.03);
+        box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.03);
     }
 
-    /* Package Select Card */
+    /* Interactive Plan Selection Card */
     .plan-card {
         background: #FFFFFF;
         border: 2px solid #E2E8F0;
-        border-radius: 22px;
-        padding: 18px;
+        border-radius: 24px;
+        padding: 20px;
         cursor: pointer;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
     }
     .plan-card:hover { border-color: #A7F3D0; background: #F0FDF4; }
     
     input[type="radio"]:checked + .plan-card {
         border-color: #10B981;
         background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%);
-        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.18);
+        box-shadow: 0 12px 28px -5px rgba(16, 185, 129, 0.18);
+        transform: translateY(-2px);
     }
     input[type="radio"]:checked + .plan-card .check-circle {
         background: #059669; border-color: #059669; color: #FFFFFF;
+        transform: scale(1.1);
     }
 
     .check-circle {
-        height: 22px; width: 22px; border-radius: 50%; border: 2px solid #CBD5E1;
+        height: 24px; width: 24px; border-radius: 50%; border: 2px solid #CBD5E1;
         display: flex; align-items: center; justify-content: center; font-size: 11px;
-        transition: all 0.2s;
+        transition: all 0.25s ease;
     }
 
-    /* Clean Light Inputs */
+    /* Inputs */
+    .input-group { position: relative; }
     .light-input {
         width: 100%; background: #F8FAFC; border: 1.5px solid #E2E8F0;
         color: #0F172A; padding: 15px 16px 15px 44px; border-radius: 18px;
@@ -71,25 +75,28 @@
     .btn-emerald:active { transform: scale(0.96); }
 
     /* ==========================================
-       🌟 FIXED CHECKOUT BAR (PERFECT POSITION) 🌟
-       বটম ন্যাভ (70px) এর ঠিক ওপরে ভাসবে
+       🌟 FLOATING ISLAND CHECKOUT BAR 🌟
+       (আগের চেয়ে আরও উপরে এবং ভাসমান স্টাইল)
     ========================================== */
-    .sticky-checkout-bar {
-        position: fixed; 
-        bottom: 70px !important; /* Bottom nav এর ওপরে অবস্থান */
-        left: 0; 
-        right: 0;
-        background: rgba(255, 255, 255, 0.96);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-top: 1.5px solid rgba(226, 232, 240, 0.9);
-        box-shadow: 0 -8px 25px rgba(15, 23, 42, 0.08);
-        z-index: 60 !important; /* বটম ন্যাভ ও টেলিগ্রাম আইকনের ওপরে থাকবে */
-        padding: 12px 16px;
+    .floating-checkout-island {
+        position: fixed;
+        bottom: 84px !important; /* বটম বার থেকে যথেষ্ট ওপরে */
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 24px);
+        max-width: 500px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1.5px solid rgba(16, 185, 129, 0.3);
+        border-radius: 24px;
+        box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.15), 0 0 15px rgba(16, 185, 129, 0.1);
+        z-index: 60 !important;
+        padding: 12px 18px;
     }
 </style>
 
-<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-48 px-1 mt-2">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-52 px-1 mt-2">
 
     <!-- 1. HEADER -->
     <div class="flex items-center justify-between mb-2 px-2">
@@ -102,7 +109,7 @@
                 <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Verified Member Verification Protocol</p>
             </div>
         </div>
-        <span class="bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full text-xs font-black flex items-center gap-1">
+        <span class="bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full text-xs font-black flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-lock text-rose-500"></i> Locked
         </span>
     </div>
@@ -123,24 +130,28 @@
         </div>
     </div>
 
-    <!-- 3. GAS FEE PERKS (সুবিধাসমূহ) -->
-    <div class="light-card border-l-4 border-l-emerald-600">
+    <!-- 3. GAS FEE PERKS -->
+    <div class="modern-card border-l-4 border-l-emerald-600">
         <h3 class="font-extrabold text-slate-800 text-sm mb-3 flex items-center gap-2">
             <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i> গ্যাস ফি দিলে কী কী সুবিধা পাবেন?
         </h3>
-        <div class="space-y-2 text-xs font-semibold text-slate-700 leading-relaxed">
-            <div class="flex items-center gap-2.5 bg-emerald-50/70 p-3 rounded-xl border border-emerald-100">
-                <i class="fa-solid fa-wallet text-emerald-600 text-sm flex-shrink-0"></i>
-                <span><b>মিনিমাম মাত্র ৫০ টাকা হলেই উইথড্র:</b> কোনো প্রকার জটিল শর্ত বা রেফার লাগবে না।</span>
+        <div class="space-y-2.5 text-xs font-semibold text-slate-700 leading-relaxed">
+            <div class="flex items-center gap-3 bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-100">
+                <div class="h-8 w-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-sm flex-shrink-0">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <span><b>মিনিমাম মাত্র ৫০ টাকা হলেই উইথড্র:</b> কোনো প্রকার জটিল শর্ত বা রেফারেল লাগবে না।</span>
             </div>
-            <div class="flex items-center gap-2.5 bg-emerald-50/70 p-3 rounded-xl border border-emerald-100">
-                <i class="fa-solid fa-bolt text-emerald-600 text-sm flex-shrink-0"></i>
+            <div class="flex items-center gap-3 bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-100">
+                <div class="h-8 w-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow-sm flex-shrink-0">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
                 <span><b>আনলিমিটেড ফ্রেশ টাস্ক:</b> হাই-পেইং জিমেইল ও মাইক্রো টাস্ক সরাসরি আনলক হয়ে যাবে।</span>
             </div>
         </div>
     </div>
 
-    <!-- 4. PLAN SELECTION (Default: Gas Fee, VIP-2 Hidden Details) -->
+    <!-- 4. PLAN SELECTION -->
     <div>
         <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2.5 ml-2">প্যাকেজ নির্বাচন করুন</p>
         
@@ -148,7 +159,7 @@
             
             <!-- Option 1: Gas Fee Only (DEFAULT SELECTED) -->
             <label class="block cursor-pointer">
-                <input type="radio" name="plan_type" value="gas_only" class="peer sr-only" checked onchange="handlePlanChange(40, 'Gas Fee (অ্যাকাউন্ট ভেরিফিকেশন)', false)">
+                <input type="radio" name="plan_type" value="gas_only" class="peer sr-only" checked onchange="handlePlanChange(40, 'শুধু গ্যাস ফি (ভেরিফিকেশন)', false)">
                 <div class="plan-card flex items-center justify-between">
                     <div class="flex items-center gap-3.5">
                         <div class="check-circle"><i class="fa-solid fa-check"></i></div>
@@ -157,7 +168,7 @@
                             <p class="text-xs text-slate-400 font-medium mt-0.5">অ্যাকাউন্ট ভেরিফিকেশন + ৫০৳ উইথড্র সুবিধা</p>
                         </div>
                     </div>
-                    <span class="text-xl font-black text-slate-900 font-mono">৳৪০</span>
+                    <span class="text-2xl font-black text-slate-900 font-mono">৳৪০</span>
                 </div>
             </label>
 
@@ -182,28 +193,28 @@
                         </div>
                     </div>
 
-                    <!-- Hidden Accordion: Daily Booster Benefits (Appears when marked) -->
-                    <div id="vipDetailsAccordion" class="hidden bg-emerald-50/90 rounded-2xl p-3.5 border border-emerald-200 text-[11px] text-slate-700 space-y-1.5 font-medium transition-all duration-300">
-                        <p class="font-extrabold text-emerald-950 mb-1.5 border-b border-emerald-200/80 pb-1 flex items-center justify-between">
+                    <!-- Hidden Accordion: Daily Booster Benefits -->
+                    <div id="vipDetailsAccordion" class="hidden bg-emerald-50/90 rounded-2xl p-4 border border-emerald-200 text-[11px] text-slate-700 space-y-2 font-medium transition-all duration-300">
+                        <p class="font-extrabold text-emerald-950 mb-1.5 border-b border-emerald-200/80 pb-1.5 flex items-center justify-between">
                             <span>👑 Daily Booster ভিআইপি-২ এর স্পেশাল সুবিধাসমূহ:</span>
                             <span class="text-[9px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded font-black">UNLOCKED</span>
                         </p>
-                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> মোট গ্যারান্টেড প্রফিট রিটার্ন: <b>৳৪৭৫</b></p>
-                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> টাকা তোলার জন্য <b>কোনো রেফারেল লাগবে না</b></p>
-                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> মিনিমাম ক্যাশআউট মাত্র <b>৳২০</b> (বিকাশ ও নগদ)</p>
-                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> উইথড্রতে <b>০% ট্রানজেকশন চার্জ</b> (ফ্রি ক্যাশআউট)</p>
-                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> <b>Premium Work Board</b> এর বেশি টাকার কাজ আনলক</p>
-                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> উইথড্র রিকোয়েস্টে <b>১০-৩০ মিনিটে প্রায়োরিটি পেমেন্ট</b></p>
-                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> লাকি স্পিন ও ক্যাপচাতে <b>ডাবল রিওয়ার্ড পয়েন্ট</b></p>
-                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> ২৪/৭ ডেডিকেটেড ভিআইপি সাপোর্ট এজেন্ট সুবিধা</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> মোট গ্যারান্টেড প্রফিট রিটার্ন: <b>৳৪৭৫</b></p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> টাকা তোলার জন্য <b>কোনো রেফারেল লাগবে না</b></p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> মিনিমাম ক্যাশআউট মাত্র <b>৳২০</b> (বিকাশ ও নগদ)</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> উইথড্রতে <b>০% ট্রানজেকশন চার্জ</b> (ফ্রি ক্যাশআউট)</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> <b>Premium Work Board</b> এর বেশি টাকার কাজ আনলক</p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> উইথড্র রিকোয়েস্টে <b>১০-৩০ মিনিটে প্রায়োরিটি পেমেন্ট</b></p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> লাকি স্পিন ও ক্যাপচাতে <b>ডাবল রিওয়ার্ড পয়েন্ট</b></p>
+                        <p class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-600"></i> ২৪/৭ ডেডিকেটেড ভিআইপি সাপোর্ট এজেন্ট সুবিধা</p>
                     </div>
                 </div>
             </label>
         </div>
     </div>
 
-    <!-- 5. PAYMENT INSTRUCTIONS (BKASH ONLY + NAGAD SUPPORT LINK) -->
-    <div id="paymentSection" class="light-card space-y-4">
+    <!-- 5. PAYMENT INSTRUCTIONS (BKASH ONLY) -->
+    <div id="paymentSection" class="modern-card space-y-4">
         <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider flex items-center justify-between border-b border-slate-100 pb-3">
             <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-[#E2136E]"></i> bKash পেমেন্ট নির্দেশনা</span>
             <span class="text-[10px] font-black uppercase tracking-wider text-[#E2136E] bg-pink-50 px-2.5 py-0.5 rounded-full border border-pink-100">Only bKash</span>
@@ -237,7 +248,7 @@
     </div>
 
     <!-- 6. SUBMISSION FORM -->
-    <div class="light-card">
+    <div class="modern-card">
         <h3 class="font-extrabold text-slate-800 text-sm mb-4 uppercase tracking-wider">পেমেন্ট ভেরিফিকেশন ফর্ম</h3>
 
         <form method="POST" action="/activate/submit" class="space-y-4" onsubmit="return disableSubmitBtn(this)">
@@ -282,25 +293,25 @@
 </div>
 
 <!-- ==========================================
-     8. FIXED BOTTOM FLOATING CHECKOUT BAR
-     (বটম ন্যাভের ওপরে দৃশ্যমান থাকবে)
+     8. FLOATING ISLAND CHECKOUT BAR
+     (স্ক্রিনের সাথে সুন্দরভাবে উপরে ভাসবে)
 ========================================== -->
-<div class="sticky-checkout-bar">
-    <div class="max-w-xl mx-auto flex items-center justify-between gap-4">
+<div class="floating-checkout-island">
+    <div class="flex items-center justify-between gap-3">
         
         <!-- Left: Details & Price -->
         <div>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none mb-1">
+            <p class="text-[9.5px] font-extrabold text-slate-400 uppercase tracking-wider leading-none mb-1">
                 আপনাকে পেমেন্ট করতে হবে:
             </p>
             <div class="flex items-baseline gap-1.5">
-                <span class="text-2xl font-black text-emerald-700 font-mono leading-none" id="barPayAmount">৳৪০</span>
+                <span class="text-2xl font-black text-emerald-600 font-mono leading-none" id="barPayAmount">৳৪০</span>
                 <span class="text-[11px] font-extrabold text-slate-700 truncate max-w-[130px] sm:max-w-xs" id="barPkgTitle">শুধু গ্যাস ফি</span>
             </div>
         </div>
 
-        <!-- Right: Payment Button (Scrolls to Payment Form) -->
-        <button onclick="scrollToPayment()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-5 py-3 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/30 active:scale-95 transition flex items-center gap-1.5 flex-shrink-0">
+        <!-- Right: Payment Button (Scrolls to Payment Section) -->
+        <button onclick="scrollToPayment()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-5 py-3 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/30 active:scale-95 transition flex items-center gap-1.5 flex-shrink-0">
             <span>পেমেন্ট করুন</span> <i class="fa-solid fa-arrow-down text-[10px]"></i>
         </button>
 
@@ -309,7 +320,6 @@
 
 <!-- Scripts -->
 <script>
-    // Handle Plan Selection & Details Toggling
     function handlePlanChange(amount, title, showVipDetails) {
         document.getElementById('payAmountText').innerText = '৳' + amount;
         document.getElementById('barPayAmount').innerText = '৳' + amount;
@@ -323,12 +333,10 @@
         }
     }
 
-    // Scroll directly to the payment instructions & form
     function scrollToPayment() {
         document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // Copy Number Logic
     function copyNumber() {
         const rawNum = document.getElementById("bKashNumber").innerText.replace(/[^0-9]/g, '');
         navigator.clipboard.writeText(rawNum).then(() => {
@@ -336,7 +344,6 @@
         });
     }
 
-    // Disable Submit Button on Submit
     function disableSubmitBtn(form) {
         const btn = document.getElementById('activateBtn');
         btn.disabled = true;
