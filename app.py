@@ -499,8 +499,9 @@ def delete_review(review_id):
     except:
         pass
     return redirect(url_for('reviews_page'))
-    # ==========================================
-# ADMIN: PANEL STATISTICS (BUG FIXED & GUARANTEED DATA)
+
+# ==========================================
+# ADMIN: PANEL STATISTICS (PAGINATED 1K+ BYPASS)
 # ==========================================
 @app.route('/admin/panel-stats')
 @login_required
@@ -508,7 +509,7 @@ def delete_review(review_id):
 def panel_stats():
     from datetime import datetime, timezone, timedelta
     
-    # বাংলাদেশ সময় (UTC+6) অনুযায়ী আজকের তারিখ (YYYY-MM-DD)
+    # বাংলাদেশ সময় অনুযায়ী আজকের তারিখ (YYYY-MM-DD)
     bd_now = datetime.now(timezone.utc) + timedelta(hours=6)
     today_date = bd_now.strftime('%Y-%m-%d')
     
@@ -520,64 +521,121 @@ def panel_stats():
         'last_vip': None, 'last_activation': None, 'last_recharge': None
     }
     
-    # ১. PROFILES ডাটা ফেচিং
+    # -------------------------------------------------------------
+    # ১. PROFILES ডাটা (১০০০ লিমিট বাইপাস লুপ - 1K+ FIX)
+    # -------------------------------------------------------------
     try:
-        profiles_res = supabase.table('profiles').select('id, is_active, current_level, created_at').limit(10000).execute()
-        profiles = profiles_res.data or []
+        all_profiles = []
+        page_size = 1000
+        start = 0
         
-        stats['total_members'] = len(profiles)
-        stats['active_members'] = sum(1 for p in profiles if p.get('is_active'))
-        stats['vip_users'] = sum(1 for p in profiles if (p.get('current_level') or 0) > 0)
-        stats['today_members'] = sum(1 for p in profiles if str(p.get('created_at', '')).startswith(today_date))
-    except Exception as e:
-        print(f"Profiles Stats Error: {e}")
+        # ১০০০ করে লুপ চালিয়ে সব মেম্বার নিয়ে আসা হবে
+        while True:
+            res = supabase.table('profiles') \
+                .select('id, is_active, current_level, created_at') \
+                .range(start, start + page_size - 1) \
+                .execute()
+            
+            data = res.data or []
+            all_profiles.extend(data)
+            
+            # যদি ১০০০ এর কম ডাটা আসে, তার মানে আর কোনো ডাটা বাকি নেই
+            if len(data) < page_size:
+                break
+                
+            start += page_size
 
-    # ২. VIP REQUESTS ডাটা ফেচিং
+        # রিয়েল ক্যালকুলেশন
+        stats['total_members'] = len(all_profiles)
+        stats['active_members'] = sum(1 for p in all_profiles if p.get('is_active'))
+        stats['vip_users'] = sum(1 for p in all_profiles if (p.get('current_level') or 0) > 0)
+        stats['today_members'] = sum(1 for p in all_profiles if str(p.get('created_at', '')).startswith(today_date))
+
+    except Exception as e:
+        print(f"Profiles 1K+ Fetch Error: {e}")
+
+    # -------------------------------------------------------------
+    # ২. VIP REQUESTS (পেজিনেটেড ডাটা ফেচিং)
+    # -------------------------------------------------------------
     try:
-        vips_res = supabase.table('vip_requests').select('user_id, amount, created_at, status').eq('status', 'approved').limit(5000).execute()
-        vips = vips_res.data or []
-        
-        if vips:
-            stats['total_vip_amount'] = sum(float(v.get('amount') or 0) for v in vips)
-            stats['today_vip_amount'] = sum(float(v.get('amount') or 0) for v in vips if str(v.get('created_at', '')).startswith(today_date))
-            # সর্বশেষ ভিআইপি
-            sorted_vips = sorted(vips, key=lambda x: x.get('created_at', ''), reverse=True)
+        all_vips = []
+        start = 0
+        while True:
+            res = supabase.table('vip_requests') \
+                .select('user_id, amount, created_at, status') \
+                .eq('status', 'approved') \
+                .range(start, start + 999) \
+                .execute()
+            data = res.data or []
+            all_vips.extend(data)
+            if len(data) < 1000: break
+            start += 1000
+
+        if all_vips:
+            stats['total_vip_amount'] = sum(float(v.get('amount') or 0) for v in all_vips)
+            stats['today_vip_amount'] = sum(float(v.get('amount') or 0) for v in all_vips if str(v.get('created_at', '')).startswith(today_date))
+            sorted_vips = sorted(all_vips, key=lambda x: str(x.get('created_at', '')), reverse=True)
             stats['last_vip'] = sorted_vips[0] if sorted_vips else None
     except Exception as e:
-        print(f"VIP Stats Error: {e}")
+        print(f"VIP Pagination Error: {e}")
 
-    # ৩. ACTIVATION REQUESTS ডাটা ফেচিং
+    # -------------------------------------------------------------
+    # ৩. ACTIVATION REQUESTS (পেজিনেটেড ডাটা ফেচিং)
+    # -------------------------------------------------------------
     try:
-        act_res = supabase.table('activation_requests').select('user_id, created_at, status').eq('status', 'approved').limit(5000).execute()
-        acts = act_res.data or []
-        
-        if acts:
-            stats['total_activation'] = len(acts)
-            stats['today_activation'] = sum(1 for a in acts if str(a.get('created_at', '')).startswith(today_date))
-            sorted_acts = sorted(acts, key=lambda x: x.get('created_at', ''), reverse=True)
+        all_acts = []
+        start = 0
+        while True:
+            res = supabase.table('activation_requests') \
+                .select('user_id, created_at, status') \
+                .eq('status', 'approved') \
+                .range(start, start + 999) \
+                .execute()
+            data = res.data or []
+            all_acts.extend(data)
+            if len(data) < 1000: break
+            start += 1000
+
+        if all_acts:
+            stats['total_activation'] = len(all_acts)
+            stats['today_activation'] = sum(1 for a in all_acts if str(a.get('created_at', '')).startswith(today_date))
+            sorted_acts = sorted(all_acts, key=lambda x: str(x.get('created_at', '')), reverse=True)
             stats['last_activation'] = sorted_acts[0] if sorted_acts else None
     except Exception as e:
-        print(f"Activation Stats Error: {e}")
+        print(f"Activation Pagination Error: {e}")
 
-    # ৪. RECHARGES / DRIVE ORDERS ডাটা ফেচিং
+    # -------------------------------------------------------------
+    # ৪. RECHARGES / DRIVE ORDERS (পেজিনেটেড ডাটা ফেচিং)
+    # -------------------------------------------------------------
     try:
-        rec_res = supabase.table('drive_orders').select('user_id, offer_price, created_at, status').eq('status', 'success').limit(5000).execute()
-        recharges = rec_res.data or []
-        
-        if recharges:
-            stats['total_recharge'] = sum(float(r.get('offer_price') or 0) for r in recharges)
-            stats['today_recharge'] = sum(float(r.get('offer_price') or 0) for r in recharges if str(r.get('created_at', '')).startswith(today_date))
-            sorted_recs = sorted(recharges, key=lambda x: x.get('created_at', ''), reverse=True)
+        all_recharges = []
+        start = 0
+        while True:
+            res = supabase.table('drive_orders') \
+                .select('user_id, offer_price, created_at, status') \
+                .eq('status', 'success') \
+                .range(start, start + 999) \
+                .execute()
+            data = res.data or []
+            all_recharges.extend(data)
+            if len(data) < 1000: break
+            start += 1000
+
+        if all_recharges:
+            stats['total_recharge'] = sum(float(r.get('offer_price') or 0) for r in all_recharges)
+            stats['today_recharge'] = sum(float(r.get('offer_price') or 0) for r in all_recharges if str(r.get('created_at', '')).startswith(today_date))
+            sorted_recs = sorted(all_recharges, key=lambda x: str(x.get('created_at', '')), reverse=True)
             stats['last_recharge'] = sorted_recs[0] if sorted_recs else None
     except Exception as e:
-        print(f"Recharge Stats Error: {e}")
+        print(f"Recharge Pagination Error: {e}")
 
-    # ৫. ACTION LOGS
+    # -------------------------------------------------------------
+    # ৫. RECENT ACTION LOGS
+    # -------------------------------------------------------------
     try:
         logs_res = supabase.table('admin_action_logs').select('*').order('created_at', desc=True).limit(20).execute()
         logs = logs_res.data or []
-    except Exception as e:
-        print(f"Logs Error: {e}")
+    except Exception:
         logs = []
 
     return render_template('panel_statistics.html', stats=stats, logs=logs)
