@@ -2,199 +2,280 @@
 {% block content %}
 
 <style>
-    .fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-    
-    .clean-card {
-        background: #ffffff;
-        border-radius: 32px;
-        border: 1px solid rgba(15, 23, 42, 0.05);
-        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    /* ==========================================
+       EARN DAILY - MODERN GAS FEE & COMBO UI
+    ========================================== */
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Modern Light Cards */
+    .light-card {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 28px;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.03);
     }
 
-    /* Radio Button Custom Styling */
-    input:checked + .method-card {
-        border-color: #10B981; /* Emerald */
-        background-color: #F0FDF4; /* Emerald 50 */
+    /* Package Select Card */
+    .plan-card {
+        background: #FFFFFF;
+        border: 2px solid #E2E8F0;
+        border-radius: 22px;
+        padding: 18px;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
     }
-    input:checked + .bkash-card { border-color: #E2136E; background-color: #FDF2F8; color: #E2136E; }
-    input:checked + .nagad-card { border-color: #F7931A; background-color: #FFF7ED; color: #F7931A; }
-    input:checked + .rocket-card { border-color: #8C3494; background-color: #FDF4FF; color: #8C3494; }
+    .plan-card:hover { border-color: #A7F3D0; background: #F0FDF4; }
+    
+    input[type="radio"]:checked + .plan-card {
+        border-color: #10B981;
+        background: linear-gradient(180deg, #FFFFFF 0%, #ECFDF5 100%);
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.18);
+    }
+    input[type="radio"]:checked + .plan-card .check-circle {
+        background: #059669; border-color: #059669; color: #FFFFFF;
+    }
+
+    .check-circle {
+        height: 22px; width: 22px; border-radius: 50%; border: 2px solid #CBD5E1;
+        display: flex; align-items: center; justify-content: center; font-size: 11px;
+        transition: all 0.2s;
+    }
+
+    /* Clean Light Inputs */
+    .light-input {
+        width: 100%; background: #F8FAFC; border: 1.5px solid #E2E8F0;
+        color: #0F172A; padding: 15px 16px 15px 44px; border-radius: 18px;
+        font-size: 13.5px; outline: none; transition: all 0.25s;
+    }
+    .light-input:focus { border-color: #10B981; background: #FFFFFF; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
+    .light-input::placeholder { color: #94A3B8; }
+    
+    .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94A3B8; font-size: 14px; }
+    .light-input:focus ~ .input-icon { color: #059669; }
+
+    /* Buttons */
+    .btn-emerald {
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+        color: #FFFFFF; width: 100%; padding: 16px;
+        border-radius: 20px; font-weight: 800; font-size: 14px; text-transform: uppercase;
+        letter-spacing: 0.5px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+    }
+    .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
+    .btn-emerald:active { transform: scale(0.96); }
 </style>
 
-<div class="max-w-xl mx-auto space-y-6 fade-up pb-32 pt-4 px-2">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-12 px-1 mt-2">
 
-    <!-- 1. HEADER SECTION -->
-    <div class="flex items-center justify-between mb-2">
-        <a href="/dashboard" class="h-10 w-10 bg-white rounded-full flex items-center justify-center text-slate-600 shadow-sm border border-slate-100 hover:text-[#4F46E5] hover:border-indigo-100 transition">
-            <i class="fa-solid fa-arrow-left"></i>
-        </a>
-        <div class="bg-rose-50 text-rose-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border border-rose-100 shadow-sm flex items-center gap-1.5">
-            <i class="fa-solid fa-lock"></i> Account Locked
+    <!-- 1. HEADER -->
+    <div class="flex items-center justify-between mb-2 px-2">
+        <div class="flex items-center gap-3">
+            <a href="/dashboard" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </a>
+            <div>
+                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">Gas Fee & Verification</h2>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Verified Member Verification Protocol</p>
+            </div>
         </div>
+        <span class="bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full text-xs font-black flex items-center gap-1">
+            <i class="fa-solid fa-lock text-rose-500"></i> Locked
+        </span>
     </div>
 
     <!-- 2. HERO BANNER -->
-    <div class="relative bg-gradient-to-br from-[#0A2540] to-[#4F46E5] rounded-[32px] p-8 text-white shadow-2xl shadow-indigo-500/20 overflow-hidden text-center">
-        <!-- Decor -->
-        <div class="absolute top-[-20%] right-[-10%] w-48 h-48 bg-emerald-500/20 rounded-full blur-[50px]"></div>
-        <div class="absolute bottom-[-20%] left-[-10%] w-32 h-32 bg-rose-500/20 rounded-full blur-[40px]"></div>
+    <div class="bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-800 rounded-[32px] p-6 sm:p-8 text-white shadow-xl shadow-emerald-600/20 relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+        <i class="fa-solid fa-shield-halved absolute right-6 top-1/2 transform -translate-y-1/2 text-8xl opacity-10 pointer-events-none rotate-12"></i>
         
         <div class="relative z-10">
-            <div class="h-16 w-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 border border-white/20 shadow-inner">
-                <i class="fa-solid fa-shield-halved text-emerald-400"></i>
-            </div>
-            <h2 class="text-2xl md:text-3xl font-black mb-2 tracking-tight">একাউন্ট অ্যাক্টিভেশন</h2>
-            <p class="text-indigo-100 text-sm font-medium px-4 mb-6">
-                Pay-R প্ল্যাটফর্মে কাজ শুরু করতে এবং পেমেন্ট নিতে আপনার একাউন্টটি ভেরিফাই করুন।
+            <span class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-white/20 mb-3 shadow-sm">
+                <span class="h-1.5 w-1.5 bg-emerald-300 rounded-full animate-ping"></span> শুধুমাত্র Verified Memberদের জন্য
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-black tracking-tight leading-tight mb-2">গ্যাস ফি (Gas Fee) পরিশোধ</h1>
+            <p class="text-xs sm:text-sm text-emerald-100 font-medium leading-relaxed max-w-sm">
+                প্ল্যাটফর্মে স্প্যাম ও ফেইক আইডি বন্ধ করে প্রকৃত ইউজারদের কাজের সুযোগ ও নিয়মিত পেমেন্ট নিশ্চিত করতে এটি চালু করা হয়েছে।
             </p>
-            
-            <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20 shadow-lg">
-                <span class="text-xs text-indigo-200 font-bold uppercase tracking-widest">এককালীন ফি:</span>
-                <span class="text-2xl font-black text-emerald-400 font-mono tracking-tight">৳ ৪০</span>
-            </div>
         </div>
     </div>
 
-    <!-- 3. WHY ACTIVATION? (Trust Box) -->
-    <div class="clean-card p-6 md:p-8">
-        <h3 class="font-black text-slate-800 mb-5 flex items-center gap-2 text-sm border-b border-slate-100 pb-3">
-            <i class="fa-solid fa-circle-info text-[#4F46E5]"></i> অ্যাক্টিভেশন কেন প্রয়োজন?
+    <!-- 3. GAS FEE PERKS (সুবিধাসমূহ) -->
+    <div class="light-card border-l-4 border-l-emerald-600">
+        <h3 class="font-extrabold text-slate-800 text-sm mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i> গ্যাস ফি দিলে কী কী সুবিধা পাবেন?
         </h3>
-        <div class="space-y-4">
-            <div class="flex items-start gap-4">
-                <div class="h-10 w-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-robot"></i></div>
-                <div>
-                    <h4 class="font-bold text-slate-700 text-sm">স্প্যাম প্রতিরোধ</h4>
-                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">স্বয়ংক্রিয় বট এবং ফেইক ইউজারদের দূরে রাখতে এটি সাহায্য করে।</p>
-                </div>
+        <div class="space-y-2 text-xs font-semibold text-slate-700 leading-relaxed">
+            <div class="flex items-center gap-2.5 bg-emerald-50/70 p-3 rounded-xl border border-emerald-100">
+                <i class="fa-solid fa-wallet text-emerald-600 text-sm flex-shrink-0"></i>
+                <span><b>মিনিমাম মাত্র ৫০ টাকা হলেই উইথড্র:</b> কোনো প্রকার জটিল শর্ত বা রেফার লাগবে না।</span>
             </div>
-            <div class="flex items-start gap-4">
-                <div class="h-10 w-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-gem"></i></div>
-                <div>
-                    <h4 class="font-bold text-slate-700 text-sm">ফুল এক্সেস</h4>
-                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">হাই-পেইং জিমেইল টাস্ক এবং অন্যান্য সকল কাজ আনলক হবে।</p>
-                </div>
-            </div>
-        </div>
-        <div class="mt-5 bg-amber-50 border border-amber-200/60 p-3 rounded-xl flex items-center gap-3">
-            <i class="fa-solid fa-check-double text-amber-600 text-lg"></i>
-            <p class="text-[10px] text-amber-800 font-bold leading-tight">এটি সম্পূর্ণ এককালীন (One-time) পেমেন্ট। পরবর্তীতে আর কোনো চার্জ কাটা হবে না।</p>
-        </div>
-    </div>
-
-    <!-- 4. PAYMENT INSTRUCTIONS -->
-    <div class="bg-gradient-to-r from-emerald-500 to-teal-500 p-1 rounded-[32px] shadow-lg shadow-emerald-200">
-        <div class="bg-white rounded-[28px] p-6 md:p-8 h-full">
-            <h3 class="font-black text-slate-800 mb-4 flex items-center gap-2 text-sm">
-                <i class="fa-solid fa-paper-plane text-emerald-500"></i> পেমেন্ট নির্দেশনা
-            </h3>
-            <p class="text-xs text-slate-600 mb-5 leading-relaxed font-medium">
-                নিচের নাম্বারে <b>৪০ টাকা সেন্ড মানি (Send Money)</b> করুন এবং ট্রানজেকশন আইডি (TrxID) নিচের ফর্মে জমা দিন।
-            </p>
-
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex items-center justify-between group">
-                <div>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">অফিসিয়াল নাম্বার</p>
-                    <p class="text-2xl font-black text-[#0A2540] font-mono tracking-wider select-all" id="payNumber">01912107604</p>
-                </div>
-                <button onclick="copyNumber()" class="h-12 w-12 bg-white border border-slate-200 text-slate-500 rounded-xl shadow-sm hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-600 transition flex items-center justify-center text-lg active:scale-95">
-                    <i class="fa-regular fa-copy"></i>
-                </button>
+            <div class="flex items-center gap-2.5 bg-emerald-50/70 p-3 rounded-xl border border-emerald-100">
+                <i class="fa-solid fa-bolt text-emerald-600 text-sm flex-shrink-0"></i>
+                <span><b>আনলিমিটেড ফ্রেশ টাস্ক:</b> হাই-পেইং জিমেইল ও মাইক্রো টাস্ক সরাসরি আনলক হয়ে যাবে।</span>
             </div>
         </div>
     </div>
 
-    <!-- 5. SUBMISSION FORM -->
-    <div class="clean-card p-6 md:p-8 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-1.5 h-full bg-[#4F46E5]"></div>
+    <!-- 4. PLAN SELECTION (Gas Fee Only vs Combo 70% Discount) -->
+    <div>
+        <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2.5 ml-2">প্যাকেজ নির্বাচন করুন</p>
         
-        <h3 class="font-black text-slate-800 mb-6 text-sm">পেমেন্ট ভেরিফিকেশন ফর্ম</h3>
-
-        <form method="POST" action="/activate/submit" class="space-y-5" onsubmit="return disableSubmitBtn(this)">
-            
-            <!-- Method Selection -->
-            <div>
-                <label class="block text-[10px] font-black text-slate-400 mb-2 ml-1 uppercase tracking-widest">পেমেন্ট মেথড</label>
-                <div class="grid grid-cols-3 gap-3">
-                    <label class="cursor-pointer">
-                        <input type="radio" name="method" value="bKash" class="peer sr-only" checked>
-                        <div class="method-card bkash-card py-3 border-2 border-slate-100 rounded-xl text-center bg-slate-50 text-slate-500 transition font-bold text-xs uppercase tracking-wider">
-                            bKash
+        <div class="space-y-3">
+            <!-- Option 1: Gas Fee Only -->
+            <label class="block cursor-pointer">
+                <input type="radio" name="plan_type" value="gas_only" class="peer sr-only" onchange="updatePayAmount(40, 'Gas Fee Only')">
+                <div class="plan-card flex items-center justify-between">
+                    <div class="flex items-center gap-3.5">
+                        <div class="check-circle"><i class="fa-solid fa-check"></i></div>
+                        <div>
+                            <h4 class="font-black text-slate-800 text-sm leading-tight">শুধু গ্যাস ফি (Gas Fee)</h4>
+                            <p class="text-xs text-slate-400 font-medium mt-0.5">অ্যাকাউন্ট ভেরিফিকেশন + ৫০৳ উইথড্র সুবিধা</p>
                         </div>
-                    </label>
-                    <label class="cursor-pointer">
-                        <input type="radio" name="method" value="Nagad" class="peer sr-only">
-                        <div class="method-card nagad-card py-3 border-2 border-slate-100 rounded-xl text-center bg-slate-50 text-slate-500 transition font-bold text-xs uppercase tracking-wider">
-                            Nagad
-                        </div>
-                    </label>
-                    <label class="cursor-pointer">
-                        <input type="radio" name="method" value="Rocket" class="peer sr-only">
-                        <div class="method-card rocket-card py-3 border-2 border-slate-100 rounded-xl text-center bg-slate-50 text-slate-500 transition font-bold text-xs uppercase tracking-wider">
-                            Rocket
-                        </div>
-                    </label>
+                    </div>
+                    <span class="text-xl font-black text-slate-900 font-mono">৳৪০</span>
                 </div>
+            </label>
+
+            <!-- Option 2: Mega Combo (Recommended 70% Discount) -->
+            <label class="block cursor-pointer">
+                <input type="radio" name="plan_type" value="combo" class="peer sr-only" checked onchange="updatePayAmount(100, 'Gas Fee + Daily Booster VIP-2')">
+                <div class="plan-card flex flex-col gap-3 !border-emerald-500">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3.5">
+                            <div class="check-circle"><i class="fa-solid fa-check"></i></div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="font-black text-slate-900 text-sm leading-tight">Gas Fee + Daily Booster Combo</h4>
+                                    <span class="bg-amber-500 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded shadow-sm">VIP-2 ৭০% ছাড়</span>
+                                </div>
+                                <p class="text-xs text-emerald-800 font-bold mt-0.5">Gas Fee ৳৪০ + Daily Booster ৳৬০ = মোট ৳১০০</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-2xl font-black text-emerald-700 font-mono">৳১০০</span>
+                            <span class="text-[11px] text-slate-400 line-through font-mono block">৳২৪০</span>
+                        </div>
+                    </div>
+
+                    <!-- Daily Booster Benefits List -->
+                    <div class="bg-emerald-50/80 rounded-xl p-3 border border-emerald-100 text-[11px] text-slate-700 space-y-1.5 font-medium">
+                        <p class="font-extrabold text-emerald-900 mb-1 border-b border-emerald-200/60 pb-1">👑 Daily Booster ভিআইপি-২ এর স্পেশাল সুবিধাসমূহ:</p>
+                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> মোট গ্যারান্টেড প্রফিট রিটার্ন: <b>৳৪৭৫</b></p>
+                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> টাকা তোলার জন্য <b>কোনো রেফারেল লাগবে না</b></p>
+                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> মিনিমাম ক্যাশআউট মাত্র <b>৳২০</b> (বিকাশ ও নগদ)</p>
+                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> উইথড্রতে <b>০% ট্রানজেকশন চার্জ</b> (ফ্রি ক্যাশআউট)</p>
+                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> <b>Premium Work Board</b> এর বেশি টাকার কাজ আনলক</p>
+                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> উইথড্র রিকোয়েস্টে <b>১০-৩০ মিনিটে প্রায়োরিটি পেমেন্ট</b></p>
+                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> লাকি স্পিন ও ক্যাপচাতে <b>ডাবল রিওয়ার্ড পয়েন্ট</b></p>
+                        <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> ২৪/৭ ডেডিকেটেড ভিআইপি সাপোর্ট এজেন্ট সুবিধা</p>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </div>
+
+    <!-- 5. PAYMENT INSTRUCTIONS (BKASH ONLY + NAGAD SUPPORT LINK) -->
+    <div class="light-card space-y-4">
+        <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider flex items-center justify-between border-b border-slate-100 pb-3">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-[#E2136E]"></i> bKash পেমেন্ট নির্দেশনা</span>
+            <span class="text-[10px] font-black uppercase tracking-wider text-[#E2136E] bg-pink-50 px-2.5 py-0.5 rounded-full border border-pink-100">Only bKash</span>
+        </h3>
+
+        <!-- Official bKash Number -->
+        <div class="bg-pink-50/60 border border-pink-200/80 p-4 rounded-2xl flex items-center justify-between group">
+            <div>
+                <p class="text-[10px] text-[#E2136E] font-extrabold uppercase tracking-wider mb-0.5">অফিশিয়াল bKash Send Money নম্বর</p>
+                <p class="text-xl sm:text-2xl font-black text-slate-900 font-mono tracking-wider select-all" id="bKashNumber">01618-897806</p>
             </div>
+            <button type="button" onclick="copyNumber()" class="h-10 w-10 bg-white border border-pink-200 text-[#E2136E] hover:bg-[#E2136E] hover:text-white rounded-xl transition shadow-sm active:scale-95 flex items-center justify-center flex-shrink-0" title="Copy Number">
+                <i class="fa-regular fa-copy text-sm"></i>
+            </button>
+        </div>
+
+        <p class="text-xs text-slate-600 font-medium leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+            উপরের বিকাশ নম্বরে নির্বাচিত প্যাকেজের সমপরিমাণ (<b id="payAmountText" class="text-emerald-700 font-black">৳১০০</b>) টাকা <b>Send Money</b> করুন এবং নিচের ফর্মে তথ্য দিয়ে ভেরিফিকেশন জমা দিন।
+        </p>
+
+        <!-- Nagad Fallback Support Link -->
+        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 text-xs font-bold text-amber-900">
+                <i class="fa-solid fa-circle-question text-amber-600 text-base"></i>
+                <span>নগদ (Nagad) দিয়ে পেমেন্ট করতে চান?</span>
+            </div>
+            <a href="https://t.me/earn_daily_site" target="_blank" class="bg-amber-600 hover:bg-amber-700 text-white text-[11px] font-extrabold uppercase px-3 py-1.5 rounded-xl transition shadow-sm flex-shrink-0">
+                সাপোর্টে যোগাযোগ <i class="fa-solid fa-arrow-right ml-0.5"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 6. SUBMISSION FORM -->
+    <div class="light-card">
+        <h3 class="font-extrabold text-slate-800 text-sm mb-4 uppercase tracking-wider">পেমেন্ট ভেরিফিকেশন ফর্ম</h3>
+
+        <form method="POST" action="/activate/submit" class="space-y-4" onsubmit="return disableSubmitBtn(this)">
+            <input type="hidden" name="method" value="bKash">
 
             <!-- Sender Number -->
             <div>
-                <label class="block text-[10px] font-black text-slate-400 mb-1.5 ml-1 uppercase tracking-widest">আপনার সেন্ডার নাম্বার</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                        <i class="fa-solid fa-phone text-xs"></i>
-                    </div>
-                    <input type="number" name="sender_number" required placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন" 
-                           class="w-full pl-10 p-3.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-indigo-500/10 transition text-sm font-bold text-slate-800 bg-slate-50 focus:bg-white font-mono">
+                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5 ml-1">যে নম্বর থেকে টাকা পাঠিয়েছেন (Sender No)</label>
+                <div class="input-group">
+                    <input type="tel" name="sender_number" required pattern="01[3-9][0-9]{8}" placeholder="01XXXXXXXXX" class="light-input font-mono tracking-wider">
+                    <i class="fa-solid fa-phone input-icon"></i>
                 </div>
             </div>
 
             <!-- TrxID -->
             <div>
-                <label class="block text-[10px] font-black text-slate-400 mb-1.5 ml-1 uppercase tracking-widest">ট্রানজেকশন আইডি (TrxID)</label>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
-                        <i class="fa-solid fa-hashtag text-xs"></i>
-                    </div>
-                    <input type="text" name="trx_id" required placeholder="Example: 9A5K..." 
-                           class="w-full pl-10 p-3.5 border border-slate-200 rounded-xl focus:outline-none focus:border-[#4F46E5] focus:ring-4 focus:ring-indigo-500/10 transition text-sm font-bold text-slate-800 bg-slate-50 focus:bg-white uppercase tracking-widest font-mono">
+                <label class="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5 ml-1">ট্রানজেকশন আইডি (TrxID)</label>
+                <div class="input-group">
+                    <input type="text" name="trx_id" required placeholder="Ex: BK9A7F..." class="light-input font-mono uppercase tracking-wider">
+                    <i class="fa-solid fa-hashtag input-icon"></i>
                 </div>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" id="activateBtn" class="btn-emerald w-full text-white py-4 rounded-xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2 mt-4">
-                <span>ভেরিফাই করুন</span>
-                <i class="fa-solid fa-shield-check"></i>
+            <button type="submit" id="activateBtn" class="btn-emerald mt-2">
+                <span>ভেরিফিকেশন সাবমিট করুন</span> <i class="fa-solid fa-shield-check text-xs"></i>
             </button>
-
         </form>
+    </div>
+
+    <!-- 7. STRICT ULTIMATUM NOTICE -->
+    <div class="p-5 rounded-3xl bg-rose-50 border-2 border-rose-200 text-rose-950 space-y-2">
+        <div class="flex items-center gap-2 font-black text-xs text-rose-700 uppercase tracking-wider">
+            <i class="fa-solid fa-triangle-exclamation text-base animate-pulse text-rose-600"></i>
+            <span>জরুরি নোটিশ ও অ্যাকাউন্টের চূড়ান্ত সময়সীমা:</span>
+        </div>
+        <p class="text-xs leading-relaxed font-semibold">
+            যে সকল মেম্বার <b>আগামী ১ তারিখের মধ্যে গ্যাস ফি (Gas Fee) পরিশোধ করবেন না</b>, তাদের অ্যাকাউন্ট চিরতরে <b>ব্যান এবং স্থায়ীভাবে ডিলিট</b> করে দেওয়া হবে। তাদের অ্যাকাউন্টে থাকা সমস্ত জমানো ব্যালেন্স বাজেয়াপ্ত করা হবে এবং তা সক্রিয় ও ভেরিফাইড মেম্বারদের মাঝে সমানভাবে বোনাস হিসেবে বণ্টন করে দেওয়া হবে।
+        </p>
     </div>
 
 </div>
 
 <!-- Scripts -->
 <script>
+    function updatePayAmount(amount, title) {
+        document.getElementById('payAmountText').innerText = '৳' + amount;
+    }
+
     function copyNumber() {
-        const numberText = document.getElementById("payNumber").innerText;
-        navigator.clipboard.writeText(numberText).then(() => {
-            const btn = event.currentTarget;
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
-            btn.classList.add('border-emerald-300', 'bg-emerald-50');
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove('border-emerald-300', 'bg-emerald-50');
-            }, 2000);
-        }).catch(err => {
-            console.error('Copy failed', err);
+        const rawNum = document.getElementById("bKashNumber").innerText.replace(/[^0-9]/g, '');
+        navigator.clipboard.writeText(rawNum).then(() => {
+            alert("বিকাশ নম্বর কপি হয়েছে: " + rawNum);
         });
     }
 
     function disableSubmitBtn(form) {
         const btn = document.getElementById('activateBtn');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i>';
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin text-lg"></i> <span class="ml-2">যাচাই হচ্ছে...</span>';
         btn.classList.add('opacity-80', 'cursor-not-allowed');
         return true;
     }
