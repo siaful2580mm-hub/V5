@@ -69,9 +69,21 @@
     }
     .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
     .btn-emerald:active { transform: scale(0.96); }
+
+    /* Sticky Bottom Floating Bar */
+    .sticky-checkout-bar {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(226, 232, 240, 0.9);
+        box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.08);
+        z-index: 45;
+        padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    }
 </style>
 
-<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-12 px-1 mt-2">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-32 px-1 mt-2">
 
     <!-- 1. HEADER -->
     <div class="flex items-center justify-between mb-2 px-2">
@@ -122,14 +134,15 @@
         </div>
     </div>
 
-    <!-- 4. PLAN SELECTION (Gas Fee Only vs Combo 70% Discount) -->
+    <!-- 4. PLAN SELECTION (Default: Gas Fee, VIP-2 Hidden Details) -->
     <div>
         <p class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2.5 ml-2">প্যাকেজ নির্বাচন করুন</p>
         
         <div class="space-y-3">
-            <!-- Option 1: Gas Fee Only -->
+            
+            <!-- Option 1: Gas Fee Only (DEFAULT SELECTED) -->
             <label class="block cursor-pointer">
-                <input type="radio" name="plan_type" value="gas_only" class="peer sr-only" onchange="updatePayAmount(40, 'Gas Fee Only')">
+                <input type="radio" name="plan_type" value="gas_only" class="peer sr-only" checked onchange="handlePlanChange(40, 'Gas Fee (অ্যাকাউন্ট ভেরিফিকেশন)', false)">
                 <div class="plan-card flex items-center justify-between">
                     <div class="flex items-center gap-3.5">
                         <div class="check-circle"><i class="fa-solid fa-check"></i></div>
@@ -142,10 +155,10 @@
                 </div>
             </label>
 
-            <!-- Option 2: Mega Combo (Recommended 70% Discount) -->
+            <!-- Option 2: Mega Combo (Features Hidden, Expands on Select) -->
             <label class="block cursor-pointer">
-                <input type="radio" name="plan_type" value="combo" class="peer sr-only" checked onchange="updatePayAmount(100, 'Gas Fee + Daily Booster VIP-2')">
-                <div class="plan-card flex flex-col gap-3 !border-emerald-500">
+                <input type="radio" name="plan_type" value="combo" class="peer sr-only" onchange="handlePlanChange(100, 'Gas Fee + Daily Booster VIP-2 Combo', true)">
+                <div class="plan-card flex flex-col gap-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3.5">
                             <div class="check-circle"><i class="fa-solid fa-check"></i></div>
@@ -163,9 +176,12 @@
                         </div>
                     </div>
 
-                    <!-- Daily Booster Benefits List -->
-                    <div class="bg-emerald-50/80 rounded-xl p-3 border border-emerald-100 text-[11px] text-slate-700 space-y-1.5 font-medium">
-                        <p class="font-extrabold text-emerald-900 mb-1 border-b border-emerald-200/60 pb-1">👑 Daily Booster ভিআইপি-২ এর স্পেশাল সুবিধাসমূহ:</p>
+                    <!-- Hidden Accordion: Daily Booster Benefits (Appears when marked) -->
+                    <div id="vipDetailsAccordion" class="hidden bg-emerald-50/90 rounded-2xl p-3.5 border border-emerald-200 text-[11px] text-slate-700 space-y-1.5 font-medium transition-all duration-300">
+                        <p class="font-extrabold text-emerald-950 mb-1.5 border-b border-emerald-200/80 pb-1 flex items-center justify-between">
+                            <span>👑 Daily Booster ভিআইপি-২ এর স্পেশাল সুবিধাসমূহ:</span>
+                            <span class="text-[9px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded font-black">UNLOCKED</span>
+                        </p>
                         <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> মোট গ্যারান্টেড প্রফিট রিটার্ন: <b>৳৪৭৫</b></p>
                         <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> টাকা তোলার জন্য <b>কোনো রেফারেল লাগবে না</b></p>
                         <p class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600"></i> মিনিমাম ক্যাশআউট মাত্র <b>৳২০</b> (বিকাশ ও নগদ)</p>
@@ -181,7 +197,7 @@
     </div>
 
     <!-- 5. PAYMENT INSTRUCTIONS (BKASH ONLY + NAGAD SUPPORT LINK) -->
-    <div class="light-card space-y-4">
+    <div id="paymentSection" class="light-card space-y-4">
         <h3 class="font-extrabold text-slate-800 text-sm uppercase tracking-wider flex items-center justify-between border-b border-slate-100 pb-3">
             <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-[#E2136E]"></i> bKash পেমেন্ট নির্দেশনা</span>
             <span class="text-[10px] font-black uppercase tracking-wider text-[#E2136E] bg-pink-50 px-2.5 py-0.5 rounded-full border border-pink-100">Only bKash</span>
@@ -199,10 +215,10 @@
         </div>
 
         <p class="text-xs text-slate-600 font-medium leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-            উপরের বিকাশ নম্বরে নির্বাচিত প্যাকেজের সমপরিমাণ (<b id="payAmountText" class="text-emerald-700 font-black">৳১০০</b>) টাকা <b>Send Money</b> করুন এবং নিচের ফর্মে তথ্য দিয়ে ভেরিফিকেশন জমা দিন।
+            উপরের বিকাশ নম্বরে নির্বাচিত প্যাকেজের সমপরিমাণ (<b id="payAmountText" class="text-emerald-700 font-black">৳৪০</b>) টাকা <b>Send Money</b> করুন এবং নিচের ফর্মে তথ্য দিয়ে ভেরিফিকেশন জমা দিন।
         </p>
 
-        <!-- Nagad Fallback Support Link -->
+        <!-- Nagad Support Link -->
         <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2 text-xs font-bold text-amber-900">
                 <i class="fa-solid fa-circle-question text-amber-600 text-base"></i>
@@ -259,12 +275,53 @@
 
 </div>
 
+<!-- ==========================================
+     8. FIXED BOTTOM FLOATING CHECKOUT BAR
+========================================== -->
+<div class="sticky-checkout-bar">
+    <div class="max-w-xl mx-auto flex items-center justify-between gap-4">
+        
+        <!-- Left: Details & Price -->
+        <div>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none mb-1">
+                আপনাকে পেমেন্ট করতে হবে:
+            </p>
+            <div class="flex items-baseline gap-1.5">
+                <span class="text-2xl font-black text-emerald-700 font-mono leading-none" id="barPayAmount">৳৪০</span>
+                <span class="text-[11px] font-extrabold text-slate-700 truncate max-w-[150px] sm:max-w-xs" id="barPkgTitle">Gas Fee Only</span>
+            </div>
+        </div>
+
+        <!-- Right Down: Payment Button (Scrolls to Payment Form) -->
+        <button onclick="scrollToPayment()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/30 active:scale-95 transition flex items-center gap-2 flex-shrink-0">
+            <span>পেমেন্ট করুন</span> <i class="fa-solid fa-arrow-down text-xs"></i>
+        </button>
+
+    </div>
+</div>
+
 <!-- Scripts -->
 <script>
-    function updatePayAmount(amount, title) {
+    // Handle Plan Selection & Details Toggling
+    function handlePlanChange(amount, title, showVipDetails) {
         document.getElementById('payAmountText').innerText = '৳' + amount;
+        document.getElementById('barPayAmount').innerText = '৳' + amount;
+        document.getElementById('barPkgTitle').innerText = title;
+
+        const accordion = document.getElementById('vipDetailsAccordion');
+        if (showVipDetails) {
+            accordion.classList.remove('hidden');
+        } else {
+            accordion.classList.add('hidden');
+        }
     }
 
+    // Scroll directly to the payment instructions & form
+    function scrollToPayment() {
+        document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Copy Number Logic
     function copyNumber() {
         const rawNum = document.getElementById("bKashNumber").innerText.replace(/[^0-9]/g, '');
         navigator.clipboard.writeText(rawNum).then(() => {
@@ -272,6 +329,7 @@
         });
     }
 
+    // Disable Submit Button on Submit
     function disableSubmitBtn(form) {
         const btn = document.getElementById('activateBtn');
         btn.disabled = true;
