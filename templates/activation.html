@@ -70,20 +70,26 @@
     .btn-emerald:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.5); }
     .btn-emerald:active { transform: scale(0.96); }
 
-    /* Sticky Bottom Floating Bar */
+    /* ==========================================
+       🌟 FIXED CHECKOUT BAR (PERFECT POSITION) 🌟
+       বটম ন্যাভ (70px) এর ঠিক ওপরে ভাসবে
+    ========================================== */
     .sticky-checkout-bar {
-        position: fixed; bottom: 0; left: 0; right: 0;
-        background: rgba(255, 255, 255, 0.94);
+        position: fixed; 
+        bottom: 70px !important; /* Bottom nav এর ওপরে অবস্থান */
+        left: 0; 
+        right: 0;
+        background: rgba(255, 255, 255, 0.96);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(226, 232, 240, 0.9);
-        box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.08);
-        z-index: 45;
-        padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+        border-top: 1.5px solid rgba(226, 232, 240, 0.9);
+        box-shadow: 0 -8px 25px rgba(15, 23, 42, 0.08);
+        z-index: 60 !important; /* বটম ন্যাভ ও টেলিগ্রাম আইকনের ওপরে থাকবে */
+        padding: 12px 16px;
     }
 </style>
 
-<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-32 px-1 mt-2">
+<div class="max-w-xl mx-auto space-y-6 fade-in-up pb-48 px-1 mt-2">
 
     <!-- 1. HEADER -->
     <div class="flex items-center justify-between mb-2 px-2">
@@ -277,6 +283,7 @@
 
 <!-- ==========================================
      8. FIXED BOTTOM FLOATING CHECKOUT BAR
+     (বটম ন্যাভের ওপরে দৃশ্যমান থাকবে)
 ========================================== -->
 <div class="sticky-checkout-bar">
     <div class="max-w-xl mx-auto flex items-center justify-between gap-4">
@@ -288,13 +295,13 @@
             </p>
             <div class="flex items-baseline gap-1.5">
                 <span class="text-2xl font-black text-emerald-700 font-mono leading-none" id="barPayAmount">৳৪০</span>
-                <span class="text-[11px] font-extrabold text-slate-700 truncate max-w-[150px] sm:max-w-xs" id="barPkgTitle">Gas Fee Only</span>
+                <span class="text-[11px] font-extrabold text-slate-700 truncate max-w-[130px] sm:max-w-xs" id="barPkgTitle">শুধু গ্যাস ফি</span>
             </div>
         </div>
 
-        <!-- Right Down: Payment Button (Scrolls to Payment Form) -->
-        <button onclick="scrollToPayment()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/30 active:scale-95 transition flex items-center gap-2 flex-shrink-0">
-            <span>পেমেন্ট করুন</span> <i class="fa-solid fa-arrow-down text-xs"></i>
+        <!-- Right: Payment Button (Scrolls to Payment Form) -->
+        <button onclick="scrollToPayment()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-5 py-3 rounded-xl font-black text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/30 active:scale-95 transition flex items-center gap-1.5 flex-shrink-0">
+            <span>পেমেন্ট করুন</span> <i class="fa-solid fa-arrow-down text-[10px]"></i>
         </button>
 
     </div>
