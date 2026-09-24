@@ -1,82 +1,206 @@
-# ==========================================
-# ADMIN: PANEL STATISTICS (BUG FIXED & GUARANTEED DATA)
-# ==========================================
-@app.route('/admin/panel-stats')
-@login_required
-@admin_required
-def panel_stats():
-    from datetime import datetime, timezone, timedelta
-    
-    # বাংলাদেশ সময় (UTC+6) অনুযায়ী আজকের তারিখ (YYYY-MM-DD)
-    bd_now = datetime.now(timezone.utc) + timedelta(hours=6)
-    today_date = bd_now.strftime('%Y-%m-%d')
-    
-    stats = {
-        'today_members': 0, 'total_members': 0, 'active_members': 0, 'vip_users': 0,
-        'today_vip_amount': 0.0, 'total_vip_amount': 0.0,
-        'today_activation': 0, 'total_activation': 0,
-        'today_recharge': 0.0, 'total_recharge': 0.0,
-        'last_vip': None, 'last_activation': None, 'last_recharge': None
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+    /* ==========================================
+       EARN DAILY - MODERN PANEL STATS UI (SOFT LIGHT)
+    ========================================== */
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(16px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Modern Light Stat Card */
+    .stat-card {
+        background: #FFFFFF; 
+        border: 1px solid #E2E8F0; 
+        border-radius: 24px;
+        padding: 22px 20px; 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        position: relative; 
+        overflow: hidden;
+        box-shadow: 0 4px 18px -4px rgba(15, 23, 42, 0.02);
     }
-    
-    # ১. PROFILES ডাটা ফেচিং
-    try:
-        profiles_res = supabase.table('profiles').select('id, is_active, current_level, created_at').limit(10000).execute()
-        profiles = profiles_res.data or []
+    .stat-card:hover { 
+        border-color: #A7F3D0; 
+        transform: translateY(-3px); 
+        box-shadow: 0 12px 25px -5px rgba(16, 185, 129, 0.1); 
+    }
+
+    /* Highlighted Stat Cards for Today */
+    .highlight-card {
+        background: linear-gradient(180deg, #FFFFFF 0%, #F0FDF4 100%);
+        border: 1.5px solid #A7F3D0;
+    }
+
+    /* Activity Log Row */
+    .log-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 18px; background: #F8FAFC; border-radius: 16px;
+        border: 1px solid #E2E8F0; margin-bottom: 8px; transition: all 0.2s ease;
+    }
+    .log-row:hover { background: #FFFFFF; border-color: #A7F3D0; }
+</style>
+
+<div class="max-w-4xl mx-auto space-y-7 fade-in-up pb-12 px-1 mt-2">
+
+    <!-- 1. HEADER -->
+    <div class="flex items-center justify-between mb-4 px-2">
+        <div class="flex items-center gap-3">
+            <a href="/admin" class="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-slate-600 hover:text-emerald-600 hover:bg-emerald-50 transition border border-slate-200 shadow-sm active:scale-95">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+            </a>
+            <div>
+                <h2 class="text-base font-extrabold text-slate-800 tracking-tight leading-none">প্যানেল পরিসংখ্যান ও লাইভ মেট্রিক</h2>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Realtime System Analytics</p>
+            </div>
+        </div>
+        <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-black flex items-center gap-1.5">
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span> Live Sync
+        </span>
+    </div>
+
+    <!-- 2. TODAY'S REALTIME REPORT -->
+    <div>
+        <h3 class="text-xs font-black text-slate-800 uppercase tracking-wider mb-3 px-1 flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-emerald-500"></span> আজকের লাইভ রিপোর্ট (Today Overview)
+        </h3>
         
-        stats['total_members'] = len(profiles)
-        stats['active_members'] = sum(1 for p in profiles if p.get('is_active'))
-        stats['vip_users'] = sum(1 for p in profiles if (p.get('current_level') or 0) > 0)
-        stats['today_members'] = sum(1 for p in profiles if str(p.get('created_at', '')).startswith(today_date))
-    except Exception as e:
-        print(f"Profiles Stats Error: {e}")
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+            <div class="stat-card highlight-card">
+                <p class="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider mb-1">আজকের নতুন মেম্বার</p>
+                <h3 class="text-3xl font-black text-slate-900 font-mono">{{ stats.today_members }}</h3>
+                <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">Registered Today</span>
+            </div>
 
-    # ২. VIP REQUESTS ডাটা ফেচিং
-    try:
-        vips_res = supabase.table('vip_requests').select('user_id, amount, created_at, status').eq('status', 'approved').limit(5000).execute()
-        vips = vips_res.data or []
+            <div class="stat-card highlight-card">
+                <p class="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider mb-1">আজকের ভিআইপি ফি</p>
+                <h3 class="text-3xl font-black text-emerald-600 font-mono">৳{{ stats.today_vip_amount }}</h3>
+                <span class="text-[10px] text-emerald-700 font-bold mt-1 inline-block">VIP Disbursed</span>
+            </div>
+
+            <div class="stat-card highlight-card">
+                <p class="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider mb-1">আজকের ভেরিফিকেশন</p>
+                <h3 class="text-3xl font-black text-slate-900 font-mono">{{ stats.today_activation }}</h3>
+                <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">Activated Accounts</span>
+            </div>
+
+            <div class="stat-card highlight-card">
+                <p class="text-[10px] text-slate-500 font-extrabold uppercase tracking-wider mb-1">আজকের রিচার্জ সেল</p>
+                <h3 class="text-3xl font-black text-slate-900 font-mono">৳{{ stats.today_recharge }}</h3>
+                <span class="text-[10px] text-emerald-600 font-bold mt-1 inline-block">Telecom Packs</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ALL TIME SYSTEM TOTALS -->
+    <div>
+        <h3 class="text-xs font-black text-slate-800 uppercase tracking-wider mb-3 px-1 flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-teal-500"></span> সর্বমোট প্ল্যাটফর্ম রিপোর্ট (All Time)
+        </h3>
         
-        if vips:
-            stats['total_vip_amount'] = sum(float(v.get('amount') or 0) for v in vips)
-            stats['today_vip_amount'] = sum(float(v.get('amount') or 0) for v in vips if str(v.get('created_at', '')).startswith(today_date))
-            # সর্বশেষ ভিআইপি
-            sorted_vips = sorted(vips, key=lambda x: x.get('created_at', ''), reverse=True)
-            stats['last_vip'] = sorted_vips[0] if sorted_vips else None
-    except Exception as e:
-        print(f"VIP Stats Error: {e}")
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3.5">
+            <div class="stat-card">
+                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">মোট রেজিস্টার্ড মেম্বার</p>
+                <h3 class="text-2xl font-black text-slate-800 font-mono">{{ stats.total_members }}</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Total User Base</p>
+            </div>
 
-    # ৩. ACTIVATION REQUESTS ডাটা ফেচিং
-    try:
-        act_res = supabase.table('activation_requests').select('user_id, created_at, status').eq('status', 'approved').limit(5000).execute()
-        acts = act_res.data or []
+            <div class="stat-card">
+                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">মোট এক্টিভ মেম্বার</p>
+                <h3 class="text-2xl font-black text-emerald-600 font-mono">{{ stats.active_members }}</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Verified Accounts</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">মোট ভিআইপি ইউজার</p>
+                <h3 class="text-2xl font-black text-amber-500 font-mono">{{ stats.vip_users }}</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Elite Pass Members</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">মোট ভিআইপি ইনভেস্টমেন্ট</p>
+                <h3 class="text-2xl font-black text-emerald-700 font-mono">৳{{ stats.total_vip_amount }}</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">VIP Subscriptions</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">মোট অ্যাক্টিভেশন</p>
+                <h3 class="text-2xl font-black text-slate-800 font-mono">{{ stats.total_activation }}</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Total Verifications</p>
+            </div>
+
+            <div class="stat-card">
+                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider mb-1">মোট রিচার্জ সেল</p>
+                <h3 class="text-2xl font-black text-slate-800 font-mono">৳{{ stats.total_recharge }}</h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">Total Drive Orders</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. RECENT ACTIVITY & SETTLEMENT TIMESTAMPS -->
+    <div class="bg-white rounded-[28px] p-6 border border-slate-200/90 shadow-sm">
+        <h3 class="text-xs font-black text-slate-800 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+            <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i> সর্বশেষ সফল অ্যাকশন হিস্টোরি
+        </h3>
         
-        if acts:
-            stats['total_activation'] = len(acts)
-            stats['today_activation'] = sum(1 for a in acts if str(a.get('created_at', '')).startswith(today_date))
-            sorted_acts = sorted(acts, key=lambda x: x.get('created_at', ''), reverse=True)
-            stats['last_activation'] = sorted_acts[0] if sorted_acts else None
-    except Exception as e:
-        print(f"Activation Stats Error: {e}")
+        <div class="space-y-3">
+            <!-- Last VIP -->
+            <div class="flex justify-between items-center p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="h-9 w-9 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-sm font-bold border border-amber-100">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-extrabold text-slate-800 leading-tight">সর্বশেষ ভিআইপি অনুমোদন</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">UID: {{ stats.last_vip.user_id[:8] if stats.last_vip else 'N/A' }}...</p>
+                    </div>
+                </div>
+                <span class="text-xs font-mono font-bold text-slate-700 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
+                    {{ stats.last_vip.created_at[:16].replace('T', ' ') if stats.last_vip else 'No Data' }}
+                </span>
+            </div>
 
-    # ৪. RECHARGES / DRIVE ORDERS ডাটা ফেচিং
-    try:
-        rec_res = supabase.table('drive_orders').select('user_id, offer_price, created_at, status').eq('status', 'success').limit(5000).execute()
-        recharges = rec_res.data or []
-        
-        if recharges:
-            stats['total_recharge'] = sum(float(r.get('offer_price') or 0) for r in recharges)
-            stats['today_recharge'] = sum(float(r.get('offer_price') or 0) for r in recharges if str(r.get('created_at', '')).startswith(today_date))
-            sorted_recs = sorted(recharges, key=lambda x: x.get('created_at', ''), reverse=True)
-            stats['last_recharge'] = sorted_recs[0] if sorted_recs else None
-    except Exception as e:
-        print(f"Recharge Stats Error: {e}")
+            <!-- Last Activation -->
+            <div class="flex justify-between items-center p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm font-bold border border-emerald-100">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-extrabold text-slate-800 leading-tight">সর্বশেষ অ্যাকাউন্ট অ্যাক্টিভেশন</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">UID: {{ stats.last_activation.user_id[:8] if stats.last_activation else 'N/A' }}...</p>
+                    </div>
+                </div>
+                <span class="text-xs font-mono font-bold text-slate-700 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
+                    {{ stats.last_activation.created_at[:16].replace('T', ' ') if stats.last_activation else 'No Data' }}
+                </span>
+            </div>
 
-    # ৫. ACTION LOGS
-    try:
-        logs_res = supabase.table('admin_action_logs').select('*').order('created_at', desc=True).limit(20).execute()
-        logs = logs_res.data or []
-    except Exception as e:
-        print(f"Logs Error: {e}")
-        logs = []
+            <!-- Last Recharge -->
+            <div class="flex justify-between items-center p-3 rounded-xl bg-slate-50 border border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="h-9 w-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center text-sm font-bold border border-sky-100">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-extrabold text-slate-800 leading-tight">সর্বশেষ ড্রাইভ রিচার্জ ডেলিভারি</p>
+                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">UID: {{ stats.last_recharge.user_id[:8] if stats.last_recharge else 'N/A' }}...</p>
+                    </div>
+                </div>
+                <span class="text-xs font-mono font-bold text-slate-700 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
+                    {{ stats.last_recharge.created_at[:16].replace('T', ' ') if stats.last_recharge else 'No Data' }}
+                </span>
+            </div>
+        </div>
+    </div>
 
-    return render_template('panel_statistics.html', stats=stats, logs=logs)
+    <!-- 5. SYSTEM FOOTNOTES -->
+    <div class="text-center pt-4 pb-4 border-t border-slate-200/80">
+        <p class="text-xs font-extrabold text-slate-700 uppercase tracking-wider flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-microchip text-emerald-600"></i> Earn Daily Automated Analytical Engine Active
+        </p>
+        <p class="text-[10px] text-slate-400 font-mono mt-0.5">Daily Reset at 12:00 AM (BDT)</p>
+    </div>
+
+</div>
+
+{% endblock %}
