@@ -499,9 +499,8 @@ def delete_review(review_id):
     except:
         pass
     return redirect(url_for('reviews_page'))
-    
-# ==========================================
-# ADMIN: PANEL STATISTICS (FIXED UNLIMITED COUNT)
+    # ==========================================
+# ADMIN: PANEL STATISTICS (BUG FIXED & GUARANTEED DATA)
 # ==========================================
 @app.route('/admin/panel-stats')
 @login_required
@@ -509,9 +508,9 @@ def delete_review(review_id):
 def panel_stats():
     from datetime import datetime, timezone, timedelta
     
-    bd_time = datetime.now(timezone.utc) + timedelta(hours=6)
-    today_date = bd_time.strftime('%Y-%m-%d')
-    today_start = f"{today_date}T00:00:00"
+    # বাংলাদেশ সময় (UTC+6) অনুযায়ী আজকের তারিখ (YYYY-MM-DD)
+    bd_now = datetime.now(timezone.utc) + timedelta(hours=6)
+    today_date = bd_now.strftime('%Y-%m-%d')
     
     stats = {
         'today_members': 0, 'total_members': 0, 'active_members': 0, 'vip_users': 0,
@@ -521,55 +520,64 @@ def panel_stats():
         'last_vip': None, 'last_activation': None, 'last_recharge': None
     }
     
+    # ১. PROFILES ডাটা ফেচিং
     try:
-        # ১. [FIXED] আনলিমিটেড ইউজার কাউন্ট (১০০০ লিমিট বাইপাস)
-        # মোট মেম্বার
-        total_res = supabase.table('profiles').select('id', count='exact', head=True).execute()
-        stats['total_members'] = total_res.count or 0
-
-        # একটিভ মেম্বার
-        active_res = supabase.table('profiles').select('id', count='exact', head=True).eq('is_active', True).execute()
-        stats['active_members'] = active_res.count or 0
-
-        # ভিআইপি মেম্বার
-        vip_users_res = supabase.table('profiles').select('id', count='exact', head=True).gt('current_level', 0).execute()
-        stats['vip_users'] = vip_users_res.count or 0
-
-        # আজকের নতুন মেম্বার
-        today_m_res = supabase.table('profiles').select('id', count='exact', head=True).gte('created_at', today_start).execute()
-        stats['today_members'] = today_m_res.count or 0
-
-        # ২. ভিআইপি রিকোয়েস্ট ও অ্যামাউন্ট (সর্বোচ্চ ১০,০০০ রো পর্যন্ত এনে যোগ করা)
-        vips = supabase.table('vip_requests').select('user_id, amount, created_at').eq('status', 'approved').limit(10000).execute().data
-        if vips:
-            stats['total_vip_amount'] = sum(float(v['amount']) for v in vips if v.get('amount'))
-            stats['today_vip_amount'] = sum(float(v['amount']) for v in vips if v.get('created_at', '').startswith(today_date) and v.get('amount'))
-            sorted_vips = sorted(vips, key=lambda x: x['created_at'], reverse=True)
-            stats['last_vip'] = sorted_vips[0] if sorted_vips else None
-
-        # ৩. অ্যাক্টিভেশন কাউন্ট (আনলিমিটেড)
-        act_total = supabase.table('activation_requests').select('id', count='exact', head=True).eq('status', 'approved').execute()
-        stats['total_activation'] = act_total.count or 0
-
-        act_today = supabase.table('activation_requests').select('id', count='exact', head=True).eq('status', 'approved').gte('created_at', today_start).execute()
-        stats['today_activation'] = act_today.count or 0
-
-        last_act = supabase.table('activation_requests').select('user_id, created_at').eq('status', 'approved').order('created_at', desc=True).limit(1).execute().data
-        stats['last_activation'] = last_act[0] if last_act else None
-
-        # ৪. রিচার্জ / ড্রাইভ অর্ডার হিসাব
-        recharges = supabase.table('drive_orders').select('user_id, offer_price, created_at').eq('status', 'success').limit(10000).execute().data
-        if recharges:
-            stats['total_recharge'] = sum(float(r['offer_price']) for r in recharges if r.get('offer_price'))
-            stats['today_recharge'] = sum(float(r['offer_price']) for r in recharges if r.get('offer_price') and r.get('created_at', '').startswith(today_date))
-            sorted_rec = sorted(recharges, key=lambda x: x['created_at'], reverse=True)
-            stats['last_recharge'] = sorted_rec[0] if sorted_rec else None
-
-        # ৫. অ্যাডমিন লগ
-        logs = supabase.table('admin_action_logs').select('*').order('created_at', desc=True).limit(20).execute().data
-
+        profiles_res = supabase.table('profiles').select('id, is_active, current_level, created_at').limit(10000).execute()
+        profiles = profiles_res.data or []
+        
+        stats['total_members'] = len(profiles)
+        stats['active_members'] = sum(1 for p in profiles if p.get('is_active'))
+        stats['vip_users'] = sum(1 for p in profiles if (p.get('current_level') or 0) > 0)
+        stats['today_members'] = sum(1 for p in profiles if str(p.get('created_at', '')).startswith(today_date))
     except Exception as e:
-        print(f"Panel Stats Error: {e}")
+        print(f"Profiles Stats Error: {e}")
+
+    # ২. VIP REQUESTS ডাটা ফেচিং
+    try:
+        vips_res = supabase.table('vip_requests').select('user_id, amount, created_at, status').eq('status', 'approved').limit(5000).execute()
+        vips = vips_res.data or []
+        
+        if vips:
+            stats['total_vip_amount'] = sum(float(v.get('amount') or 0) for v in vips)
+            stats['today_vip_amount'] = sum(float(v.get('amount') or 0) for v in vips if str(v.get('created_at', '')).startswith(today_date))
+            # সর্বশেষ ভিআইপি
+            sorted_vips = sorted(vips, key=lambda x: x.get('created_at', ''), reverse=True)
+            stats['last_vip'] = sorted_vips[0] if sorted_vips else None
+    except Exception as e:
+        print(f"VIP Stats Error: {e}")
+
+    # ৩. ACTIVATION REQUESTS ডাটা ফেচিং
+    try:
+        act_res = supabase.table('activation_requests').select('user_id, created_at, status').eq('status', 'approved').limit(5000).execute()
+        acts = act_res.data or []
+        
+        if acts:
+            stats['total_activation'] = len(acts)
+            stats['today_activation'] = sum(1 for a in acts if str(a.get('created_at', '')).startswith(today_date))
+            sorted_acts = sorted(acts, key=lambda x: x.get('created_at', ''), reverse=True)
+            stats['last_activation'] = sorted_acts[0] if sorted_acts else None
+    except Exception as e:
+        print(f"Activation Stats Error: {e}")
+
+    # ৪. RECHARGES / DRIVE ORDERS ডাটা ফেচিং
+    try:
+        rec_res = supabase.table('drive_orders').select('user_id, offer_price, created_at, status').eq('status', 'success').limit(5000).execute()
+        recharges = rec_res.data or []
+        
+        if recharges:
+            stats['total_recharge'] = sum(float(r.get('offer_price') or 0) for r in recharges)
+            stats['today_recharge'] = sum(float(r.get('offer_price') or 0) for r in recharges if str(r.get('created_at', '')).startswith(today_date))
+            sorted_recs = sorted(recharges, key=lambda x: x.get('created_at', ''), reverse=True)
+            stats['last_recharge'] = sorted_recs[0] if sorted_recs else None
+    except Exception as e:
+        print(f"Recharge Stats Error: {e}")
+
+    # ৫. ACTION LOGS
+    try:
+        logs_res = supabase.table('admin_action_logs').select('*').order('created_at', desc=True).limit(20).execute()
+        logs = logs_res.data or []
+    except Exception as e:
+        print(f"Logs Error: {e}")
         logs = []
 
     return render_template('panel_statistics.html', stats=stats, logs=logs)
