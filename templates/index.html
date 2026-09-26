@@ -141,6 +141,30 @@
     #welcomePopup.show .popup-content { transform: scale(1) translateY(0); }
 </style>
 
+<!-- ==========================================
+         ⚠️ ACTIVATION / VERIFICATION WARNING BANNER
+    ========================================== -->
+    {% if settings.activation_required and not user.is_active and user.role != 'admin' %}
+    <div class="bg-gradient-to-r from-rose-500 to-red-600 rounded-3xl p-5 text-white shadow-lg shadow-rose-500/20 relative overflow-hidden animate-pulse">
+        <div class="flex items-center justify-between gap-3 relative z-10">
+            <div class="flex items-center gap-3.5">
+                <div class="h-11 w-11 bg-white text-rose-600 rounded-2xl flex items-center justify-center text-xl flex-shrink-0 shadow-md">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                    <h3 class="font-black text-sm leading-tight">অ্যাকাউন্ট ভেরিফিকেশন প্রয়োজন!</h3>
+                    <p class="text-[11px] text-rose-100 font-medium mt-0.5 leading-snug">
+                        কাজে ঢুকতে ও ৫০ টাকা হলেই উইথড্র পেতে এখনই মেম্বার ভেরিফিকেশন ফি (৳৫০) পরিশোধ করুন।
+                    </p>
+                </div>
+            </div>
+            <a href="/activate" class="bg-white text-rose-700 hover:bg-rose-50 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider shadow-sm flex-shrink-0 active:scale-95 transition">
+                ভেরিফাই করুন
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
 <div class="max-w-2xl mx-auto space-y-7 fade-in-up pb-10 px-1 mt-2">
 
     <!-- 1. SCROLLING NOTICE -->
