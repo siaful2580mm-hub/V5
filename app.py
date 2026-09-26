@@ -349,14 +349,21 @@ def before_request_checks():
             return
         return render_template('maintenance.html')
 
-    # ৫. এক্টিভেশন ব্যারিয়ার চেক
+# ৪. এক্টিভেশন ব্যারিয়ার চেক (FIXED: সব আর্নিং পেজ লক হবে)
     if g.settings.get('activation_required'):
+        # ইউজার যদি লগইন থাকে এবং ভেরিফাইড (is_active) না হয় এবং এডমিন না হয়
         if g.user and not g.user.get('is_active') and g.user.get('role') != 'admin':
-            restricted_pages = ['tasks', 'submit_task', 'withdraw']
+            # এই পেজগুলোতে আনভেরিফাইড ইউজার ঢুকতে পারবে না
+            restricted_pages = [
+                'tasks', 'submit_task', 'withdraw', 
+                'work_station', 'gmail_tasks', 'take_gmail_task', 
+                'playstore_tasks', 'lucky_spin', 'premium_tasks', 
+                'fb_task', 'ig_task'
+            ]
             if request.endpoint in restricted_pages:
-                flash("⚠️ এই সুবিধা পেতে একাউন্ট ভেরিফাই করুন!", "error")
+                flash("⚠️ কাজ করতে বা টাকা তুলতে প্রথমে মেম্বার ভেরিফিকেশন (Gas Fee) সম্পন্ন করুন!", "error")
                 return redirect(url_for('activate_account'))
-
+                
 
 
 
